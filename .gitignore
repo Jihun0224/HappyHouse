@@ -61,3 +61,4 @@ build/
 /backend/mvnw.*
 /backend/mvnw
 /servers
+/backend/bin
