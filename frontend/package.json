@@ -12,7 +12,8 @@
     "bootstrap-vue": "2.22.0",
     "core-js": "^3.8.3",
     "vue": "2.6.14",
-    "vue-router": "^3.5.1"
+    "vue-router": "^3.5.1",
+    "vue-select": "3.18.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -37,7 +38,11 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {},
+    "globals": {
+      "kakao": false,
+      "todoEventBus": "readonly"
+    }
   },
   "browserslist": [
     "> 1%",

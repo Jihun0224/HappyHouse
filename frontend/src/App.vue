@@ -6,8 +6,8 @@
   </div>
 </template>
 <script>
-import HeaderNav from "@/components/HeaderNav.vue";
-import FixedFooter from "@/components/FixedFooter.vue";
+import HeaderNav from "@/components/common/HeaderNav.vue";
+import FixedFooter from "@/components/common/FixedFooter.vue";
 
 export default {
   name: "App",
