@@ -1,11 +1,35 @@
 <template>
-  <div class="container px-4 px-lg-5" id="wrap">
-    <div class="select-box">
-      <v-select :options="this.do" id="do" />
-      <v-select :options="this.do" id="si" />
-      <v-select :options="this.do" id="gu" />
+  <div id="search">
+    <div class="container px-4 px-lg-5">
+      <div class="title"><h1>Search</h1></div>
+      <div class="select-box-wrap">
+        <div class="select-box">
+          <div style="background: #fff">
+            <v-select
+              v-model="searchParams.sido"
+              :options="this.do"
+              id="select"
+            />
+          </div>
+          <div style="background: #fff">
+            <v-select
+              v-model="searchParams.si"
+              :options="this.do"
+              id="select"
+            />
+          </div>
+          <div style="background: #fff">
+            <v-select
+              v-model="searchParams.gu"
+              :options="this.do"
+              id="select"
+            />
+          </div>
+          <b-button id="search-button">검색</b-button>
+        </div>
+      </div>
+      <div id="map"></div>
     </div>
-    <div id="map"></div>
   </div>
 </template>
 
@@ -13,6 +37,11 @@
 export default {
   data() {
     return {
+      searchParams: {
+        sido: "시·도를 선택해주세요.",
+        si: "시·군·구를 선택해주세요.",
+        gu: "읍·면·동을 선택해주세요.",
+      },
       do: ["서울특별시", "경기도"],
       latitude: 37.501314726742,
       longitude: 127.02730766538,
@@ -57,14 +86,31 @@ export default {
 
 
 <style scoped>
-#wrap {
-  height: 100vh;
+#search {
+  height: 95vh;
+  background-color: #f5f8fd;
 }
-#wrap #map {
-  position: relative;
-  top: 20vh;
-  height: 80vh;
+#search #map {
+  height: 60vh;
 }
 .select-box {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+#select {
+  width: 270px;
+  height: 30px;
+}
+#search-button {
+  height: 37px;
+  background-color: #413e66;
+}
+h1 {
+  text-align: center;
+  color: #413e66;
+  font-size: 6vh;
+  padding-top: 6vh;
 }
 </style>

@@ -91,7 +91,7 @@ export default {};
 
 <style scoped>
 .wrap {
-  background-color: #f5f8fd;
+  background-color: #fff;
   min-height: 500px;
 }
 h3 {

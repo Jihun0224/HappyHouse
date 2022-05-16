@@ -1,6 +1,6 @@
 <template>
   <div class="masthead">
-    <video autoplay loop id="bgvid">
+    <video autoplay loop muted="muted" id="bgvid">
       <source src="@/assets/video/house.mp4" type="video/mp4" />
     </video>
     <div
@@ -17,7 +17,7 @@
         <div class="text-center">
           <h1>HappyHouse</h1>
           <h2 class="text-white-50 mx-auto mt-2 mb-5">소개 자리</h2>
-          <b-button variant="light">Get Started</b-button>
+          <b-button variant="light" v-on:click="toSearch">Get Started</b-button>
         </div>
       </div>
     </div>
@@ -25,7 +25,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    toSearch() {
+      window.scrollBy({ top: window.innerHeight - 72, behavior: "smooth" });
+    },
+  },
+};
 </script>
 
 <style scoped>
