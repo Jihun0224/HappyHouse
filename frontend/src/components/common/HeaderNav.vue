@@ -21,8 +21,10 @@
             <template #button-content>
               <em>User</em>
             </template>
-            <b-dropdown-item href="#">Sign In</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Up</b-dropdown-item>
+            <b-dropdown-item v-b-modal="'log-in'">LogIn</b-dropdown-item>
+            <LogIn />
+            <b-dropdown-item v-b-modal="'sign-up'">Sign Up</b-dropdown-item>
+            <SignUp />
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -31,7 +33,15 @@
 </template>
 
 <script>
+import SignUp from "@/components/Member/SignUp.vue";
+import LogIn from "@/components/Member/LogIn.vue";
+
 export default {
+  el: "mainNav",
+  components: {
+    SignUp,
+    LogIn,
+  },
   created() {
     window.addEventListener("scroll", this.handleScroll);
   },
@@ -53,7 +63,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 #mainNav {
   min-height: 3.5rem;
   background-color: #fff;
@@ -90,6 +100,7 @@ export default {
     padding: 2rem 1.5rem;
     color: rgba(255, 255, 255, 0.5);
   }
+
   #mainNav .nav-link:hover {
     color: rgba(255, 255, 255, 0.75);
   }
@@ -107,5 +118,8 @@ export default {
     padding: 1.5rem 1.5rem 1.25rem;
     border-bottom: 0.25rem solid transparent;
   }
+}
+.btn .btn-secondary {
+  background-color: #fff;
 }
 </style>
