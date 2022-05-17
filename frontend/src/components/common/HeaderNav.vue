@@ -10,7 +10,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#">Search</b-nav-item>
+          <b-nav-item router-link to="/search">Search</b-nav-item>
           <b-nav-item href="#">Board</b-nav-item>
           <b-nav-item href="#">Notice</b-nav-item>
         </b-navbar-nav>
@@ -37,7 +37,6 @@ import SignUp from "@/components/Member/SignUp.vue";
 import LogIn from "@/components/Member/LogIn.vue";
 
 export default {
-  el: "mainNav",
   components: {
     SignUp,
     LogIn,
@@ -59,6 +58,10 @@ export default {
       } else {
         navbarCollapsible.classList.add("navbar-shrink");
       }
+    },
+    movePage(target) {
+      this.$router.push("/" + target);
+      window.scrollBy({ top: 0 });
     },
   },
 };

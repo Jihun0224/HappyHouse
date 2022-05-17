@@ -7,10 +7,16 @@ export default new Vuex.Store({
   state: {
     user: null,
     accessToken: false,
+    sidos: [{ value: null, label: "시·도를 선택해주세요." }],
+    guguns: [{ value: null, label: "시·군·구를 선택해주세요." }],
+    dongs: [{ value: null, label: "읍·면·동을 선택해주세요." }],
   },
   getters: {
     getAccessToken: state => state.accessToken,
     getUser: state => state.user,
+    getSidos: state => state.sidos,
+    getGuguns: state => state.guguns,
+    getDongs: state => state.dongs
   },
   mutations: {
     LOGIN(state, user) {
@@ -28,7 +34,31 @@ export default new Vuex.Store({
     reset(state) {
       state.accessToken = false;
       state.user = null;
-    }
+    },
+    SET_SIDO_LIST(state, sidos) {
+      sidos.forEach((sido) => {
+        state.sidos.push({ value: sido.sidoCode, label: sido.sidoName });
+      });
+    },
+    SET_GUGUN_LIST(state, guguns) {
+      guguns.forEach((gugun) => {
+        state.guguns.push({ value: gugun.gugunCode, label: gugun.gugunName });
+      });
+    },
+    SET_DONG_LIST(state, dongs) {
+      dongs.forEach((dong) => {
+        state.dongs.push({ value: dong.dongCode, label: dong.dongName });
+      });
+    },
+    CLEAR_SIDO_LIST(state) {
+      state.sidos = [{ value: null, label: "시·도를 선택해주세요." }];
+    },
+    CLEAR_GUGUN_LIST(state) {
+      state.guguns = [{ value: null, label: "시·군·구를 선택해주세요." }];
+    },
+    CLEAR_DONG_LIST(state) {
+      state.dongs = [{ value: null, label: "읍·면·동을 선택해주세요." }];
+    },
   },
   actions: {
     login({ commit }, user) {
@@ -58,7 +88,42 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("reset");
-    }
+    },
+    getSido({ commit }) {
+      http
+        .get(`/map/sido`)
+        .then(({ data }) => {
+          console.log(data);
+          commit("SET_SIDO_LIST", data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getGugun({ commit }, sidoCode) {
+      const params = { sido: sidoCode };
+      http
+        .get(`/map/gugun`, { params })
+        .then(({ data }) => {
+          console.log(commit, data);
+          commit("SET_GUGUN_LIST", data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getDong({ commit }, gugunCode) {
+      const params = { gugun: gugunCode };
+      http
+        .get(`/map/dong`, { params })
+        .then(({ data }) => {
+          console.log(commit, data);
+          commit("SET_DONG_LIST", data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   modules: {
   }
