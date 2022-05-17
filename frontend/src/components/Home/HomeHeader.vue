@@ -28,7 +28,7 @@
 export default {
   methods: {
     toSearch() {
-      window.scrollBy({ top: window.innerHeight - 72, behavior: "smooth" });
+      window.scrollBy({ top: window.innerHeight - 45, behavior: "smooth" });
     },
   },
 };
