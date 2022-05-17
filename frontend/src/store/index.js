@@ -93,7 +93,7 @@ export default new Vuex.Store({
       http
         .get(`/map/sido`)
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           commit("SET_SIDO_LIST", data);
         })
         .catch((error) => {

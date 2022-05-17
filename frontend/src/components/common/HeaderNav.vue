@@ -11,8 +11,8 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item router-link to="/search">Search</b-nav-item>
-          <b-nav-item href="#">Board</b-nav-item>
-          <b-nav-item href="#">Notice</b-nav-item>
+          <b-nav-item router-link to="/board">Board</b-nav-item>
+          <b-nav-item router-link to="/notice">Notice</b-nav-item>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -63,13 +63,16 @@ export default {
       this.$router.push("/" + target);
       window.scrollBy({ top: 0 });
     },
+    changeNavBarColor() {
+      console.log(this.$route.name);
+    },
   },
 };
 </script>
-<style scoped>
+<style>
 #mainNav {
-  min-height: 3.5rem;
-  background-color: #fff;
+  min-height: 3rem;
+  background-color: #f5f8fd;
 }
 
 #mainNav .navbar-toggler:focus {
@@ -96,22 +99,22 @@ export default {
   }
   #mainNav .navbar-brand {
     padding: 0.5rem 0;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(65, 62, 102);
   }
   #mainNav .nav-link {
     transition: none;
     padding: 2rem 1.5rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(65, 62, 102);
   }
 
   #mainNav .nav-link:hover {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(65, 62, 102, 0.75);
   }
   #mainNav .nav-link:active {
     color: #413e66;
   }
   #mainNav.navbar-shrink {
-    background-color: #fff;
+    background-color: #f5f8fd;
   }
   #mainNav.navbar-shrink .navbar-brand {
     color: #413e66;
