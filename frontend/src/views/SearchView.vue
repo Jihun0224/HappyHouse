@@ -1,10 +1,12 @@
 <template>
   <div>
     <HeaderNav />
-    <container class="search">
-      <SearchResult />
-      <KakaoMap />
-    </container>
+    <div class="container-fluid">
+      <div class="row">
+        <SearchResult />
+        <KakaoMap />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -22,10 +24,6 @@ export default {
 };
 </script>
 <style scoped>
-.search {
-  height: 100vh;
-  width: 100%;
-}
 #map {
   height: 100vh;
   width: 80%;
@@ -33,10 +31,5 @@ export default {
 }
 #mainNav {
   background-color: #f5f8fd;
-}
-#result {
-  position: relative;
-  top: 88px;
-  width: 20vw;
 }
 </style>
