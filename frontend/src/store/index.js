@@ -7,16 +7,18 @@ export default new Vuex.Store({
   state: {
     user: null,
     accessToken: false,
-    sidos: [{ value: null, label: "시·도를 선택해주세요." }],
-    guguns: [{ value: null, label: "시·군·구를 선택해주세요." }],
-    dongs: [{ value: null, label: "읍·면·동을 선택해주세요." }],
+    sidos: [{ value: null, label: "시·도" }],
+    guguns: [{ value: null, label: "시·군·구" }],
+    dongs: [{ value: null, label: "읍·면·동" }],
+    houses: [],
   },
   getters: {
     getAccessToken: state => state.accessToken,
     getUser: state => state.user,
     getSidos: state => state.sidos,
     getGuguns: state => state.guguns,
-    getDongs: state => state.dongs
+    getDongs: state => state.dongs,
+    getHouses: state => state.houses
   },
   mutations: {
     LOGIN(state, user) {
@@ -51,13 +53,16 @@ export default new Vuex.Store({
       });
     },
     CLEAR_SIDO_LIST(state) {
-      state.sidos = [{ value: null, label: "시·도를 선택해주세요." }];
+      state.sidos = [{ value: null, label: "시·도" }];
     },
     CLEAR_GUGUN_LIST(state) {
-      state.guguns = [{ value: null, label: "시·군·구를 선택해주세요." }];
+      state.guguns = [{ value: null, label: "시·군·구" }];
     },
     CLEAR_DONG_LIST(state) {
-      state.dongs = [{ value: null, label: "읍·면·동을 선택해주세요." }];
+      state.dongs = [{ value: null, label: "읍·면·동" }];
+    },
+    SET_HOUSE_LIST(state, houses) {
+      state.houses = houses;
     },
   },
   actions: {
@@ -124,6 +129,19 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
+    getHouses({ commit }, dong) {
+      const params = { dong: dong };
+      console.log(dong);
+      http
+        .get(`/map/apt`, { params })
+        .then(({ data }) => {
+          console.log(commit, data);
+          commit("SET_HOUSE_LIST", data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
   modules: {
   }

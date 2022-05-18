@@ -1,21 +1,10 @@
 <template>
   <div class="search-result">
     <div class="search-result-top">
-      <p><b-icon icon="search"></b-icon>검색</p>
+      <div class="search-result-title"><b-icon icon="search"></b-icon>검색</div>
     </div>
     <div class="search-result-body">
       <div class="search-result-options">
-        <div class="option">
-          <div class="option_title">기준 년도</div>
-          <div class="option_select">
-            <v-select
-              v-model="sidoCode"
-              :options="sidos"
-              @input="gugunList"
-              id="select"
-            />
-          </div>
-        </div>
         <div class="option">
           <div class="option_title">시도</div>
           <div class="option_select">
@@ -31,9 +20,9 @@
           <div class="option_title">시군구</div>
           <div class="option_select">
             <v-select
-              v-model="sidoCode"
-              :options="sidos"
-              @input="gugunList"
+              v-model="gugunCode"
+              :options="guguns"
+              @input="DongList"
               id="select"
             />
           </div>
@@ -41,12 +30,7 @@
         <div class="option">
           <div class="option_title">읍면동</div>
           <div class="option_select">
-            <v-select
-              v-model="sidoCode"
-              :options="sidos"
-              @input="gugunList"
-              id="select"
-            />
+            <v-select v-model="dongCode" :options="dongs" id="select" />
           </div>
         </div>
         <div class="option_input_type">
@@ -57,12 +41,17 @@
             </b-input-group>
           </div>
         </div>
+        <div class="serch-btn-div">
+          <b-button id="search-button" @click="searchApt">검색</b-button>
+        </div>
       </div>
 
       <div class="search-result-body-result">
         <div class="search-result-body-result-top">
-          <p><b-icon icon="list-task"></b-icon>결과</p>
-          <div class="search-result-body-result">리스트</div>
+          <div class="search-result-title">
+            <b-icon icon="list-task"></b-icon>검색 결과
+          </div>
+          <div class="search-result-list"><SearchList /></div>
         </div>
       </div>
     </div>
@@ -70,14 +59,51 @@
 </template>
 
 <script>
-export default {};
+import { mapState, mapActions, mapMutations } from "vuex";
+import SearchList from "@/components/Search/SearchList.vue";
+export default {
+  components: {
+    SearchList,
+  },
+  data() {
+    return {
+      sidoCode: "시·도",
+      gugunCode: "시·군·구",
+      dongCode: "읍·면·동",
+    };
+  },
+  computed: {
+    ...mapState(["sidos", "guguns", "dongs"]),
+  },
+  created() {
+    this.CLEAR_SIDO_LIST();
+    this.getSido();
+  },
+  methods: {
+    ...mapActions(["getSido", "getGugun", "getDong", "getHouses"]),
+    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST"]),
+    gugunList() {
+      this.CLEAR_GUGUN_LIST();
+      this.CLEAR_DONG_LIST();
+      this.gugunCode = null;
+      if (this.sidoCode.value) this.getGugun(this.sidoCode.value);
+    },
+    DongList() {
+      this.CLEAR_DONG_LIST();
+      this.dongCode = null;
+      if (this.gugunCode.value) this.getDong(this.gugunCode.value);
+    },
+    searchApt() {
+      if (this.dongCode.value) this.getHouses(this.dongCode.value);
+    },
+  },
+};
 </script>
 
-<style>
+<style scpoed>
 .search-result {
   padding-top: 88px;
   background-color: #f5f8fd;
-
   width: 20%;
   height: 100vh;
 }
@@ -88,12 +114,12 @@ export default {};
 .option {
   height: 35px;
   margin-top: 10px;
-  margin-left: 15px;
+  margin-left: 5px;
 }
 .option_input_type {
   height: 55px;
   margin-top: 10px;
-  margin-left: 15px;
+  margin-left: 5px;
 }
 .option_title {
   float: left;
@@ -101,18 +127,19 @@ export default {};
   line-height: 35px;
 }
 .option_select {
-  width: 70%;
+  width: 290px;
 }
 
 .option_input {
-  width: 150px;
+  width: 190px;
   float: left;
 }
-p {
+.search-result-title {
   color: #413e66;
   font-weight: 600;
   line-height: 50px;
   padding-left: 20px;
+  margin-bottom: 0;
 }
 .search-result-options {
   background-color: #f5f8fd;
@@ -125,5 +152,15 @@ p {
 .search-result-body-result {
   background-color: #f5f8fd;
   height: 100%;
+}
+#search-button {
+  margin: 0 auto;
+  height: 37px;
+  width: 150px;
+  background-color: #413e66;
+}
+.serch-btn-div {
+  height: 45px;
+  display: flex;
 }
 </style>
