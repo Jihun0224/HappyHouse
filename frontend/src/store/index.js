@@ -11,6 +11,7 @@ export default new Vuex.Store({
     guguns: [{ value: null, label: "시·군·구" }],
     dongs: [{ value: null, label: "읍·면·동" }],
     houses: [],
+    allHouses: [],
   },
   getters: {
     getAccessToken: state => state.accessToken,
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     getSidos: state => state.sidos,
     getGuguns: state => state.guguns,
     getDongs: state => state.dongs,
-    getHouses: state => state.houses
+    getHouses: state => state.houses,
+    getAllHouses: state => state.allHouses
   },
   mutations: {
     LOGIN(state, user) {
@@ -64,6 +66,9 @@ export default new Vuex.Store({
     SET_HOUSE_LIST(state, houses) {
       state.houses = houses;
     },
+    SET_ALLHOUSE_LIST(state, houses) {
+      state.allHouses = houses;
+    }
   },
   actions: {
     login({ commit }, user) {
@@ -137,6 +142,18 @@ export default new Vuex.Store({
         .then(({ data }) => {
           console.log(commit, data);
           commit("SET_HOUSE_LIST", data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getAllhouses({ commit }) {
+      const params = { aptName: "" }
+      http
+        .get(`/map/searchByAptName`, { params })
+        .then(({ data }) => {
+          // console.log(commit, data);
+          commit("SET_ALLHOUSE_LIST", data);
         })
         .catch((error) => {
           console.log(error);

@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -24,6 +26,7 @@ export default {
     this.getLocation();
   },
   methods: {
+    ...mapActions(["getAllhouses"]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
@@ -42,16 +45,42 @@ export default {
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
+
       var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
       marker.setMap(this.map);
+      this.createMarker();
     },
+    createMarker() {
+      if (this.getAllhouses.length == 0) this.getAllhouses();
+
+      var imageSrc =
+        "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
+      var imageSize = new kakao.maps.Size(24, 35);
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      var markers = this.getAllHouses.map(function (house) {
+        return new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(house.lat, house.lng),
+          title: house.aptName,
+          image: markerImage,
+        });
+      });
+      var clusterer = new kakao.maps.MarkerClusterer({
+        map: this.map,
+        averageCenter: true,
+        minLevel: 5,
+      });
+      clusterer.addMarkers(markers);
+    },
+
     addScript() {
       // const API_KEY=process.env.VUE_APP_KAKAO_MAP_API_KEY
       const API_KEY = "5c1c5e499996ae9f12b29dfc9a75f172";
       const script = document.createElement("script");
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + API_KEY;
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        API_KEY +
+        "&libraries=services,clusterer";
       document.head.appendChild(script);
     },
     zoomIn() {
@@ -60,6 +89,9 @@ export default {
     zoomOut() {
       this.map.setLevel(this.map.getLevel() + 1);
     },
+  },
+  computed: {
+    ...mapGetters(["getAllHouses"]),
   },
 };
 </script>
