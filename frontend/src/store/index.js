@@ -5,18 +5,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    selectedArea: null,
     sidos: [{ value: null, label: "시·도" }],
     guguns: [{ value: null, label: "시·군·구" }],
     dongs: [{ value: null, label: "읍·면·동" }],
     houses: [],
     allHouses: [],
+    selectedHouse: null
   },
   getters: {
     getSidos: state => state.sidos,
     getGuguns: state => state.guguns,
     getDongs: state => state.dongs,
     getHouses: state => state.houses,
-    getAllHouses: state => state.allHouses
+    getAllHouses: state => state.allHouses,
+    getSelectedArea: state => state.selectedArea,
+    getSelectedHouse: state => state.selectedHouse
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -48,7 +52,19 @@ export default new Vuex.Store({
     },
     SET_ALLHOUSE_LIST(state, houses) {
       state.allHouses = houses;
-    }
+    },
+    SET_SELECTEDAREA(state, selectedArea) {
+      state.selectedArea = selectedArea
+    },
+    SET_SELECTEDHOUSE(state, house) {
+      state.selectedHouse = house
+    },
+    CLEAR_SELECTEDAREA(state) {
+      state.selectedArea = null
+    },
+    CLEAR_SELECTEDHOUSE(state) {
+      state.selectedHouse = null
+    },
   },
   actions: {
     getSido({ commit }) {
@@ -67,7 +83,7 @@ export default new Vuex.Store({
       http
         .get(`/map/gugun`, { params })
         .then(({ data }) => {
-          console.log(commit, data);
+          // console.log(commit, data);
           commit("SET_GUGUN_LIST", data);
         })
         .catch((error) => {
@@ -79,7 +95,7 @@ export default new Vuex.Store({
       http
         .get(`/map/dong`, { params })
         .then(({ data }) => {
-          console.log(commit, data);
+          // console.log(commit, data);
           commit("SET_DONG_LIST", data);
         })
         .catch((error) => {
@@ -88,11 +104,11 @@ export default new Vuex.Store({
     },
     getHouses({ commit }, dong) {
       const params = { dong: dong };
-      console.log(dong);
+      // console.log(dong);
       http
         .get(`/map/apt`, { params })
         .then(({ data }) => {
-          console.log(commit, data);
+          // console.log(commit, data);
           commit("SET_HOUSE_LIST", data);
         })
         .catch((error) => {

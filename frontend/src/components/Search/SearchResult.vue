@@ -73,15 +73,24 @@ export default {
     };
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs"]),
+    ...mapState(["sidos", "guguns", "dongs", "selectedArea"]),
   },
   created() {
-    this.CLEAR_SIDO_LIST();
-    this.getSido();
+    if (this.selectedArea != null) {
+      this.setArea();
+    } else {
+      this.CLEAR_SIDO_LIST();
+      this.getSido();
+    }
   },
   methods: {
     ...mapActions(["getSido", "getGugun", "getDong", "getHouses"]),
-    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST"]),
+    ...mapMutations([
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+      "CLEAR_SELECTEDAREA",
+    ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
       this.CLEAR_DONG_LIST();
@@ -95,6 +104,14 @@ export default {
     },
     searchApt() {
       if (this.dongCode.value) this.getHouses(this.dongCode.value);
+    },
+    setArea() {
+      const area = this.selectedArea;
+      this.sidoCode = area.sido;
+      this.gugunCode = area.gugun;
+      this.dongCode = area.dong;
+      this.getHouses(this.selectedArea.dong.value);
+      this.CLEAR_SELECTEDAREA();
     },
   },
 };

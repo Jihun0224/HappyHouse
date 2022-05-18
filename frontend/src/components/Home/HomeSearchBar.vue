@@ -23,7 +23,7 @@
           <div style="background: #fff">
             <v-select v-model="dongCode" :options="dongs" id="select" />
           </div>
-          <b-button id="search-button" @click="searchApt">검색</b-button>
+          <b-button id="home-search-button" @click="searchApt">검색</b-button>
         </div>
       </div>
       <KakaoMap />
@@ -46,7 +46,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs"]),
+    ...mapState(["sidos", "guguns", "dongs", "selectedArea"]),
   },
   created() {
     this.CLEAR_SIDO_LIST();
@@ -54,7 +54,12 @@ export default {
   },
   methods: {
     ...mapActions(["getSido", "getGugun", "getDong", "getHouseList"]),
-    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST"]),
+    ...mapMutations([
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+      "SET_SELECTEDAREA",
+    ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
       this.CLEAR_DONG_LIST();
@@ -67,7 +72,16 @@ export default {
       if (this.gugunCode.value) this.getDong(this.gugunCode.value);
     },
     searchApt() {
-      if (this.gugunCode.value) this.getHouseList(this.gugunCode.value);
+      if (this.dongCode.value) {
+        const searchedArea = {
+          sido: { value: this.sidoCode.value, label: this.sidoCode.label },
+          gugun: { value: this.gugunCode.value, label: this.gugunCode.label },
+          dong: { value: this.dongCode.value, label: this.dongCode.label },
+        };
+        this.SET_SELECTEDAREA(searchedArea);
+        // console.log(this.selectedArea);
+        this.$router.push("/search");
+      }
     },
   },
 };
@@ -91,7 +105,7 @@ export default {
   width: 270px;
   height: 30px;
 }
-#search-button {
+#home-search-button {
   height: 37px;
   background-color: #413e66;
 }
