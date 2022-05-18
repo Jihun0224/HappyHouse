@@ -1,5 +1,10 @@
 <template>
-  <div id="map"></div>
+  <div id="map">
+    <div class="custom_zoomcontrol radius_border">
+      <span @click="zoomIn"><img :src="inImg" /></span>
+      <span @click="zoomOut"><img :src="outImg" /></span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -8,6 +13,11 @@ export default {
     return {
       latitude: 37.501314726742,
       longitude: 127.02730766538,
+      map: null,
+      inImg:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png",
+      outImg:
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png",
     };
   },
   mounted() {
@@ -31,9 +41,9 @@ export default {
         center: new kakao.maps.LatLng(this.latitude, this.longitude),
         level: 5,
       };
-      var map = new kakao.maps.Map(container, options);
-      var marker = new kakao.maps.Marker({ position: map.getCenter() });
-      marker.setMap(map);
+      this.map = new kakao.maps.Map(container, options);
+      var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
+      marker.setMap(this.map);
     },
     addScript() {
       // const API_KEY=process.env.VUE_APP_KAKAO_MAP_API_KEY
@@ -44,10 +54,46 @@ export default {
         "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + API_KEY;
       document.head.appendChild(script);
     },
+    zoomIn() {
+      this.map.setLevel(this.map.getLevel() - 1);
+    },
+    zoomOut() {
+      this.map.setLevel(this.map.getLevel() + 1);
+    },
   },
 };
 </script>
 
 
 <style scoped>
+.custom_zoomcontrol {
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  width: 36px;
+  height: 80px;
+  overflow: hidden;
+  z-index: 2;
+  background-color: #f5f5f5;
+}
+.custom_zoomcontrol span {
+  display: block;
+  width: 36px;
+  height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+.custom_zoomcontrol span img {
+  width: 15px;
+  height: 39px;
+  padding: 12px 0;
+  border: none;
+}
+.custom_zoomcontrol span:first-child {
+  border-bottom: 1px solid #bfbfbf;
+}
+.radius_border {
+  border: 1px solid #919191;
+  border-radius: 5px;
+}
 </style>

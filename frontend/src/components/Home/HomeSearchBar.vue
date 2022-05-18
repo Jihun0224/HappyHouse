@@ -78,7 +78,7 @@ export default {
   height: 95vh;
   background-color: #f5f8fd;
 }
-#search #map {
+#search #map-wrap {
   height: 60vh;
 }
 .select-box {
@@ -100,5 +100,8 @@ h1 {
   color: #413e66;
   font-size: 6vh;
   padding-top: 6vh;
+}
+#map {
+  height: 60vh;
 }
 </style>
