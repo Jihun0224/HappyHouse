@@ -5,8 +5,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null,
-    accessToken: false,
     sidos: [{ value: null, label: "시·도" }],
     guguns: [{ value: null, label: "시·군·구" }],
     dongs: [{ value: null, label: "읍·면·동" }],
@@ -14,8 +12,6 @@ export default new Vuex.Store({
     allHouses: [],
   },
   getters: {
-    getAccessToken: state => state.accessToken,
-    getUser: state => state.user,
     getSidos: state => state.sidos,
     getGuguns: state => state.guguns,
     getDongs: state => state.dongs,
@@ -23,22 +19,6 @@ export default new Vuex.Store({
     getAllHouses: state => state.allHouses
   },
   mutations: {
-    LOGIN(state, user) {
-      state.user.push({
-        userId: user.userId,
-        userPwd: user.userPwd,
-        userName: user.userName,
-        email: user.email,
-        phone: user.phone,
-      });
-    },
-    SET_TOKEN(state, token) {
-      state.accessToken = token;
-    },
-    reset(state) {
-      state.accessToken = false;
-      state.user = null;
-    },
     SET_SIDO_LIST(state, sidos) {
       sidos.forEach((sido) => {
         state.sidos.push({ value: sido.sidoCode, label: sido.sidoName });
@@ -71,34 +51,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login({ commit }, user) {
-      http
-        .post(`/user/login`, user)
-        .then(({ data }) => {
-          if (data != null) {
-            commit("LOGIN", data);
-            commit("SET_TOKEN", true);
-          } else {
-            commit("SET_TOKEN", false);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    registe(user) {
-      http
-        .post(`/user/register`, user)
-        .then(({ data }) => {
-          console.log("회원가입 완료:", data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    logout({ commit }) {
-      commit("reset");
-    },
     getSido({ commit }) {
       http
         .get(`/map/sido`)
