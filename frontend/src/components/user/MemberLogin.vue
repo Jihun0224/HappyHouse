@@ -6,6 +6,7 @@
         <div>
           <b-row>
             <b-col>
+              <br /><br /><br /><br />
               <b-alert variant="secondary" show><h3>로그인</h3></b-alert>
             </b-col>
           </b-row>
@@ -98,7 +99,7 @@ export default {
       }
     },
     movePage() {
-      this.$router.push({ name: "signup" });
+      this.$router.push({ name: "signUp" });
     },
   },
 };

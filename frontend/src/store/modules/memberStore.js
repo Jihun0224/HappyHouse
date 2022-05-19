@@ -1,6 +1,11 @@
 import jwt_decode from "jwt-decode";
-import { login } from "@/api/member.js";
-import { findById } from "../../api/member";
+import {
+  login,
+  findById,
+  modifyMemberInfo,
+  unregisterMember,
+  signUpMember,
+} from "@/api/member.js";
 
 const memberStore = {
   namespaced: true,
@@ -8,6 +13,8 @@ const memberStore = {
     isLogin: false,
     isLoginError: false,
     userInfo: null,
+
+    isSignupError: false,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -25,6 +32,10 @@ const memberStore = {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
+
+    SET_IS_SIGNUP_ERROR: (state, isSignupError) => {
+      state.isSignupError = isSignupError;
+    },
   },
   actions: {
     async userConfirm({ commit }, user) {
@@ -41,7 +52,7 @@ const memberStore = {
             commit("SET_IS_LOGIN_ERROR", true);
           }
         },
-        () => {}
+        () => {},
       );
     },
     getUserInfo({ commit }, token) {
@@ -57,7 +68,49 @@ const memberStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
+      );
+    },
+    modifyMember({ commit }, user) {
+      modifyMemberInfo(user);
+      commit("SET_MEMBER_INFO", user);
+    },
+    deleteMember({ commit }, userid) {
+      unregisterMember(
+        userid,
+        (response) => {
+          console.log(response.data);
+          if (response.data === "success") {
+            commit("SET_IS_LOGIN", false);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_MEMBER_INFO", null);
+          } else {
+            console.log("response data fail");
+          }
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    async registerMember({ commit }, user) {
+      //   signUpMember(member);
+      //   commit("SET_IS_LOGIN", false);
+      //   commit("SET_IS_LOGIN_ERROR", false);
+      //   commit("SET_MEMBER_INFO", null);
+      await signUpMember(
+        user,
+        () => {
+          alert("Store Sign Up Member Success!!");
+          commit("SET_IS_LOGIN", false);
+          commit("SET_IS_LOGIN_ERROR", false);
+          commit("SET_IS_SIGNUP_ERROR", false);
+          commit("SET_MEMBER_INFO", null);
+        },
+        () => {
+          //   alert("Store Sign Up Member Fail!!");
+          commit("SET_IS_SIGNUP_ERROR", true);
+        },
       );
     },
   },
