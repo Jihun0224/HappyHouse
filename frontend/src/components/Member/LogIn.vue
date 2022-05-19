@@ -4,7 +4,12 @@
       <b-input-group-prepend is-text
         ><b><b-icon icon="person-circle" scale="1"></b-icon></b
       ></b-input-group-prepend>
-      <b-form-input v-model="id" type="text" placeholder="ID"></b-form-input>
+      <b-form-input
+        id="userid"
+        v-model="user.userid"
+        type="text"
+        placeholder="ID"
+      ></b-form-input>
     </b-input-group>
 
     <b-input-group>
@@ -12,48 +17,56 @@
         ><b><b-icon icon="lock-fill" scale="1"></b-icon></b
       ></b-input-group-prepend>
       <b-form-input
-        v-model="password"
+        id="userpwd"
+        v-model="user.userpwd"
         type="password"
         placeholder="Password"
       ></b-form-input>
     </b-input-group>
     <div class="modal-footer">
       <b-button variant="warning" v-b-modal="'sign-up'">회원가입</b-button>
-      <b-button variant="primary" type="submit" @click="login">로그인</b-button>
+      <b-button variant="primary" type="submit" @click="confirm"
+        >로그인</b-button
+      >
     </div>
   </b-modal>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
+  name: "MemberLogin",
   data() {
     return {
-      id: "",
-      password: "",
+      user: {
+        userid: null,
+        userpwd: null,
+      },
     };
   },
-
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+  },
   methods: {
-    login() {
-      const user = {
-        id: this.id,
-        password: this.password,
-      };
-      if (user.id && user.password) {
-        this.$store.dispatch("login", user);
-        if (this.$store.state.accessToken) {
-          console.log("로그인 성공");
-          this.$bvModal.hide("log-in");
-        } else {
-          alert("아이디와 비밀번호가 일치하지 않습니다.");
+    methods: {
+      ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+      async confirm() {
+        await this.userConfirm(this.user);
+        let token = sessionStorage.getItem("access-token");
+        if (this.isLogin) {
+          await this.getUserInfo(token);
+          this.$router.push({ name: "home" });
         }
-      } else {
-        alert("아이디와 비밀번호를 모두 입력해주세요!");
-      }
+      },
+      movePage() {
+        this.$router.push({ name: "signup" });
+      },
     },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>
