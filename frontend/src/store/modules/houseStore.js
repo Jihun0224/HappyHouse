@@ -7,9 +7,10 @@ const houseStore = {
         sidos: [{ value: null, label: "시·도" }],
         guguns: [{ value: null, label: "시·군·구" }],
         dongs: [{ value: null, label: "읍·면·동" }],
-        houses: [],
+        houses: null,
         allHouses: [],
-        selectedHouse: null
+        selectedHouse: null,
+        isEmpty: false
     },
     getters: {
         getSidos: state => state.sidos,
@@ -18,7 +19,8 @@ const houseStore = {
         getHouses: state => state.houses,
         getAllHouses: state => state.allHouses,
         getSelectedArea: state => state.selectedArea,
-        getSelectedHouse: state => state.selectedHouse
+        getSelectedHouse: state => state.selectedHouse,
+        getIsEmpty: state => state.isEmpty
     },
     mutations: {
         SET_SIDO_LIST(state, sidos) {
@@ -48,6 +50,9 @@ const houseStore = {
         SET_HOUSE_LIST(state, houses) {
             state.houses = houses;
         },
+        CLEAR_HOUSE_LIST(state) {
+            state.houses = null;
+        },
         SET_ALLHOUSE_LIST(state, houses) {
             state.allHouses = houses;
         },
@@ -63,6 +68,9 @@ const houseStore = {
         CLEAR_SELECTEDHOUSE(state) {
             state.selectedHouse = null
         },
+        SET_ISEMPTY(state, searched) {
+            state.isEmpty = searched;
+        }
     },
     actions: {
         getSido({ commit }) {
@@ -109,7 +117,14 @@ const houseStore = {
                 params,
                 ({ data }) => {
                     // console.log(commit, response);
+                    if (data.length == 0) {
+                        commit("SET_ISEMPTY", true);
+                    }
+                    else {
+                        commit("SET_ISEMPTY", false);
+                    }
                     commit("SET_HOUSE_LIST", data);
+
                 },
                 (error) => {
                     console.log(error);

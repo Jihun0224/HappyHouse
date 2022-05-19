@@ -1,57 +1,66 @@
 package com.ssafy.happyhouse.model;
 
-import lombok.Data;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-@Data
+@ApiModel(value = "MemberDto : 회원정보", description = "회원의 상세 정보를 나타낸다.")
 public class MemberDto {
 
-	public String userName;
-	public String userId;
-	public String userPwd;
-	public String email;
-	public String joinDate;
-	public String phone;
-	public String getUserName() {
-		return userName;
+	@ApiModelProperty(value = "회원 아이디")
+	private String userid;
+	@ApiModelProperty(value = "회원 이름")
+	private String username;
+	@ApiModelProperty(value = "회원 비밀번호")
+	private String userpwd;
+	@ApiModelProperty(value = "회원 이메일")
+	private String email;
+	@ApiModelProperty(value = "회원 가입일")
+	private String joindate;
+
+	public String getUserid() {
+		return userid;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
-	@Override
-	public String toString() {
-		return "MemberDto [userName=" + userName + ", userId=" + userId + ", userPwd=" + userPwd + ", email=" + email
-				+ ", joinDate=" + joinDate + ", phone=" + phone + "]";
+
+	public String getUsername() {
+		return username;
 	}
-	public String getUserId() {
-		return userId;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+
+	public String getUserpwd() {
+		return userpwd;
 	}
-	public String getUserPwd() {
-		return userPwd;
+
+	public void setUserpwd(String userpwd) {
+		this.userpwd = userpwd;
 	}
-	public void setUserPwd(String userPwd) {
-		this.userPwd = userPwd;
-	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getJoinDate() {
-		return joinDate;
-	}
-	public void setJoinDate(String joinDate) {
-		this.joinDate = joinDate;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+
+	public String getJoindate() {
+		return joindate;
 	}
 
+	public void setJoindate(String joindate) {
+		this.joindate = joindate;
+	}
+
+	@Override
+	public String toString() {
+		return "MemberDto [userid=" + userid + ", username=" + username + ", userpwd=" + userpwd + ", email=" + email
+				+ ", joindate=" + joindate + "]";
+	}
 
 }
