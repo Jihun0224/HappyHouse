@@ -16,7 +16,7 @@
       <div class="d-flex justify-content-center">
         <div class="text-center">
           <h1>HappyHouse</h1>
-          <h2 class="text-white-50 mx-auto mt-2 mb-5">소개 자리</h2>
+          <h2 class="text-white-50 mx-auto mt-2 mb-5"></h2>
           <b-button variant="light" v-on:click="toSearch">Get Started</b-button>
         </div>
       </div>

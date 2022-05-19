@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import BoardView from '@/views/BoardView.vue'
 import NoticeView from '@/views/NoticeView.vue'
-import SearchView from '@/views/SearchView.vue'
+import HouseView from '@/views/HouseView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,9 +23,9 @@ const routes = [
     component: NoticeView,
   },
   {
-    path: '/search',
-    name: 'search',
-    component: SearchView,
+    path: '/house',
+    name: 'house',
+    component: HouseView,
   }
 ]
 

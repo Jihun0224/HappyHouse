@@ -33,7 +33,9 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
-import KakaoMap from "@/components/Search/KakaoMap.vue";
+import KakaoMap from "@/components/House/KakaoMap.vue";
+const houseStore = "houseStore";
+
 export default {
   components: {
     KakaoMap,
@@ -46,15 +48,20 @@ export default {
     };
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs", "selectedArea"]),
+    ...mapState(houseStore, ["sidos", "guguns", "dongs", "selectedArea"]),
   },
   created() {
     this.CLEAR_SIDO_LIST();
     this.getSido();
   },
   methods: {
-    ...mapActions(["getSido", "getGugun", "getDong", "getHouseList"]),
-    ...mapMutations([
+    ...mapActions(houseStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getHouseList",
+    ]),
+    ...mapMutations(houseStore, [
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
@@ -80,7 +87,7 @@ export default {
         };
         this.SET_SELECTEDAREA(searchedArea);
         // console.log(this.selectedArea);
-        this.$router.push("/search");
+        this.$router.push("/house");
       }
     },
   },

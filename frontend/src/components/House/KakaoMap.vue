@@ -9,6 +9,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+const houseStore = "houseStore";
 
 export default {
   data() {
@@ -26,7 +27,7 @@ export default {
     this.getLocation();
   },
   methods: {
-    ...mapActions(["getAllhouses"]),
+    ...mapActions(houseStore, ["getAllhouses"]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
@@ -91,7 +92,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getAllHouses"]),
+    ...mapGetters(houseStore,["getAllHouses"]),
   },
 };
 </script>

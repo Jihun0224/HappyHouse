@@ -51,7 +51,7 @@
           <div class="search-result-title">
             <b-icon icon="list-task"></b-icon>검색 결과
           </div>
-          <div class="search-result-list"><SearchList /></div>
+          <div class="search-result-list"><HouseList /></div>
         </div>
       </div>
     </div>
@@ -60,10 +60,12 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
-import SearchList from "@/components/Search/SearchList.vue";
+import HouseList from "@/components/House/HouseList.vue";
+const houseStore = "houseStore";
+
 export default {
   components: {
-    SearchList,
+    HouseList,
   },
   data() {
     return {
@@ -73,7 +75,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs", "selectedArea"]),
+    ...mapState(houseStore, ["sidos", "guguns", "dongs", "selectedArea"]),
   },
   created() {
     if (this.selectedArea != null) {
@@ -84,8 +86,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getSido", "getGugun", "getDong", "getHouses"]),
-    ...mapMutations([
+    ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouses"]),
+    ...mapMutations(houseStore, [
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",

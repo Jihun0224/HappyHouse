@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "SearchListItem",
+  name: "HouseListItem",
   props: {
     house: Object,
   },

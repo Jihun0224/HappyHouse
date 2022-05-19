@@ -2,7 +2,7 @@
   <div class="list">
     <b-row>
       <b-col>
-        <SearchListItem
+        <HouseListItem
           v-for="(house, index) in getHouses"
           :key="index"
           :house="house"
@@ -13,16 +13,17 @@
 </template>
 
 <script>
-import SearchListItem from "@/components/Search/SearchListItem.vue";
+import HouseListItem from "@/components/House/HouseListItem.vue";
 import { mapGetters } from "vuex";
+const houseStore = "houseStore";
 
 export default {
-  name: "SearchList",
+  name: "HouseList",
   components: {
-    SearchListItem,
+    HouseListItem,
   },
   computed: {
-    ...mapGetters(["getHouses"]),
+    ...mapGetters(houseStore, ["getHouses"]),
   },
 };
 </script>

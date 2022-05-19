@@ -3,7 +3,7 @@
     <HeaderNav />
     <div class="container-fluid">
       <div class="row">
-        <SearchResult />
+        <HouseSearchResult />
         <KakaoMap />
       </div>
     </div>
@@ -11,15 +11,15 @@
 </template>
 
 <script>
-import KakaoMap from "@/components/Search/KakaoMap.vue";
+import KakaoMap from "@/components/House/KakaoMap.vue";
 import HeaderNav from "@/components/common/HeaderNav.vue";
-import SearchResult from "@/components/Search/SearchResult.vue";
+import HouseSearchResult from "@/components/House/HouseSearchResult.vue";
 
 export default {
   components: {
     KakaoMap,
     HeaderNav,
-    SearchResult,
+    HouseSearchResult,
   },
 };
 </script>
