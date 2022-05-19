@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.BoardMapper">
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test='key == "userid"'>
+				where ${key} = #{word}
+			</if>
+			<if test='key != "userid"'>
+				where ${key} like concat('%', #{word}, '%')
+			</if>
+		</if>
+	</sql>
+
+
+	<!-- 게시글 전체 조회 -->
+	<select id="selectBoard" parameterType="map" resultType="boardDto">
+		select articleno, userid,
+		subject, content, hit, regtime
+		from board
+		<include refid="search"></include>
+		order by articleno desc
+	</select>
+
+	<!-- 게시글 상세 조회 -->
+	<select id="selectBoardByNo" parameterType="int"
+		resultType="boardDto">
+		select articleno,
+		subject, userid, content, hit, regtime
+		from board
+		where articleno = #{articleno}
+	</select>
+
+	<!-- 게시글 등록 -->
+	<insert id="insertBoard" parameterType="boardDto">
+		insert into board(
+		subject, userid, content
+		) values (
+		#{subject}, #{userid}, #{content}
+		)
+	</insert>
+
+	<!-- 게시글 수정 -->
+	<update id="updateBoard" parameterType="boardDto">
+		update board
+		set subject =
+		#{subject},
+		userid = #{userid},
+		content = #{content}
+		where articleno =
+		#{articleno}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="int">
+		delete
+		from board
+		where
+		articleno = #{articleno}
+	</delete>
+
+</mapper>
+
