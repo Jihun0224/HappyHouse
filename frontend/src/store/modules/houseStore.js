@@ -10,7 +10,8 @@ const houseStore = {
         houses: null,
         allHouses: [],
         selectedHouse: null,
-        isEmpty: false
+        isEmpty: false,
+        ceter: null
     },
     getters: {
         getSidos: state => state.sidos,
@@ -20,7 +21,8 @@ const houseStore = {
         getAllHouses: state => state.allHouses,
         getSelectedArea: state => state.selectedArea,
         getSelectedHouse: state => state.selectedHouse,
-        getIsEmpty: state => state.isEmpty
+        getIsEmpty: state => state.isEmpty,
+        getCenter: state => state.ceter
     },
     mutations: {
         SET_SIDO_LIST(state, sidos) {
@@ -70,6 +72,9 @@ const houseStore = {
         },
         SET_ISEMPTY(state, searched) {
             state.isEmpty = searched;
+        },
+        SET_CENTER(state, pos) {
+            state.ceter = pos
         }
     },
     actions: {
