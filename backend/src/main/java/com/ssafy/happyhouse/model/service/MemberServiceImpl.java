@@ -1,6 +1,5 @@
 package com.ssafy.happyhouse.model.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,33 +17,15 @@ public class MemberServiceImpl implements MemberService {
 	private MemberMapper memberMapper;
 	
 	@Override
-	public int idCheck(String checkId) throws Exception {
-		return memberMapper.idCheck(checkId); // 0 or 1
+	public MemberDto login(MemberDto memberDto) throws Exception {
+		if(memberDto.getUserid() == null || memberDto.getUserpwd() == null)
+			return null;
+		return memberMapper.login(memberDto);
 	}
 
 	@Override
-	public void registerMember(MemberDto memberDto) throws Exception {
-		memberMapper.registerMember(memberDto);
-	}
-
-	@Override
-	public MemberDto login(Map<String, String> map) throws Exception {
-		return memberMapper.login(map);
-	}
-
-	@Override
-	public MemberDto getMember(String userId) throws Exception {
-		return memberMapper.getMember(userId);
-	}
-
-	@Override
-	public void updateMember(MemberDto memberDto) throws Exception {
-		memberMapper.updateMember(memberDto);
-	}
-
-	@Override
-	public void deleteMember(String userId) throws Exception {
-		memberMapper.deleteMember(userId);
+	public MemberDto userInfo(String userid) throws Exception {
+		return memberMapper.userInfo(userid);
 	}
 
 }
