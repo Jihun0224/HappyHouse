@@ -1,26 +1,29 @@
 <template>
   <div class="list">
-    <b-row>
-      <b-col>
-        <HouseListItem
-          v-for="(house, index) in getHouses"
-          :key="index"
-          :house="house"
-        />
-      </b-col>
-    </b-row>
+    <virtual-list
+      id="virtual-list"
+      :data-key="'aptCode'"
+      :data-sources="getHouses"
+      :data-component="HouseListItem"
+    />
   </div>
 </template>
 
 <script>
+import VirtualList from "vue-virtual-scroll-list";
 import HouseListItem from "@/components/House/HouseListItem.vue";
 import { mapGetters } from "vuex";
 const houseStore = "houseStore";
 
 export default {
   name: "HouseList",
+  data() {
+    return {
+      HouseListItem: HouseListItem,
+    };
+  },
   components: {
-    HouseListItem,
+    "virtual-list": VirtualList,
   },
   computed: {
     ...mapGetters(houseStore, ["getHouses"]),
@@ -31,5 +34,16 @@ export default {
 <style>
 .list {
   padding: 0;
+  height: 55vh;
+}
+#virtual-list {
+  height: 40vh;
+  overflow-y: auto;
+}
+@media (min-height: 970px) {
+  #virtual-list {
+    height: 55vh;
+    overflow-y: auto;
+  }
 }
 </style>

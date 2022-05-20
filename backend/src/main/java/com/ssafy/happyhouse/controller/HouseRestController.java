@@ -48,8 +48,12 @@ public class HouseRestController {
 	}
 	
 	@GetMapping("/apt")
-	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(houseMapService.getAptInDong(dong), HttpStatus.OK);
+	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("params") String params) throws Exception {
+		String dong=params.split(",")[0];
+		String aptName;
+		if(params.split(",").length==1)aptName="";
+		else aptName=params.split(",")[1];
+		return new ResponseEntity<List<HouseInfoDto>>(houseMapService.getAptInDong(dong,aptName), HttpStatus.OK);
 	}
 	
 	@GetMapping("/searchByAptName")

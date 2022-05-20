@@ -10,7 +10,9 @@ const houseStore = {
         houses: null,
         allHouses: [],
         selectedHouse: null,
-        isEmpty: false
+        isEmpty: false,
+        center: null,
+        centerChangeCnt: 0,
     },
     getters: {
         getSidos: state => state.sidos,
@@ -20,7 +22,9 @@ const houseStore = {
         getAllHouses: state => state.allHouses,
         getSelectedArea: state => state.selectedArea,
         getSelectedHouse: state => state.selectedHouse,
-        getIsEmpty: state => state.isEmpty
+        getIsEmpty: state => state.isEmpty,
+        getCenter: state => state.center,
+        getCenterChangeCnt: state => state.centerChangeCnt
     },
     mutations: {
         SET_SIDO_LIST(state, sidos) {
@@ -35,7 +39,7 @@ const houseStore = {
         },
         SET_DONG_LIST(state, dongs) {
             dongs.forEach((dong) => {
-                state.dongs.push({ value: dong.dongCode, label: dong.dongName });
+                state.dongs.push({ value: dong.dongCode, label: dong.dongName, lat: dong.lat, lng: dong.lng });
             });
         },
         CLEAR_SIDO_LIST(state) {
@@ -70,6 +74,12 @@ const houseStore = {
         },
         SET_ISEMPTY(state, searched) {
             state.isEmpty = searched;
+        },
+        SET_CENTER(state, pos) {
+            state.center = pos
+        },
+        SET_CNTUP(state) {
+            state.centerChangeCnt += 1
         }
     },
     actions: {
@@ -110,8 +120,8 @@ const houseStore = {
                 },
             );
         },
-        getHouses({ commit }, dong) {
-            const params = { dong: dong };
+        getHouses({ commit }, searchString) {
+            const params = { params: searchString };
             // console.log(dong);
             houseList(
                 params,
