@@ -2,42 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.happyhouse.model.mapper.MemberMapper">
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.MemberMapper">
 
 	<insert id="registerMember" parameterType="MemberDto">
-		insert into member (userid, username, userpwd, email, phone,joindate)
-		values (#{userId}, #{userName}, #{userPwd}, #{email}, #{phone},now())
+		insert into member
+		(userid, username, userpwd, email, phone,joindate)
+		values (#{userid},
+		#{username}, #{userpwd}, #{email}, #{phone},now())
 	</insert>
-
-	<select id="login" parameterType="memberDto" resultType="memberDto">
-		select username, userid, email
-		from member
-		where userid = #{userid} and userpwd = #{userpwd}
-	</select>
-	
-	<select id="getMember" parameterType="String" resultType="memberdto">
-		select userid, userpwd, username, email, phone,date_format(joindate, '%y.%m.%d') joindate
-		from member
-		where userid = #{userId}
-	</select>
-	
-	<update id="updateMember" parameterType="MemberDto">
-		update member
-		set userpwd = #{userPwd},
-			email = #{email},
-			phone = #{phone},
-			username = #{userName}
-		where userid = #{userId}
-	</update>
-	
-	<delete id="deleteMember" parameterType="String">
-		delete from member
-		where userid = #{userId}
-	</delete>
-	<select id="userInfo" parameterType="String" resultType="memberDto">
-		select username, userid, email, joindate
+	<select id="idCheck" parameterType="string" resultType="int">
+		select
+		count(userid)
 		from member
 		where userid = #{userid}
 	</select>
-	
+	<select id="login" parameterType="memberDto"
+		resultType="memberDto">
+		select username, userid, email
+		from member
+		where userid =
+		#{userid} and userpwd = #{userpwd}
+	</select>
+
+	<select id="getMember" parameterType="String"
+		resultType="memberdto">
+		select userid, userpwd, username, email,
+		phone,date_format(joindate, '%y.%m.%d') joindate
+		from member
+		where
+		userid = #{userId}
+	</select>
+
+	<update id="updateMember" parameterType="MemberDto">
+		update member
+		set userpwd
+		= #{userpwd},
+		email = #{email},
+		phone = #{phone},
+		username = #{username}
+		where userid = #{userid}
+	</update>
+
+	<delete id="deleteMember" parameterType="String">
+		delete from member
+		where
+		userid = #{userid}
+	</delete>
+	<select id="userInfo" parameterType="String"
+		resultType="memberDto">
+		select username, userid, email, joindate
+		from member
+		where
+		userid = #{userid}
+	</select>
+
 </mapper>
