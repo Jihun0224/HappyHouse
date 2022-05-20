@@ -92,11 +92,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(houseStore,["getAllHouses"]),
+    ...mapGetters(houseStore, ["getAllHouses"]),
   },
 };
 </script>
-
 
 <style scoped>
 .custom_zoomcontrol {
