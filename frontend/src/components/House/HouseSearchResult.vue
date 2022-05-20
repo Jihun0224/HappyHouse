@@ -110,6 +110,8 @@ export default {
       "SET_ISEMPTY",
       "CLEAR_HOUSE_LIST",
       "SET_CENTER",
+      "MOVE_CENTER",
+      "SET_CNTUP",
     ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
@@ -130,7 +132,7 @@ export default {
           lng: this.dongCode.lng,
         };
         this.SET_CENTER(coords);
-        console.log(this.center);
+        this.SET_CNTUP();
       }
     },
     setArea() {

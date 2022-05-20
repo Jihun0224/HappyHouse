@@ -12,7 +12,7 @@ const houseStore = {
         selectedHouse: null,
         isEmpty: false,
         center: null,
-
+        centerChangeCnt: 0
     },
     getters: {
         getSidos: state => state.sidos,
@@ -23,7 +23,8 @@ const houseStore = {
         getSelectedArea: state => state.selectedArea,
         getSelectedHouse: state => state.selectedHouse,
         getIsEmpty: state => state.isEmpty,
-        getCenter: state => state.center
+        getCenter: state => state.center,
+        getCenterChangeCnt: state => state.centerChangeCnt
     },
     mutations: {
         SET_SIDO_LIST(state, sidos) {
@@ -77,6 +78,9 @@ const houseStore = {
         SET_CENTER(state, pos) {
             state.center = pos
         },
+        SET_CNTUP(state) {
+            state.centerChangeCnt += 1
+        }
     },
     actions: {
         getSido({ commit }) {

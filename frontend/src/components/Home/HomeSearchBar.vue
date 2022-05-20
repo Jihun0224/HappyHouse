@@ -73,6 +73,7 @@ export default {
       "CLEAR_DONG_LIST",
       "SET_SELECTEDAREA",
       "SET_CENTER",
+      "SET_CNTUP",
     ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
@@ -98,6 +99,7 @@ export default {
           lng: this.dongCode.lng,
         };
         this.SET_CENTER(coords);
+        this.SET_CNTUP();
         this.$router.push("/house");
       }
     },
