@@ -2,10 +2,10 @@ package com.ssafy.happyhouse.model;
 
 public class HouseInfoDto {
 
-	private int aptCode;
-	private String aptName;
+	private long aptCode;
+	private String apartmentName;
 	private String dongCode;
-	private String dongName;
+	private String dong;
 	private String sidoName;
 	private String gugunName;
 	private int buildYear;
@@ -15,20 +15,20 @@ public class HouseInfoDto {
 	private String img;
 	private String recentPrice;
 
-	public int getAptCode() {
+	public long getAptCode() {
 		return aptCode;
 	}
 
-	public void setAptCode(int aptCode) {
+	public void setAptCode(long aptCode) {
 		this.aptCode = aptCode;
 	}
 
 	public String getAptName() {
-		return aptName;
+		return apartmentName;
 	}
 
-	public void setAptName(String aptName) {
-		this.aptName = aptName;
+	public void setAptName(String apartmentName) {
+		this.apartmentName = apartmentName;
 	}
 
 	public String getDongCode() {
@@ -40,11 +40,11 @@ public class HouseInfoDto {
 	}
 
 	public String getDongName() {
-		return dongName;
+		return dong;
 	}
 
-	public void setDongName(String dongName) {
-		this.dongName = dongName;
+	public void setDongName(String dong) {
+		this.dong = dong;
 	}
 
 	public String getSidoName() {
@@ -113,8 +113,8 @@ public class HouseInfoDto {
 
 	@Override
 	public String toString() {
-		return "HouseInfoDto [aptCode=" + aptCode + ", aptName=" + aptName + ", dongCode=" + dongCode + ", dongName="
-				+ dongName + ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", buildYear=" + buildYear
+		return "HouseInfoDto [aptCode=" + aptCode + ", apartmentName=" + apartmentName + ", dongCode=" + dongCode + ", dong="
+				+ dong + ", sidoName=" + sidoName + ", gugunName=" + gugunName + ", buildYear=" + buildYear
 				+ ", jibun=" + jibun + ", lat=" + lat + ", lng=" + lng + ", img=" + img + ", recentPrice=" + recentPrice
 				+ "]";
 	}
