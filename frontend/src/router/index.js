@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import BoardView from '@/views/BoardView.vue'
-import NoticeView from '@/views/NoticeView.vue'
-import HouseView from '@/views/HouseView.vue'
-import BoardRegisterView from '@/components/Board/BoardRegister.vue'
-import BoardListView from '@/components/Board/BoardList.vue'
-import BoardModifyView from '@/components/Board/BoardModify.vue'
-import BoardDeleteView from '@/components/Board/BoardDelete.vue'
-import BoardDetailView from '@/components/Board/BoardDetail.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import HomeView from "@/views/HomeView.vue";
+import BoardView from "@/views/BoardView.vue";
+import NoticeView from "@/views/NoticeView.vue";
+import HouseView from "@/views/HouseView.vue";
+import BoardRegisterView from "@/components/Board/BoardRegister.vue";
+import BoardListView from "@/components/Board/BoardList.vue";
+import BoardModifyView from "@/components/Board/BoardModify.vue";
+import BoardDeleteView from "@/components/Board/BoardDelete.vue";
+import BoardDetailView from "@/components/Board/BoardDetail.vue";
 
 import store from "@/store/index.js";
 
@@ -42,34 +42,34 @@ const routes = [
     path: "/board",
     name: "board",
     component: BoardView,
-    redirect: '/board/list',
+    redirect: "/board/list",
     children: [
       {
-        path: 'write',
-        name: 'boardRegister',
-        component: BoardRegisterView
+        path: "write",
+        name: "boardRegister",
+        component: BoardRegisterView,
       },
       {
-        path: 'list',
-        name: 'boardList',
-        component: BoardListView
+        path: "list",
+        name: "boardList",
+        component: BoardListView,
       },
       {
-        path: 'detail/:articleno',
-        name: 'boardDetail',
-        component: BoardDetailView
+        path: "detail/:articleno",
+        name: "boardDetail",
+        component: BoardDetailView,
       },
       {
-        path: 'modify/:articleno',
-        name: 'boardModify',
-        component: BoardModifyView
+        path: "modify/:articleno",
+        name: "boardModify",
+        component: BoardModifyView,
       },
       {
-        path: 'delete/:articleno',
-        name: 'boardDelete',
-        component: BoardDeleteView
+        path: "delete/:articleno",
+        name: "boardDelete",
+        component: BoardDeleteView,
       },
-    ]
+    ],
   },
   {
     path: "/notice",
@@ -87,12 +87,12 @@ const routes = [
     component: () => import("@/views/MemberView.vue"),
     children: [
       {
-        path: "singin",
+        path: "signin",
         name: "signIn",
         component: () => import("@/components/user/MemberLogin.vue"),
       },
       {
-        path: "singup",
+        path: "signup",
         name: "signUp",
         component: () => import("@/components/user/MemberRegister.vue"),
       },
@@ -101,6 +101,11 @@ const routes = [
         name: "mypage",
         beforeEnter: onlyAuthUser,
         component: () => import("@/components/user/MemberMyPage.vue"),
+      },
+      {
+        path: "update",
+        name: "update",
+        component: () => import("@/components/user/MemberUpdate.vue"),
       },
     ],
   },
