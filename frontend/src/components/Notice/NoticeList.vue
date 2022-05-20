@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3>QnA 게시판</h3></b-alert>
+        <b-alert show variant="warning"><h3>공지사항</h3></b-alert>
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -29,68 +29,69 @@
         </b-form>
       </b-col>
     </b-row>
-    <!-- 여기 Vue 분리 -->
-    <board-search-list
+    <!-- list 출력 -->
+    <notice-search-list
       v-if="isSearch"
-      v-bind:list="searchBoardList"
-    ></board-search-list>
-    <board-search-list v-else v-bind:list="boardList"></board-search-list>
+      v-bind:list="searchNoticeList"
+    ></notice-search-list>
+    <notice-search-list v-else v-bind:list="noticeList"></notice-search-list>
     <b-row class="mb-1">
-      <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()"
-          >글쓰기</b-button
-        >
+      <b-col>
+        <!--click 추가-->
+        <b-button variant="outline-primary" v-if="isVisible" @click="moveWrite">
+          글쓰기
+        </b-button>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-//import http from "@/api/http";
-import BoardSearchList from "@/components/Board/item/BoardSearchList";
+import NoticeSearchList from "@/components/Notice/item/NoticeSearchList";
 import { mapState, mapActions } from "vuex";
-const boardStore = "boardStore";
+const noticeStore = "noticeStore";
 const memberStore = "memberStore";
 
 export default {
-  name: "BoardList",
+  name: "NoticeList",
   components: {
-    BoardSearchList,
+    NoticeSearchList,
   },
   data() {
     return {
-      isSearch: false,
       key: null,
       options: [
         { value: null, text: "검색 대상 선택" },
-        { value: "userid", text: "아이디" },
         { value: "subject", text: "제목" },
         { value: "content", text: "내용" },
       ],
       word: "",
+      isVisible: false,
+      isSearch: false,
     };
   },
-  created() {
-    console.log("create");
-    this.getBoardList({
-      key: null,
-      word: null,
-    });
-  },
   computed: {
-    ...mapState(boardStore, ["boardList", "searchBoardList"]),
+    ...mapState(noticeStore, ["noticeList", "searchNoticeList"]),
     // 일단은 userInfo만 사용
     ...mapState(memberStore, ["userInfo"]),
   },
+  created() {
+    if (this.userInfo !== null && this.userInfo.userid === "admin") {
+      this.isVisible = true;
+    }
+    this.getNoticeList({
+      key: null,
+      word: null,
+    });
+    console.log("isVisible: " + this.isVisible);
+    console.log("isSearch: " + this.isSearch);
+    console.log(this.noticeList);
+  },
   methods: {
-    ...mapActions(boardStore, ["getBoardList"]),
+    ...mapActions(noticeStore, ["getNoticeList"]),
+    // 로그인 유저가 admin일 때만 보임
     moveWrite() {
-      // 회원만 글쓰기 가능
-      if (this.userInfo === null) {
-        alert("회윈만 글을 쓸 수 있습니다. 로그인해주세요!");
-      } else {
-        this.$router.push({ name: "boardRegister" });
-      }
+      this.$router.push({ name: "noticeRegister" });
     },
     search(event) {
       event.preventDefault();
@@ -102,7 +103,7 @@ export default {
           alert("전체 검색합니다.");
         }
       }
-      this.getBoardList({
+      this.getNoticeList({
         key: this.key,
         word: this.word,
       });

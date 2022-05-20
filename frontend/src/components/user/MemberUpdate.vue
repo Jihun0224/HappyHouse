@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <br /><br /><br /><br />
-        <b-alert variant="secondary" show><h3>회원가입</h3></b-alert>
+        <b-alert variant="secondary" show><h3>회원정보 수정</h3></b-alert>
       </b-col>
     </b-row>
 
@@ -14,14 +14,7 @@
           <!-- <b-alert show variant="danger" v-if="isLoginError"
             >아이디 또는 비밀번호를 확인하세요.</b-alert
           > -->
-          <b-form-group label="아이디:" label-for="userid">
-            <b-form-input
-              id="userid"
-              v-model="user.userid"
-              required
-              placeholder="아이디 입력...."
-            ></b-form-input>
-          </b-form-group>
+
           <b-form-group label="비밀번호:" label-for="userpwd">
             <b-form-input
               type="password"
@@ -31,15 +24,7 @@
               placeholder="비밀번호 입력...."
             ></b-form-input>
           </b-form-group>
-          <b-form-group label="비밀번호 확인:" label-for="userpwdConfirm">
-            <b-form-input
-              type="password"
-              id="userpwdConfirm"
-              v-model="userpwdConfirm"
-              required
-              placeholder="비밀번호 입력...."
-            ></b-form-input>
-          </b-form-group>
+
           <b-form-group label="이름:" label-for="username">
             <b-form-input
               type="text"
@@ -71,8 +56,8 @@
             type="submit"
             variant="primary"
             class="m-1"
-            @click="register"
-            >회원가입</b-button
+            @click="updateMember"
+            >수정하기</b-button
           >
         </b-form>
       </b-card>
@@ -82,54 +67,31 @@
 
 <script>
 //import memberStore from "@/store/modules/memberStore";
-import { mapActions, mapMutations, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 const memberStore = "memberStore";
 
 export default {
-  name: "MemberRegister",
+  name: "MemberUpdate",
   data() {
     return {
-      user: {
-        userid: null,
-        userpwd: null,
-        email: null,
-        phone: null,
-        username: null,
-      },
-      userpwdConfirm: null,
-      pwMatches: true,
+      user: {},
     };
   },
   created() {
-    //this.SET_IS_SIGNUP_ERROR(false);
+    this.user = this.userInfo;
   },
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "isSignipError"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   methods: {
-    ...mapMutations(memberStore, ["SET_IS_SIGNUP_ERROR"]),
-    ...mapActions(memberStore, ["registerMember"]),
+    ...mapActions(memberStore, ["modifyMember"]),
 
-    pwCheck() {
-      if (this.user.userpwd == this.userpwdConfirm) {
-        this.pwMatches = true;
-      } else {
-        this.pwMatches = false;
-      }
+    updateMember() {
+      this.modifyMember(this.user);
+      this.mvMyPage();
     },
-    async register() {
-      console.log("회원가입 버튼 눌렸음");
-      this.pwCheck();
-      if (this.pwMatches) {
-        await this.registerMember(this.user);
-        if (this.isSignupError == false) {
-          alert("가입을 환영합니다!");
-        }
-        this.movePage();
-      }
-    },
-    movePage() {
+    mvMyPage() {
       this.$router.push({ name: "home" });
     },
   },

@@ -3,22 +3,6 @@
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
         <b-form-group
-          id="userid-group"
-          label="작성자:"
-          label-for="userid"
-          description="작성자를 입력하세요."
-        >
-          <b-form-input
-            id="userid"
-            disabled
-            v-model="article.userid"
-            type="text"
-            required
-            placeholder="작성자 입력..."
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group
           id="subject-group"
           label="제목:"
           label-for="subject"
@@ -42,7 +26,6 @@
             max-rows="15"
           ></b-form-textarea>
         </b-form-group>
-
         <b-button
           type="submit"
           variant="primary"
@@ -61,20 +44,17 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-const boardStore = "boardStore";
-const memberStore = "memberStore";
+const noticeStore = "noticeStore";
 
 export default {
-  name: "BoardInputItem",
+  name: "NoticeInputItem",
   data() {
     return {
       article: {
         articleno: 0,
-        userid: "",
         subject: "",
         content: "",
       },
-      isUserid: false,
     };
   },
   props: {
@@ -82,41 +62,30 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      this.setBoard();
-    } else {
-      this.article.userid = this.userInfo.userid;
+      this.setNotice();
     }
   },
   computed: {
-    ...mapState(boardStore, ["board"]),
-    ...mapState(memberStore, ["userInfo"]),
+    ...mapState(noticeStore, ["notice"]),
   },
   methods: {
-    ...mapActions(boardStore, [
-      "registerBoard",
-      "getDetailBoard",
-      "modifyBoard",
+    ...mapActions(noticeStore, [
+      "registerNotice",
+      "getDetailNotice",
+      "modifyNotice",
     ]),
-    async setBoard() {
-      await this.getDetailBoard(this.$route.params.articleno);
-      console.log(this.board);
-      this.article.articleno = this.board.articleno;
-      this.article.userid = this.board.userid;
-      this.article.subject = this.board.subject;
-      this.article.content = this.board.content;
-      this.isUserid = true;
+    async setNotice() {
+      await this.getDetailNotice(this.$route.params.articleno);
+      this.article.articleno = this.notice.articleno;
+      this.article.subject = this.notice.subject;
+      this.article.content = this.notice.content;
     },
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
-      err &&
-        !this.article.subject &&
+      !this.article.subject &&
         ((msg = "제목 입력해주세요"),
         (err = false),
         this.$refs.subject.focus());
@@ -135,26 +104,24 @@ export default {
       this.article.articleno = 0;
       this.article.subject = "";
       this.article.content = "";
-      //this.$router.push({ name: "boardList" });
     },
+    // NoticeList에서 admin한테만 글쓰기 보임
     registArticle() {
-      this.registerBoard({
-        userid: this.article.userid,
+      this.registerNotice({
         subject: this.article.subject,
         content: this.article.content,
       });
     },
+    // NoticeDetail에서 admin한테만 글수정 보임
     modifyArticle() {
-      console.log(this.article.content);
-      this.modifyBoard({
-        userid: this.article.userid,
+      this.modifyNotice({
         articleno: this.article.articleno,
         subject: this.article.subject,
         content: this.article.content,
       });
     },
     moveList() {
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "noticeList" });
     },
   },
 };

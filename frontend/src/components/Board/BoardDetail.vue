@@ -44,12 +44,12 @@
       </b-col>
     </b-row>
     <answer-list v-bind:list="answerList"></answer-list>
-    <b-form>
+    <b-form @submit="onSubmit">
       <div>답변 쓰기</div>
       <b-form-textarea
-        id="answer"
         rows="3"
         max-rows="6"
+        v-model="answer.content"
         required
         placeholder="답변 입력..."
       ></b-form-textarea>
@@ -65,13 +65,26 @@ import AnswerList from "@/components/Answer/AnswerList";
 import { mapState, mapActions } from "vuex";
 const boardStore = "boardStore";
 const answerStore = "answerStore";
+const memberStore = "memberStore";
 
 export default {
   components: { AnswerList },
   name: "BoardDetail",
+  data() {
+    return {
+      answer: {
+        articleno: this.$route.params.articleno,
+        userid: "",
+        content: "",
+        regtime: "",
+      },
+    };
+  },
   computed: {
     ...mapState(boardStore, ["board"]),
     ...mapState(answerStore, ["answerList"]),
+    // 일단은 userInfo만 사용
+    ...mapState(memberStore, ["userInfo"]),
     message() {
       if (this.board.content)
         return this.board.content.split("\n").join("<br>");
@@ -84,23 +97,50 @@ export default {
   },
   methods: {
     ...mapActions(boardStore, ["getDetailBoard"]),
-    ...mapActions(answerStore, ["getAnswerList"]),
+    ...mapActions(answerStore, ["registerAnswer", "getAnswerList"]),
     moveBoardList() {
       this.$router.push({ name: "boardList" });
     },
     moveModifyArticle() {
-      this.$router.replace({
-        name: "boardModify",
-        params: { articleno: this.board.articleno },
-      });
+      if (
+        this.userInfo === null ||
+        this.userInfo.userid !== this.board.userid
+      ) {
+        alert("수정 권한이 없습니다.");
+      } else {
+        this.$router.replace({
+          name: "boardModify",
+          params: { articleno: this.board.articleno },
+        });
+      }
       //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     deleteArticle() {
-      if (confirm("정말로 삭제?")) {
-        this.$router.replace({
-          name: "boardDelete",
-          params: { articleno: this.board.articleno },
-        });
+      if (
+        this.userInfo === null ||
+        this.userInfo.userid !== this.board.userid
+      ) {
+        alert("삭제 권한이 없습니다.");
+      } else {
+        if (confirm("정말로 삭제?")) {
+          this.$router.replace({
+            name: "boardDelete",
+            params: { articleno: this.board.articleno },
+          });
+        }
+      }
+    },
+    async onSubmit(event) {
+      event.preventDefault();
+      if (this.userInfo === null) {
+        alert("회윈만 답변을 쓸 수 있습니다. 로그인해주세요!");
+      } else {
+        this.answer.userid = this.userInfo.userid;
+        await this.registerAnswer(this.answer);
+        console.log(this.answerList);
+        // 새로고침 -> 아니면 다시 getAnswerList
+        //await this.getAnswerList(this.$route.params.articleno);
+        this.$router.go();
       }
     },
   },

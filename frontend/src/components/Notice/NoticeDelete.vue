@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3>QnA 삭제</h3></b-alert>
+        <b-alert show><h3>공지사항 삭제</h3></b-alert>
       </b-col>
     </b-row>
     <b-row>
@@ -13,15 +13,15 @@
 
 <script>
 import { mapActions } from "vuex";
-const boardStore = "boardStore";
+const noticeStore = "noticeStore";
 
 export default {
-  name: "BoardDelete",
+  name: "NoticeDelete",
   created() {
-    this.deleteBoard(this.$route.params.articleno);
+    this.deleteNotice(this.$route.params.articleno);
   },
   methods: {
-    ...mapActions(boardStore, ["deleteBoard"]),
+    ...mapActions(noticeStore, ["deleteNotice"]),
   },
 };
 </script>

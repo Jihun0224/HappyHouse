@@ -73,7 +73,7 @@ const memberStore = {
     },
     modifyMember({ commit }, user) {
       modifyMemberInfo(user);
-      commit("SET_MEMBER_INFO", user);
+      commit("SET_USER_INFO", user);
     },
     deleteMember({ commit }, userid) {
       unregisterMember(
@@ -83,7 +83,7 @@ const memberStore = {
           if (response.data === "success") {
             commit("SET_IS_LOGIN", false);
             commit("SET_IS_LOGIN_ERROR", false);
-            commit("SET_MEMBER_INFO", null);
+            commit("SET_USER_INFO", null);
           } else {
             console.log("response data fail");
           }
@@ -105,7 +105,7 @@ const memberStore = {
           commit("SET_IS_LOGIN", false);
           commit("SET_IS_LOGIN_ERROR", false);
           commit("SET_IS_SIGNUP_ERROR", false);
-          commit("SET_MEMBER_INFO", null);
+          commit("SET_USER_INFO", null);
         },
         () => {
           //   alert("Store Sign Up Member Fail!!");

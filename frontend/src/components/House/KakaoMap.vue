@@ -53,7 +53,7 @@ export default {
       this.createMarker();
     },
     createMarker() {
-      if (this.getAllhouses.length == 0) this.getAllhouses();
+      //if (this.getAllhouses.length == 0) this.getAllhouses();
 
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
@@ -107,7 +107,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .custom_zoomcontrol {
