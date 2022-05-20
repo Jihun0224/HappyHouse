@@ -126,7 +126,11 @@ export default {
         if (this.isSignupError == false) {
           alert("가입을 환영합니다!");
         }
+        this.movePage();
       }
+    },
+    movePage() {
+      this.$router.push({ name: "home" });
     },
   },
 };
