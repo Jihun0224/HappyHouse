@@ -34,8 +34,8 @@ export default {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
       } else {
         navigator.geolocation.getCurrentPosition((pos) => {
-          var coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-          this.SET_CENTER(coords);
+          var coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          if (this.getCenter.lat == undefined) this.SET_CENTER(coords);
           window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
         });
       }
@@ -43,7 +43,7 @@ export default {
     initMap() {
       var container = document.getElementById("map");
       var options = {
-        center: new kakao.maps.LatLng(this.getCenter.lat, this.getCenter.lon),
+        center: new kakao.maps.LatLng(this.getCenter.lat, this.getCenter.lng),
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
@@ -63,7 +63,7 @@ export default {
       var markers = this.getAllHouses.map(function (house) {
         return new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),
-          title: house.aptName,
+          title: house.aptCode,
           image: markerImage,
         });
       });

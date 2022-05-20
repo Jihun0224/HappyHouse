@@ -87,6 +87,7 @@ export default {
       "selectedArea",
       "houses",
       "isEmpty",
+      "center",
     ]),
   },
   created() {
@@ -108,6 +109,7 @@ export default {
       "CLEAR_SELECTEDAREA",
       "SET_ISEMPTY",
       "CLEAR_HOUSE_LIST",
+      "SET_CENTER",
     ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
@@ -123,6 +125,12 @@ export default {
     searchApt() {
       if (this.dongCode.value) {
         this.getHouses(this.dongCode.value);
+        var coords = {
+          lat: this.dongCode.lat,
+          lng: this.dongCode.lng,
+        };
+        this.SET_CENTER(coords);
+        console.log(this.center);
       }
     },
     setArea() {
