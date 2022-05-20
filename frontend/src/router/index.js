@@ -1,14 +1,19 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import HomeView from "@/views/HomeView.vue";
-import BoardView from "@/views/BoardView.vue";
-import NoticeView from "@/views/NoticeView.vue";
-import HouseView from "@/views/HouseView.vue";
-import BoardRegisterView from "@/components/Board/BoardRegister.vue";
-import BoardListView from "@/components/Board/BoardList.vue";
-import BoardModifyView from "@/components/Board/BoardModify.vue";
-import BoardDeleteView from "@/components/Board/BoardDelete.vue";
-import BoardDetailView from "@/components/Board/BoardDetail.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import HomeView from '@/views/HomeView.vue'
+import BoardView from '@/views/BoardView.vue'
+import NoticeView from '@/views/NoticeView.vue'
+import HouseView from '@/views/HouseView.vue'
+import BoardRegisterView from '@/components/Board/BoardRegister.vue'
+import BoardListView from '@/components/Board/BoardList.vue'
+import BoardModifyView from '@/components/Board/BoardModify.vue'
+import BoardDeleteView from '@/components/Board/BoardDelete.vue'
+import BoardDetailView from '@/components/Board/BoardDetail.vue'
+import NoticeRegisterView from '@/components/Notice/NoticeRegister.vue'
+import NoticeListView from '@/components/Notice/NoticeList.vue'
+import NoticeModifyView from '@/components/Notice/NoticeModify.vue'
+import NoticeDeleteView from '@/components/Notice/NoticeDelete.vue'
+import NoticeDetailView from '@/components/Notice/NoticeDetail.vue'
 
 import store from "@/store/index.js";
 
@@ -75,6 +80,34 @@ const routes = [
     path: "/notice",
     name: "notice",
     component: NoticeView,
+    redirect: '/notice/list',
+    children: [
+      {
+        path: 'write',
+        name: 'noticeRegister',
+        component: NoticeRegisterView
+      },
+      {
+        path: 'list',
+        name: 'noticeList',
+        component: NoticeListView
+      },
+      {
+        path: 'detail/:articleno',
+        name: 'noticeDetail',
+        component: NoticeDetailView
+      },
+      {
+        path: 'modify/:articleno',
+        name: 'noticeModify',
+        component: NoticeModifyView
+      },
+      {
+        path: 'delete/:articleno',
+        name: 'noticeDelete',
+        component: NoticeDeleteView
+      },
+    ]
   },
   {
     path: "/house",
@@ -116,7 +149,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
   scrollBehavior() {
-    return { x: 0, y: 0 };
+    return { x: 0, y: 0 }
   },
 });
 
