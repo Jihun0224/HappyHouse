@@ -2,10 +2,10 @@
   <b-container class="li-row">
     <b-row class="mt-3">
       <b-col>
-        <div class="house-name">{{ house.aptName }}</div>
+        <div class="house-name">{{ source.aptName }}</div>
         <div class="house-address">
           <b-icon icon="geo-alt-fill" font-scale="1"></b-icon>
-          {{ house | setAddress }}
+          {{ source | setAddress }}
         </div>
       </b-col>
     </b-row>
@@ -16,7 +16,7 @@
 export default {
   name: "HouseListItem",
   props: {
-    house: Object,
+    source: Object,
   },
   filters: {
     setAddress: function (house) {
@@ -36,8 +36,8 @@ export default {
 
 <style scoped>
 .li-row {
-  height: 90px;
-  border: 1px gray solid;
+  height: 75px;
+  border-bottom: 1px solid lightgrey;
   width: 100%;
 }
 .house-name {

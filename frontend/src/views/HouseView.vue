@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="HouseView">
     <HeaderNav />
     <div class="container-fluid">
       <div class="row">
