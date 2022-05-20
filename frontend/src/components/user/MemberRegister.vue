@@ -31,9 +31,18 @@
               placeholder="비밀번호 입력...."
             ></b-form-input>
           </b-form-group>
+          <b-form-group label="비밀번호 확인:" label-for="userpwdConfirm">
+            <b-form-input
+              type="password"
+              id="userpwdConfirm"
+              v-model="userpwdConfirm"
+              required
+              placeholder="비밀번호 입력...."
+            ></b-form-input>
+          </b-form-group>
           <b-form-group label="이름:" label-for="username">
             <b-form-input
-              type="name"
+              type="text"
               id="username"
               v-model="user.username"
               required
@@ -42,7 +51,7 @@
           </b-form-group>
           <b-form-group label="전화번호:" label-for="userphone">
             <b-form-input
-              type="phone"
+              type="text"
               id="userphone"
               v-model="user.userphone"
               required
@@ -72,10 +81,10 @@
 </template>
 
 <script>
-import memberStore from "@/store/modules/memberStore";
+//import memberStore from "@/store/modules/memberStore";
 import { mapActions, mapMutations, mapState } from "vuex";
 
-//const memberStore = "memberStore";
+const memberStore = "memberStore";
 
 export default {
   name: "MemberRegister",
@@ -93,7 +102,7 @@ export default {
     };
   },
   created() {
-    this.SET_IS_SIGNUP_ERROR(false);
+    //this.SET_IS_SIGNUP_ERROR(false);
   },
   computed: {
     ...mapState(memberStore, ["isLogin", "isLoginError", "isSignipError"]),
@@ -103,7 +112,7 @@ export default {
     ...mapActions(memberStore, ["registerMember"]),
 
     pwCheck() {
-      if (this.user.password == this.userpwdConfirm) {
+      if (this.user.userpwd == this.userpwdConfirm) {
         this.pwMatches = true;
       } else {
         this.pwMatches = false;
