@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col v-if="list.length">
-      <div>답변 목록</div>
+      <div>답변 목록 : {{ list.length }}개</div>
       <answer-list-item
         v-for="answer in list"
         :key="answer.answerno"

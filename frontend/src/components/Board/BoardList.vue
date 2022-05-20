@@ -50,6 +50,7 @@
 import BoardSearchList from "@/components/Board/item/BoardSearchList";
 import { mapState, mapActions } from "vuex";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardList",
@@ -78,11 +79,18 @@ export default {
   },
   computed: {
     ...mapState(boardStore, ["boardList", "searchBoardList"]),
+    // 일단은 userInfo만 사용
+    ...mapState(memberStore, ["userInfo"]),
   },
   methods: {
     ...mapActions(boardStore, ["getBoardList"]),
     moveWrite() {
-      this.$router.push({ name: "boardRegister" });
+      // 회원만 글쓰기 가능
+      if (this.userInfo === null) {
+        alert("회윈만 글을 쓸 수 있습니다. 로그인해주세요!");
+      } else {
+        this.$router.push({ name: "boardRegister" });
+      }
     },
     search(event) {
       event.preventDefault();

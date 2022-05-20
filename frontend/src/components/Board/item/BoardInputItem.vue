@@ -10,7 +10,7 @@
         >
           <b-form-input
             id="userid"
-            :disabled="isUserid"
+            disabled
             v-model="article.userid"
             type="text"
             required
@@ -62,6 +62,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 const boardStore = "boardStore";
+const memberStore = "memberStore";
 
 export default {
   name: "BoardInputItem",
@@ -82,10 +83,13 @@ export default {
   created() {
     if (this.type === "modify") {
       this.setBoard();
+    } else {
+      this.article.userid = this.userInfo.userid;
     }
   },
   computed: {
     ...mapState(boardStore, ["board"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   methods: {
     ...mapActions(boardStore, [

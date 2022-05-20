@@ -23,8 +23,8 @@ const answerStore = {
     },
   },
   actions: {
-    registerAnswer({ commit }, answer) {
-      registerAnswer(
+    registerAnswer: async function ({ commit }, answer) {
+      await registerAnswer(
         answer,
         (response) => {
           if (response.data === "success") {
