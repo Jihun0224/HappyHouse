@@ -130,6 +130,14 @@ export default {
       if (this.gugunCode.value) this.getDong(this.gugunCode.value);
     },
     searchApt() {
+      if (
+        this.sidoCode == null ||
+        this.gugunCode == null ||
+        this.dongCode == null
+      ) {
+        window.alert("검색하고자 하는 동을 선택해주세요!");
+        return;
+      }
       if (this.dongCode.value) {
         this.getHouses(this.dongCode.value + "," + this.aptName);
         var coords = {
