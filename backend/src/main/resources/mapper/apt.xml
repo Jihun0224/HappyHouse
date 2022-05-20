@@ -32,7 +32,7 @@
 		on left(h.dongcode,2) = left(si.sidocode,2)
 		left join guguncode gu
 		on left(h.dongcode,5) = left(gu.guguncode,5)
-		where dongCode = #{dong}
+		where dongCode = #{dong} and h.aptName like concat('%', #{aptName}, '%')
 		order by aptName
 	</select>
 	

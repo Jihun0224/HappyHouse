@@ -37,7 +37,11 @@
           <div class="option_title">아파트명</div>
           <div class="option_input">
             <b-input-group>
-              <b-form-input style="background-color: #f5f8fd"></b-form-input>
+              <b-form-input
+                v-model="aptName"
+                placeholder="Apt Name"
+                style="background-color: #f5f8fd"
+              ></b-form-input>
             </b-input-group>
           </div>
         </div>
@@ -77,6 +81,7 @@ export default {
       sidoCode: "시·도",
       gugunCode: "시·군·구",
       dongCode: "읍·면·동",
+      aptName: "",
     };
   },
   computed: {
@@ -126,7 +131,7 @@ export default {
     },
     searchApt() {
       if (this.dongCode.value) {
-        this.getHouses(this.dongCode.value);
+        this.getHouses(this.dongCode.value + "," + this.aptName);
         var coords = {
           lat: this.dongCode.lat,
           lng: this.dongCode.lng,
@@ -140,7 +145,7 @@ export default {
       this.sidoCode = area.sido;
       this.gugunCode = area.gugun;
       this.dongCode = area.dong;
-      this.getHouses(this.selectedArea.dong.value);
+      this.getHouses(this.selectedArea.dong.value, "");
       if (this.houses == null) {
         this.SET_ISEMPTY(true);
       }

@@ -12,7 +12,7 @@ const houseStore = {
         selectedHouse: null,
         isEmpty: false,
         center: null,
-        centerChangeCnt: 0
+        centerChangeCnt: 0,
     },
     getters: {
         getSidos: state => state.sidos,
@@ -120,8 +120,8 @@ const houseStore = {
                 },
             );
         },
-        getHouses({ commit }, dong) {
-            const params = { dong: dong };
+        getHouses({ commit }, searchString) {
+            const params = { params: searchString };
             // console.log(dong);
             houseList(
                 params,
