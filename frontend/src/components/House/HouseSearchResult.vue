@@ -51,7 +51,10 @@
           <div class="search-result-title">
             <b-icon icon="list-task"></b-icon>검색 결과
           </div>
-          <div class="search-result-list"><HouseList /></div>
+          <div class="search-result-list">
+            <ResultNotFound v-if="isEmpty" />
+            <HouseList v-else />
+          </div>
         </div>
       </div>
     </div>
@@ -61,11 +64,13 @@
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 import HouseList from "@/components/House/HouseList.vue";
+import ResultNotFound from "@/components/House/ResultNotFound.vue";
 const houseStore = "houseStore";
 
 export default {
   components: {
     HouseList,
+    ResultNotFound,
   },
   data() {
     return {
@@ -75,12 +80,21 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, ["sidos", "guguns", "dongs", "selectedArea"]),
+    ...mapState(houseStore, [
+      "sidos",
+      "guguns",
+      "dongs",
+      "selectedArea",
+      "houses",
+      "isEmpty",
+    ]),
   },
   created() {
     if (this.selectedArea != null) {
       this.setArea();
     } else {
+      this.CLEAR_HOUSE_LIST();
+      this.SET_ISEMPTY(false);
       this.CLEAR_SIDO_LIST();
       this.getSido();
     }
@@ -92,6 +106,8 @@ export default {
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
       "CLEAR_SELECTEDAREA",
+      "SET_ISEMPTY",
+      "CLEAR_HOUSE_LIST",
     ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
@@ -105,7 +121,9 @@ export default {
       if (this.gugunCode.value) this.getDong(this.gugunCode.value);
     },
     searchApt() {
-      if (this.dongCode.value) this.getHouses(this.dongCode.value);
+      if (this.dongCode.value) {
+        this.getHouses(this.dongCode.value);
+      }
     },
     setArea() {
       const area = this.selectedArea;
@@ -113,6 +131,9 @@ export default {
       this.gugunCode = area.gugun;
       this.dongCode = area.dong;
       this.getHouses(this.selectedArea.dong.value);
+      if (this.houses == null) {
+        this.SET_ISEMPTY(true);
+      }
       this.CLEAR_SELECTEDAREA();
     },
   },
