@@ -14,7 +14,6 @@
 		</if>
 	</sql>
 
-
 	<!-- 게시글 전체 조회 -->
 	<select id="selectBoard" parameterType="map" resultType="boardDto">
 		select articleno, userid,
