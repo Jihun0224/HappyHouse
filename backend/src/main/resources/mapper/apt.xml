@@ -32,13 +32,10 @@
 		on left(h.dongcode,2) = left(si.sidocode,2)
 		left join guguncode gu
 		on left(h.dongcode,5) = left(gu.guguncode,5)
-<<<<<<< HEAD
 		where dongCode = #{dong} and h.aptName like concat('%', #{aptName}, '%')
 		order by aptName
-=======
 		where dongCode = #{dong}
 		order by apartmentName
->>>>>>> 3ae9f0a212b16e3ea313076532314e02374f9427
 	</select>
 	
 		<select id="searchByAptName" parameterType="string" resultType="houseInfoDto">
