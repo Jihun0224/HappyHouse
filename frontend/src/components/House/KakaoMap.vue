@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 const houseStore = "houseStore";
 
 export default {
@@ -27,14 +27,15 @@ export default {
     this.getLocation();
   },
   methods: {
+    ...mapMutations(houseStore, ["SET_CENTER", "SET_SELECTEDHOUSE"]),
     ...mapActions(houseStore, ["getAllhouses"]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
       } else {
         navigator.geolocation.getCurrentPosition((pos) => {
-          this.latitude = pos.coords.latitude;
-          this.longitude = pos.coords.longitude;
+          var coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          if (this.getCenter.lat == undefined) this.SET_CENTER(coords);
           window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
         });
       }
@@ -42,7 +43,7 @@ export default {
     initMap() {
       var container = document.getElementById("map");
       var options = {
-        center: new kakao.maps.LatLng(this.latitude, this.longitude),
+        center: new kakao.maps.LatLng(this.getCenter.lat, this.getCenter.lng),
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
@@ -58,21 +59,31 @@ export default {
         "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
       var imageSize = new kakao.maps.Size(24, 35);
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
       var markers = this.getAllHouses.map(function (house) {
         return new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),
-          title: house.aptName,
+          title: house.aptCode,
           image: markerImage,
         });
       });
+
       var clusterer = new kakao.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
         minLevel: 5,
       });
       clusterer.addMarkers(markers);
+      markers.map((marker) => {
+        kakao.maps.event.addListener(marker, "click", () => {
+          var moveLatLon = new kakao.maps.LatLng(
+            marker.getPosition().Ma,
+            marker.getPosition().La
+          );
+          this.map.panTo(moveLatLon);
+        });
+      });
     },
-
     addScript() {
       // const API_KEY=process.env.VUE_APP_KAKAO_MAP_API_KEY
       const API_KEY = "5c1c5e499996ae9f12b29dfc9a75f172";
@@ -92,7 +103,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(houseStore, ["getAllHouses"]),
+    ...mapGetters(houseStore, ["getAllHouses", "getCenter"]),
   },
 };
 </script>

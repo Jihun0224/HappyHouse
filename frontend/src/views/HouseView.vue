@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="HouseView">
     <HeaderNav />
     <div class="container-fluid">
       <div class="row">
         <HouseSearchResult />
-        <KakaoMap />
+        <KakaoMap :key="centerChangeCnt" />
       </div>
     </div>
   </div>
@@ -14,12 +14,16 @@
 import KakaoMap from "@/components/House/KakaoMap.vue";
 import HeaderNav from "@/components/common/HeaderNav.vue";
 import HouseSearchResult from "@/components/House/HouseSearchResult.vue";
-
+import { mapState } from "vuex";
+const houseStore = "houseStore";
 export default {
   components: {
     KakaoMap,
     HeaderNav,
     HouseSearchResult,
+  },
+  computed: {
+    ...mapState(houseStore, ["centerChangeCnt"]),
   },
 };
 </script>

@@ -38,7 +38,7 @@
           >
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
-          <b-nav-item-dropdown right>
+          <b-nav-item-dropdown id="people-icon" right>
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
             </template>
@@ -70,6 +70,12 @@ export default {
   computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
+  created() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
   methods: {
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     onClickLogout() {
@@ -80,10 +86,24 @@ export default {
       sessionStorage.removeItem("access-token");
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
+    handleScroll() {
+      const navbarCollapsible = document.body.querySelector("#mainNav");
+      if (!navbarCollapsible) {
+        return;
+      }
+      if (window.scrollY === 0) {
+        navbarCollapsible.classList.remove("navbar-shrink");
+      } else {
+        navbarCollapsible.classList.add("navbar-shrink");
+      }
+    },
   },
 };
 </script>
 <style>
+#people-icon {
+  height: 80px;
+}
 #mainNav {
   min-height: 3rem;
   background-color: #f5f8fd;
