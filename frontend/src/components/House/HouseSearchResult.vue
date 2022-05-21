@@ -82,6 +82,7 @@ export default {
       gugunCode: "시·군·구",
       dongCode: "읍·면·동",
       aptName: "",
+      coords: null,
     };
   },
   computed: {
@@ -115,7 +116,6 @@ export default {
       "SET_ISEMPTY",
       "CLEAR_HOUSE_LIST",
       "SET_CENTER",
-      "MOVE_CENTER",
       "SET_CNTUP",
     ]),
     gugunList() {
@@ -129,6 +129,25 @@ export default {
       this.dongCode = null;
       if (this.gugunCode.value) this.getDong(this.gugunCode.value);
     },
+    getGeocoder() {
+      var address =
+        this.sidoCode.label +
+        " " +
+        this.gugunCode.label +
+        " " +
+        this.dongCode.label;
+      var geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(address, (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          var coords = {
+            lat: result[0].y,
+            lng: result[0].x,
+          };
+          this.SET_CENTER(coords);
+          this.SET_CNTUP();
+        }
+      });
+    },
     searchApt() {
       if (
         this.sidoCode == null ||
@@ -140,12 +159,7 @@ export default {
       }
       if (this.dongCode.value) {
         this.getHouses(this.dongCode.value + "," + this.aptName);
-        var coords = {
-          lat: this.dongCode.lat,
-          lng: this.dongCode.lng,
-        };
-        this.SET_CENTER(coords);
-        this.SET_CNTUP();
+        this.getGeocoder();
       }
     },
     setArea() {
@@ -157,6 +171,7 @@ export default {
       if (this.houses == null) {
         this.SET_ISEMPTY(true);
       }
+      this.getGeocoder();
       this.CLEAR_SELECTEDAREA();
     },
   },

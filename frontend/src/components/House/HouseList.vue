@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" v-if="getHouses">
     <virtual-list
       id="virtual-list"
       :data-key="'aptCode'"
