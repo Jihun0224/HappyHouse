@@ -86,7 +86,6 @@ const houseStore = {
         getSido({ commit }) {
             sidoList(
                 ({ data }) => {
-                    // console.log(data);
                     commit("SET_SIDO_LIST", data);
                 },
                 (error) => {
@@ -126,7 +125,6 @@ const houseStore = {
             houseList(
                 params,
                 ({ data }) => {
-                    // console.log(commit, response);
                     if (data.length == 0) {
                         commit("SET_ISEMPTY", true);
                     }
