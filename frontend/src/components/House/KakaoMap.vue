@@ -35,7 +35,7 @@ export default {
       } else {
         navigator.geolocation.getCurrentPosition((pos) => {
           var coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-          if (this.getCenter.lat == undefined) this.SET_CENTER(coords);
+          if (this.getCenter == null) this.SET_CENTER(coords);
           window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
         });
       }
@@ -50,7 +50,7 @@ export default {
 
       var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
       marker.setMap(this.map);
-      this.createMarker();
+      // this.createMarker();
     },
     createMarker() {
       //if (this.getAllhouses.length == 0) this.getAllhouses();
