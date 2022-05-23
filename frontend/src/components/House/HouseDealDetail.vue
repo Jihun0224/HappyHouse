@@ -8,6 +8,7 @@
     @ok="closeModal"
     ok-only
   >
+    <HouseDetailChart />
     <div class="row my-1">
       <span class="infoKey col-4">아파트명</span>
       <span class="infoValue">{{ getSelectedHouse.aptName }}</span>
@@ -30,17 +31,21 @@
       <span class="infoKey col-4">최신거래금액</span>
       <span class="infoValue">{{ getSelectedHouse.recentPrice }}</span>
     </div>
+
     <b-button type="submit" @click="setmyhome">마이홈 등록</b-button>
   </b-modal>
 </template>
 
 <script>
+import HouseDetailChart from "@/components/House/HouseDetailChart.vue";
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-
 const houseStore = "houseStore";
 const memberStore = "memberStore";
 export default {
   name: "HouseDealDetail",
+  components: {
+    HouseDetailChart,
+  },
   data() {
     return {
       user: {
