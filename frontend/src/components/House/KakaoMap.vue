@@ -58,7 +58,7 @@ export default {
     createMarker() {
       var activeId = null;
       var timeoutId = null;
-      setTimeout(() => {}, 100);
+      setTimeout(() => {}, 500);
 
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
@@ -145,7 +145,7 @@ export default {
         kakao.maps.event.addListener(marker, "click", () => {
           var moveLatLon = new kakao.maps.LatLng(
             marker.getPosition().Ma,
-            marker.getPosition().La
+            marker.getPosition().La,
           );
           this.map.panTo(moveLatLon);
         });

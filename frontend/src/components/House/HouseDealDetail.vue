@@ -67,6 +67,7 @@ export default {
 
     setmyhome() {
       this.setMyhome(this.user);
+      console.log(this.user.myhome);
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
@@ -78,7 +79,6 @@ export default {
     console.log(this.isSelectedHouse);
     console.log(this.selectedHouse);
     this.user.myhome = this.selectedHouse.aptCode;
-    console.log(this.user.myhome);
   },
 };
 </script>
