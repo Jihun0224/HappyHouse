@@ -16,13 +16,19 @@ public class MemberDto {
 	private String email;
 	@ApiModelProperty(value = "회원 가입일")
 	private String joindate;
-	
+	@ApiModelProperty(value = "전화번호")
 	private String phone;
+	@ApiModelProperty(value = "myHome")
+	private long myhome;
+	
+	
+	
+
 
 	@Override
 	public String toString() {
 		return "MemberDto [userid=" + userid + ", username=" + username + ", userpwd=" + userpwd + ", email=" + email
-				+ ", joindate=" + joindate + ", phone=" + phone + "]";
+				+ ", joindate=" + joindate + ", phone=" + phone + ", myhome=" + myhome + "]";
 	}
 
 	public String getPhone() {
@@ -31,6 +37,15 @@ public class MemberDto {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+
+	public long getMyhome() {
+		return myhome;
+	}
+
+	public void setMyhome(long myhome) {
+		this.myhome = myhome;
 	}
 
 	public String getUserid() {

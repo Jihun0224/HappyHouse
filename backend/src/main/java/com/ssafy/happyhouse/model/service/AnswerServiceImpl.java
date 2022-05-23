@@ -17,18 +17,18 @@ public class AnswerServiceImpl implements AnswerService {
 	private AnswerMapper answerMapper;
 
 	@Override
-	public List<AnswerDto> retrieveAnswer(int articleno) {
+	public List<AnswerDto> retrieveAnswer(int articleno) throws Exception {
 		return answerMapper.selectAnswer(articleno);
 	}
 
 	@Override
-	public boolean writeAnswer(AnswerDto answer) {
+	public boolean writeAnswer(AnswerDto answer) throws Exception {
 		return answerMapper.insertAnswer(answer) == 1;
 	}
 
 	@Override
 	@Transactional
-	public boolean deleteAnswer(int answerno) {
+	public boolean deleteAnswer(int answerno) throws Exception {
 		return answerMapper.deleteAnswer(answerno) == 1;
 	}
 }

@@ -53,4 +53,9 @@ public class MemberServiceImpl implements MemberService {
 		// 회원 삭제하기
 		memberMapper.deleteMember(userid);
 	}
+
+	@Override
+	public void setMyhome(MemberDto memberDto) throws Exception {
+		memberMapper.setMyhome(memberDto);
+	}
 }
