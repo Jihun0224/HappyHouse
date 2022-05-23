@@ -2,7 +2,7 @@
   <b-container class="li-row">
     <b-row class="mt-3">
       <b-col>
-        <div @click="selectApt(source)" class="house-name">
+        <div class="house-name" v-on:click="changeCenter(source)">
           {{ source.aptName }}
         </div>
         <div class="house-address">
@@ -23,6 +23,24 @@ export default {
   props: {
     source: Object,
   },
+  methods: {
+    ...mapMutations(houseStore, [
+      "SET_SELECTEDHOUSE",
+      "SET_ISSELECTEDHOUSE",
+      "SET_CENTER",
+      "SET_CNTUP",
+    ]),
+    changeCenter(house) {
+      var coords = {
+        lat: house.lat,
+        lng: house.lng,
+      };
+      this.SET_CENTER(coords);
+      this.SET_CNTUP();
+      this.SET_SELECTEDHOUSE(house);
+      this.SET_ISSELECTEDHOUSE(true);
+    },
+  },
   filters: {
     setAddress: function (house) {
       return (
@@ -34,14 +52,6 @@ export default {
         " " +
         house.jibun
       );
-    },
-  },
-  methods: {
-    ...mapMutations(houseStore, ["SET_SELECTEDHOUSE", "SET_ISSELECTEDHOUSE"]),
-    selectApt(house) {
-      // 선택된 아파트의 정보 출력을 위해 설정
-      this.SET_SELECTEDHOUSE(house);
-      this.SET_ISSELECTEDHOUSE(true);
     },
   },
 };

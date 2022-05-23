@@ -11,4 +11,5 @@ public interface MemberService {
 	void registerMember(MemberDto memberDto) throws Exception;
 	void updateMember(MemberDto memberDto) throws Exception;
 	void deleteMember(String userid) throws Exception;
+	void setMyhome (MemberDto memberDto) throws Exception;
 }

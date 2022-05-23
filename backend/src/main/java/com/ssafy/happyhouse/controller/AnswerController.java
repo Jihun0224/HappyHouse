@@ -34,12 +34,12 @@ public class AnswerController {
 	private AnswerService answerService;
 
 	@GetMapping("{articleno}")
-	public ResponseEntity<List<AnswerDto>> retrieveAnswer(@PathVariable int articleno) {
+	public ResponseEntity<List<AnswerDto>> retrieveAnswer(@PathVariable int articleno) throws Exception {
 		return new ResponseEntity<List<AnswerDto>>(answerService.retrieveAnswer(articleno), HttpStatus.OK);
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> writeAnswer(@RequestBody AnswerDto answer) {
+	public ResponseEntity<String> writeAnswer(@RequestBody AnswerDto answer) throws Exception {
 		if (answerService.writeAnswer(answer)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -47,7 +47,7 @@ public class AnswerController {
 	}
 
 	@DeleteMapping("{answerno}")
-	public ResponseEntity<String> deleteAnswer(@PathVariable int answerno) {
+	public ResponseEntity<String> deleteAnswer(@PathVariable int answerno) throws Exception {
 		if (answerService.deleteAnswer(answerno)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

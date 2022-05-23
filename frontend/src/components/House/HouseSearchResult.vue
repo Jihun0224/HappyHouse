@@ -72,6 +72,7 @@ import HouseList from "@/components/House/HouseList.vue";
 import ResultNotFound from "@/components/House/ResultNotFound.vue";
 import HouseDealDetail from "@/components/House/HouseDealDetail.vue";
 const houseStore = "houseStore";
+
 export default {
   components: {
     HouseList,
@@ -108,6 +109,7 @@ export default {
       this.getSido();
     }
   },
+
   methods: {
     ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouses"]),
     ...mapMutations(houseStore, [
@@ -150,7 +152,7 @@ export default {
         }
       });
     },
-    searchApt() {
+    async searchApt() {
       if (
         this.sidoCode == null ||
         this.gugunCode == null ||
@@ -160,7 +162,9 @@ export default {
         return;
       }
       if (this.dongCode.value) {
-        this.getHouses(this.dongCode.value + "," + this.aptName);
+        await this.getHouses(this.dongCode.value + "," + this.aptName);
+        console.log(this.houses);
+        console.log(this.dongCode.value);
         this.getGeocoder();
       }
     },
@@ -209,6 +213,7 @@ export default {
 .option_select {
   width: 290px;
 }
+
 .option_input {
   width: 190px;
   float: left;

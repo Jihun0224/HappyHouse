@@ -138,4 +138,13 @@ public class MemberController {
 		memberService.deleteMember(userid);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "마이홈 아파트번호 세팅", response = MemberDto.class)
+	@PutMapping(value = "/setmyhome")
+	public ResponseEntity<MemberDto> setMyhome(@RequestBody MemberDto memberDto) throws Exception{
+		System.out.println("마이홈 세팅 (컨트롤러 부분)");
+		System.out.println(memberDto.toString());
+		memberService.setMyhome(memberDto);
+		return new ResponseEntity<MemberDto>(memberDto, HttpStatus.OK);
+	}
 }

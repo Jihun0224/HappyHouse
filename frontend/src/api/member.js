@@ -25,6 +25,9 @@ async function unregisterMember(userid, success, fail) {
 async function signUpMember(user, success, fail) {
   await api.post(`/user`, JSON.stringify(user)).then(success).catch(fail);
 }
+async function setMyhomeInfo(user) {
+  await api.put(`/user/setmyhome`, JSON.stringify(user));
+}
 // function logout(success, fail)
 
 export {
@@ -34,4 +37,5 @@ export {
   unregisterMember,
   signUpMember,
   collectMemberInfo,
+  setMyhomeInfo,
 };

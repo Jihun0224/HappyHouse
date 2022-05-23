@@ -13,4 +13,5 @@ public interface MemberMapper {
 	void updateMember(MemberDto memberDto) throws Exception;
 	void deleteMember(String userid) throws Exception;
 	int idCheck(String checkId) throws Exception;
+	void setMyhome(MemberDto memberDto) throws Exception;
 }

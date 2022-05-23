@@ -13,7 +13,13 @@ function dongList(params, success, fail) {
 function allHouseList(params, success, fail) {
     api.get(`/map/searchByAptName`, { params: params }).then(success).catch(fail);
 }
-function houseList(params, success, fail) {
-    api.get(`/map/apt`, { params: params }).then(success).catch(fail);
+async function houseList(params, success, fail) {
+    await api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
-export { sidoList, gugunList, dongList, allHouseList, houseList };
+async function dealYearList(params, success, fail) {
+    await api.get(`/map/dealYear`, { params: params }).then(success).catch(fail);
+}
+function searchDealList(params, success, fail) {
+    api.get(`map/deal`, { params: params }).then(success).catch(fail);
+}
+export { sidoList, gugunList, dongList, allHouseList, houseList, dealYearList, searchDealList };

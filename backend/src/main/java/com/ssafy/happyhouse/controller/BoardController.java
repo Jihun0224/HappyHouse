@@ -44,13 +44,13 @@ public class BoardController {
 	}
 
 	@GetMapping("{articleno}")
-	public ResponseEntity<BoardDto> detailBoard(@PathVariable int articleno) {
+	public ResponseEntity<BoardDto> detailBoard(@PathVariable int articleno) throws Exception {
 		logger.debug("detailBoard - 호출");
 		return new ResponseEntity<BoardDto>(boardService.detailBoard(articleno), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<String> writeBoard(@RequestBody BoardDto board) {
+	public ResponseEntity<String> writeBoard(@RequestBody BoardDto board) throws Exception {
 		logger.debug("writeBoard - 호출");
 		if (boardService.writeBoard(board)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -59,7 +59,7 @@ public class BoardController {
 	}
 
 	@PutMapping("{articleno}")
-	public ResponseEntity<String> updateBoard(@RequestBody BoardDto board) {
+	public ResponseEntity<String> updateBoard(@RequestBody BoardDto board) throws Exception {
 		
 		System.out.println("수정");
 		
@@ -73,7 +73,7 @@ public class BoardController {
 	}
 
 	@DeleteMapping("{articleno}")
-	public ResponseEntity<String> deleteBoard(@PathVariable int articleno) {
+	public ResponseEntity<String> deleteBoard(@PathVariable int articleno) throws Exception {
 		logger.debug("deleteBoard - 호출");
 		if (boardService.deleteBoard(articleno)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);

@@ -48,7 +48,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, ["sidos", "guguns", "dongs", "selectedArea"]),
+    ...mapState(houseStore, [
+      "center",
+      "sidos",
+      "guguns",
+      "dongs",
+      "selectedArea",
+    ]),
   },
   created() {
     this.CLEAR_SIDO_LIST();
@@ -66,6 +72,8 @@ export default {
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
       "SET_SELECTEDAREA",
+      "SET_CENTER",
+      "SET_CNTUP",
     ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
@@ -86,7 +94,12 @@ export default {
           dong: { value: this.dongCode.value, label: this.dongCode.label },
         };
         this.SET_SELECTEDAREA(searchedArea);
-        // console.log(this.selectedArea);
+        var coords = {
+          lat: this.dongCode.lat,
+          lng: this.dongCode.lng,
+        };
+        this.SET_CENTER(coords);
+        this.SET_CNTUP();
         this.$router.push("/house");
       }
     },
