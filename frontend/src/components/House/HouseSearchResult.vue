@@ -62,6 +62,7 @@
         </div>
       </div>
     </div>
+    <house-deal-detail></house-deal-detail>
   </div>
 </template>
 
@@ -69,12 +70,14 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 import HouseList from "@/components/House/HouseList.vue";
 import ResultNotFound from "@/components/House/ResultNotFound.vue";
+import HouseDealDetail from "@/components/House/HouseDealDetail.vue";
 const houseStore = "houseStore";
 
 export default {
   components: {
     HouseList,
     ResultNotFound,
+    HouseDealDetail,
   },
   data() {
     return {

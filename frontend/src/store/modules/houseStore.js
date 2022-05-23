@@ -10,6 +10,7 @@ const houseStore = {
         houses: null,
         allHouses: [],
         selectedHouse: null,
+        isSelectedHouse: false,
         isEmpty: false,
         center: null,
         centerChangeCnt: 0,
@@ -22,6 +23,7 @@ const houseStore = {
         getAllHouses: state => state.allHouses,
         getSelectedArea: state => state.selectedArea,
         getSelectedHouse: state => state.selectedHouse,
+        getIsSelectedHouse: state => state.isSelectedHouse,
         getIsEmpty: state => state.isEmpty,
         getCenter: state => state.center,
         getCenterChangeCnt: state => state.centerChangeCnt
@@ -64,7 +66,10 @@ const houseStore = {
             state.selectedArea = selectedArea
         },
         SET_SELECTEDHOUSE(state, house) {
-            state.selectedHouse = house
+            state.selectedHouse = house;
+        },
+        SET_ISSELECTEDHOUSE(state, bool) {
+            state.isSelectedHouse = bool;
         },
         CLEAR_SELECTEDAREA(state) {
             state.selectedArea = null
