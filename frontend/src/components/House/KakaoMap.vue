@@ -27,7 +27,11 @@ export default {
     this.getLocation();
   },
   methods: {
-    ...mapMutations(houseStore, ["SET_CENTER", "SET_SELECTEDHOUSE"]),
+    ...mapMutations(houseStore, [
+      "SET_CENTER",
+      "SET_SELECTEDHOUSE",
+      "SET_ISSELECTEDHOUSE",
+    ]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
@@ -107,7 +111,6 @@ export default {
             timeoutId = null;
             return;
           }
-          console.log(this.map);
           overlay.setMap(this.map);
           activeId = house.aptCode;
         };
@@ -120,10 +123,15 @@ export default {
           }, 50);
         };
 
+        var clickHandler = () => {
+          this.selectApt(house);
+        };
+
         kakao.maps.event.addListener(marker, "mouseover", mouseOverHandler);
         kakao.maps.event.addListener(marker, "mouseout", mouseOutHandler);
         contents.addEventListener("mouseover", mouseOverHandler);
         contents.addEventListener("mouseout", mouseOutHandler);
+        kakao.maps.event.addListener(marker, "click", clickHandler);
         return marker;
       });
 
@@ -159,6 +167,11 @@ export default {
     },
     zoomOut() {
       this.map.setLevel(this.map.getLevel() + 1);
+    },
+    selectApt(house) {
+      // 선택된 아파트의 정보 출력을 위해 설정
+      this.SET_SELECTEDHOUSE(house);
+      this.SET_ISSELECTEDHOUSE(true);
     },
   },
   computed: {
