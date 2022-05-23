@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 
 const houseStore = "houseStore";
 const memberStore = "memberStore";
