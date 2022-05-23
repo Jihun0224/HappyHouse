@@ -109,6 +109,7 @@ export default {
       this.getSido();
     }
   },
+
   methods: {
     ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouses"]),
     ...mapMutations(houseStore, [
@@ -162,6 +163,8 @@ export default {
       }
       if (this.dongCode.value) {
         this.getHouses(this.dongCode.value + "," + this.aptName);
+        console.log(this.houses);
+        console.log(this.dongCode.value);
         this.getGeocoder();
       }
     },

@@ -17,7 +17,6 @@ export default {
       latitude: 37.501314726742,
       longitude: 127.02730766538,
       map: null,
-      prevOverlay: null,
       inImg:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png",
       outImg:
@@ -50,9 +49,11 @@ export default {
 
       var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
       marker.setMap(this.map);
-      this.createMarker(this.map, this.prevOverlay);
+      this.createMarker();
     },
-    createMarker(map, prevOverlay) {
+    createMarker() {
+      var activeId = null;
+      var timeoutId = null;
       setTimeout(() => {}, 100);
 
       var imageSrc =
@@ -64,17 +65,16 @@ export default {
         return;
       }
 
-      var markers = this.getHouses.map(function (house) {
+      var markers = this.getHouses.map((house) => {
         var marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),
           title: house.aptCode,
           image: markerImage,
         });
-
         var content = `<div class="customoverlay">
           <div class="info">
             <div class="title">${house.aptName}
-              <div class="close" onclick='this.parentNode.parentNode.parentNode.style.display = "none"' title="닫기"></div>
+              <div class="close" ></div>
             </div>
             <div class="body ml-3 my-2">
               <div class="row my-1">
@@ -92,26 +92,38 @@ export default {
             </div>
           </div>
           </div>`;
-
         var overlay = new kakao.maps.CustomOverlay({
+          yAnchor: 2.5,
           content: content,
-          map: map,
           position: marker.getPosition(),
         });
+        var contents = document.createElement("div");
+        contents.innerHTML = content;
+        contents.style.cssText = "background-color: white";
 
-        // 마커 클릭시 infowindow 열리도록 클릭 이벤트 추가
-        // [문제] 처음부터 overlay창 다 뜨고 클릭 이벤트가 안먹힘
-        kakao.maps.event.addListener(marker, "click", () => {
-          console.log(this);
-          // 마커에 남아있는 infowindow 닫기
-          console.log(prevOverlay);
-          if (prevOverlay !== null) {
-            prevOverlay.setMap(null);
+        var mouseOverHandler = () => {
+          if (timeoutId !== null && house.aptCode === activeId) {
+            window.clearTimeout(timeoutId);
+            timeoutId = null;
+            return;
           }
-          overlay.setMap(map);
-          prevOverlay = overlay;
-        });
+          console.log(this.map);
+          overlay.setMap(this.map);
+          activeId = house.aptCode;
+        };
 
+        var mouseOutHandler = () => {
+          timeoutId = window.setTimeout(function () {
+            overlay.setMap(null);
+            activeId = null;
+            timeoutId = null;
+          }, 50);
+        };
+
+        kakao.maps.event.addListener(marker, "mouseover", mouseOverHandler);
+        kakao.maps.event.addListener(marker, "mouseout", mouseOutHandler);
+        contents.addEventListener("mouseover", mouseOverHandler);
+        contents.addEventListener("mouseout", mouseOutHandler);
         return marker;
       });
 

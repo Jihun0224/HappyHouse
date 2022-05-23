@@ -11,6 +11,7 @@ function apiInstance() {
   });
   return instance;
 }
+
 // 이 친구는 쓸 지 모르겠음 -> DB로 할지 API 쓸지 정해야 될 듯합니다
 // function houseInstance() {
 //   const instance = axios.create({
