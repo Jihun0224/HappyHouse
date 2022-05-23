@@ -37,7 +37,11 @@
           <div class="option_title">아파트명</div>
           <div class="option_input">
             <b-input-group>
-              <b-form-input style="background-color: #f5f8fd"></b-form-input>
+              <b-form-input
+                v-model="aptName"
+                placeholder="Apt Name"
+                style="background-color: #f5f8fd"
+              ></b-form-input>
             </b-input-group>
           </div>
         </div>
@@ -58,6 +62,7 @@
         </div>
       </div>
     </div>
+    <house-deal-detail></house-deal-detail>
   </div>
 </template>
 
@@ -65,18 +70,21 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 import HouseList from "@/components/House/HouseList.vue";
 import ResultNotFound from "@/components/House/ResultNotFound.vue";
+import HouseDealDetail from "@/components/House/HouseDealDetail.vue";
 const houseStore = "houseStore";
-
 export default {
   components: {
     HouseList,
     ResultNotFound,
+    HouseDealDetail,
   },
   data() {
     return {
       sidoCode: "시·도",
       gugunCode: "시·군·구",
       dongCode: "읍·면·동",
+      aptName: "",
+      coords: null,
     };
   },
   computed: {
@@ -87,6 +95,7 @@ export default {
       "selectedArea",
       "houses",
       "isEmpty",
+      "center",
     ]),
   },
   created() {
@@ -108,6 +117,8 @@ export default {
       "CLEAR_SELECTEDAREA",
       "SET_ISEMPTY",
       "CLEAR_HOUSE_LIST",
+      "SET_CENTER",
+      "SET_CNTUP",
     ]),
     gugunList() {
       this.CLEAR_GUGUN_LIST();
@@ -120,9 +131,37 @@ export default {
       this.dongCode = null;
       if (this.gugunCode.value) this.getDong(this.gugunCode.value);
     },
+    getGeocoder() {
+      var address =
+        this.sidoCode.label +
+        " " +
+        this.gugunCode.label +
+        " " +
+        this.dongCode.label;
+      var geocoder = new kakao.maps.services.Geocoder();
+      geocoder.addressSearch(address, (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          var coords = {
+            lat: result[0].y,
+            lng: result[0].x,
+          };
+          this.SET_CENTER(coords);
+          this.SET_CNTUP();
+        }
+      });
+    },
     searchApt() {
+      if (
+        this.sidoCode == null ||
+        this.gugunCode == null ||
+        this.dongCode == null
+      ) {
+        window.alert("검색하고자 하는 동을 선택해주세요!");
+        return;
+      }
       if (this.dongCode.value) {
-        this.getHouses(this.dongCode.value);
+        this.getHouses(this.dongCode.value + "," + this.aptName);
+        this.getGeocoder();
       }
     },
     setArea() {
@@ -130,10 +169,11 @@ export default {
       this.sidoCode = area.sido;
       this.gugunCode = area.gugun;
       this.dongCode = area.dong;
-      this.getHouses(this.selectedArea.dong.value);
+      this.getHouses(this.selectedArea.dong.value, "");
       if (this.houses == null) {
         this.SET_ISEMPTY(true);
       }
+      this.getGeocoder();
       this.CLEAR_SELECTEDAREA();
     },
   },
@@ -169,7 +209,6 @@ export default {
 .option_select {
   width: 290px;
 }
-
 .option_input {
   width: 190px;
   float: left;

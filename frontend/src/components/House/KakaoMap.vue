@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 const houseStore = "houseStore";
 
 export default {
@@ -17,6 +17,7 @@ export default {
       latitude: 37.501314726742,
       longitude: 127.02730766538,
       map: null,
+      prevOverlay: null,
       inImg:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png",
       outImg:
@@ -27,14 +28,18 @@ export default {
     this.getLocation();
   },
   methods: {
-    ...mapActions(houseStore, ["getAllhouses"]),
+    ...mapMutations(houseStore, [
+      "SET_CENTER",
+      "SET_SELECTEDHOUSE",
+      "SET_ISSELECTEDHOUSE",
+    ]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
       } else {
         navigator.geolocation.getCurrentPosition((pos) => {
-          this.latitude = pos.coords.latitude;
-          this.longitude = pos.coords.longitude;
+          var coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          if (this.getCenter == null) this.SET_CENTER(coords);
           window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
         });
       }
@@ -42,37 +47,93 @@ export default {
     initMap() {
       var container = document.getElementById("map");
       var options = {
-        center: new kakao.maps.LatLng(this.latitude, this.longitude),
+        center: new kakao.maps.LatLng(this.getCenter.lat, this.getCenter.lng),
         level: 5,
       };
       this.map = new kakao.maps.Map(container, options);
 
       var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
       marker.setMap(this.map);
-      this.createMarker();
+      this.createMarker(this.map, this.prevOverlay, this.selectApt);
     },
-    createMarker() {
-      //if (this.getAllhouses.length == 0) this.getAllhouses();
+    createMarker(map, prevOverlay, selectApt) {
+      setTimeout(() => {}, 100);
 
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
       var imageSize = new kakao.maps.Size(24, 35);
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-      var markers = this.getAllHouses.map(function (house) {
-        return new kakao.maps.Marker({
+
+      if (this.getHouses === null) {
+        return;
+      }
+
+      var markers = this.getHouses.map(function (house) {
+        var marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),
-          title: house.aptName,
+          title: house.aptCode,
           image: markerImage,
         });
+
+        var content = `<div class="customoverlay">
+          <div class="info">
+            <div class="title">${house.aptName}
+              <div class="close" onclick='this.parentNode.parentNode.parentNode.style.display = "none"' title="닫기"></div>
+            </div>
+            <div class="body ml-3 my-2">
+              <div class="row my-1">
+                <span class="infoKey col-4">건축년도</span>
+                <span class="infoValue">${house.buildYear}</span>
+              </div>
+              <div class="row my-1">
+                <span class="infoKey col-4">주소</span>
+                <span class="infoValue">${house.sidoName} ${house.gugunName} ${house.dongName} ${house.jibun}</span>
+              </div>
+              <div class="row my-1">
+                <span class="infoKey col-4">최신거래금액</span>
+                <span class="infoValue">${house.recentPrice}</span>
+              </div>
+            </div>
+          </div>
+          </div>`;
+
+        var overlay = new kakao.maps.CustomOverlay({
+          content: content,
+          map: map,
+          position: marker.getPosition(),
+        });
+
+        // 마커 클릭시 infowindow 열리도록 클릭 이벤트 추가
+        // [문제] 처음부터 overlay창 다 뜨고 클릭 이벤트가 안먹힘
+        kakao.maps.event.addListener(marker, "click", () => {
+          // 마커에 남아있는 infowindow 닫기
+          if (prevOverlay !== null) {
+            prevOverlay.setMap(null);
+          }
+          overlay.setMap(map);
+          prevOverlay = overlay;
+          selectApt(house);
+        });
+
+        return marker;
       });
+
       var clusterer = new kakao.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
         minLevel: 5,
       });
       clusterer.addMarkers(markers);
+      markers.map((marker) => {
+        kakao.maps.event.addListener(marker, "click", () => {
+          var moveLatLon = new kakao.maps.LatLng(
+            marker.getPosition().Ma,
+            marker.getPosition().La
+          );
+          this.map.panTo(moveLatLon);
+        });
+      });
     },
-
     addScript() {
       // const API_KEY=process.env.VUE_APP_KAKAO_MAP_API_KEY
       const API_KEY = "5c1c5e499996ae9f12b29dfc9a75f172";
@@ -90,14 +151,76 @@ export default {
     zoomOut() {
       this.map.setLevel(this.map.getLevel() + 1);
     },
+    selectApt(house) {
+      // 선택된 아파트의 정보 출력을 위해 설정
+      this.SET_SELECTEDHOUSE(house);
+      this.SET_ISSELECTEDHOUSE(true);
+    },
   },
   computed: {
-    ...mapGetters(houseStore, ["getAllHouses"]),
+    ...mapGetters(houseStore, ["getHouses", "getCenter"]),
   },
 };
 </script>
 
-<style scoped>
+<style>
+.customoverlay {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 288px;
+  height: 120px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+  line-height: 1.5;
+}
+.customoverlay * {
+  padding: 0;
+  margin: 0;
+}
+.customoverlay .info {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.customoverlay .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
+}
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .body .infoKey {
+  color: green;
+}
 .custom_zoomcontrol {
   position: absolute;
   top: 100px;
