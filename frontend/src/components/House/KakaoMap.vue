@@ -57,6 +57,12 @@ export default {
   },
   mounted() {
     this.getLocation();
+    if (this.$route.name == "home") {
+      var controller = document.getElementsByClassName("custom_zoomcontrol")[0];
+      controller.style.top = 0;
+      var category = document.getElementById("category");
+      category.style.top = 0;
+    }
   },
   methods: {
     ...mapMutations(houseStore, [
@@ -383,7 +389,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .customoverlay {
   position: absolute;
   left: 0;
