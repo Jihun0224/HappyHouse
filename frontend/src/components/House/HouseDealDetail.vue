@@ -31,24 +31,41 @@
       <span class="infoKey col-4">최신거래금액</span>
       <span class="infoValue">{{ selectedHouse.recentPrice }}</span>
     </div>
+    <b-button type="submit" @click="setmyhome">마이홈 등록</b-button>
   </b-modal>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 const houseStore = "houseStore";
-
+const memberStore = "memberStore";
 export default {
   name: "HouseDealDetail",
+  data() {
+    return {
+      user: {
+        myhome: null,
+      },
+    };
+  },
   computed: {
     ...mapState(houseStore, ["selectedHouse", "isSelectedHouse"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   methods: {
     ...mapMutations(houseStore, ["SET_SELECTEDHOUSE", "SET_ISSELECTEDHOUSE"]),
+    ...mapActions(memberStore, ["setMyhome"]),
+
+    setmyhome() {
+      this.setMyhome(this.user);
+    },
   },
   created() {
+    this.user = this.userInfo;
     console.log(this.isSelectedHouse);
     console.log(this.selectedHouse);
+    this.user.myhome = this.selectedHouse.aptCode;
+    console.log(this.user.myhome);
   },
 };
 </script>
