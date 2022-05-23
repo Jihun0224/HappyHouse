@@ -126,7 +126,6 @@ const houseStore = {
         },
         getHouses({ commit }, searchString) {
             const params = { params: searchString };
-            // console.log(dong);
             houseList(
                 params,
                 ({ data }) => {

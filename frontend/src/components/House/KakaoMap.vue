@@ -21,6 +21,7 @@ export default {
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png",
       outImg:
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png",
+      ...mapGetters(houseStore, ["houses"]),
     };
   },
   mounted() {
@@ -58,17 +59,14 @@ export default {
     createMarker() {
       var activeId = null;
       var timeoutId = null;
-      setTimeout(() => {}, 500);
 
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
       var imageSize = new kakao.maps.Size(24, 35);
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-      if (this.getHouses === null) {
-        return;
-      }
-
+      if (this.getHouses === null) return;
+      setTimeout(() => {}, 100);
       var markers = this.getHouses.map((house) => {
         var marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),
@@ -133,18 +131,17 @@ export default {
         kakao.maps.event.addListener(marker, "click", clickHandler);
         return marker;
       });
-
       var clusterer = new kakao.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
-        minLevel: 5,
+        minLevel: 4,
       });
       clusterer.addMarkers(markers);
       markers.map((marker) => {
         kakao.maps.event.addListener(marker, "click", () => {
           var moveLatLon = new kakao.maps.LatLng(
             marker.getPosition().Ma,
-            marker.getPosition().La,
+            marker.getPosition().La
           );
           this.map.panTo(moveLatLon);
         });
