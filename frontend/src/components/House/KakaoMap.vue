@@ -27,7 +27,11 @@ export default {
     this.getLocation();
   },
   methods: {
-    ...mapMutations(houseStore, ["SET_CENTER", "SET_SELECTEDHOUSE"]),
+    ...mapMutations(houseStore, [
+      "SET_CENTER",
+      "SET_SELECTEDHOUSE",
+      "SET_ISSELECTEDHOUSE",
+    ]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
@@ -54,7 +58,7 @@ export default {
     createMarker() {
       var activeId = null;
       var timeoutId = null;
-      setTimeout(() => {}, 100);
+      setTimeout(() => {}, 500);
 
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
@@ -118,10 +122,15 @@ export default {
           }, 50);
         };
 
+        var clickHandler = () => {
+          this.selectApt(house);
+        };
+
         kakao.maps.event.addListener(marker, "mouseover", mouseOverHandler);
         kakao.maps.event.addListener(marker, "mouseout", mouseOutHandler);
         contents.addEventListener("mouseover", mouseOverHandler);
         contents.addEventListener("mouseout", mouseOutHandler);
+        kakao.maps.event.addListener(marker, "click", clickHandler);
         return marker;
       });
 
@@ -135,7 +144,7 @@ export default {
         kakao.maps.event.addListener(marker, "click", () => {
           var moveLatLon = new kakao.maps.LatLng(
             marker.getPosition().Ma,
-            marker.getPosition().La
+            marker.getPosition().La,
           );
           this.map.panTo(moveLatLon);
         });
@@ -157,6 +166,11 @@ export default {
     },
     zoomOut() {
       this.map.setLevel(this.map.getLevel() + 1);
+    },
+    selectApt(house) {
+      // 선택된 아파트의 정보 출력을 위해 설정
+      this.SET_SELECTEDHOUSE(house);
+      this.SET_ISSELECTEDHOUSE(true);
     },
   },
   computed: {

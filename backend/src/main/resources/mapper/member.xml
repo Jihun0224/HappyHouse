@@ -43,7 +43,11 @@
 		username = #{username}
 		where userid = #{userid}
 	</update>
-
+	<update id="setMyhome" parameterType="MemberDto">
+		update member
+		set myhome = #{myhome}
+		where userid = #{userid}
+	</update>
 	<delete id="deleteMember" parameterType="String">
 		delete from member
 		where

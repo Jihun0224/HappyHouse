@@ -1,5 +1,6 @@
 package com.ssafy.happyhouse.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,29 +18,29 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper boardMapper;
 
     @Override
-	public List<BoardDto> retrieveBoard(Map<String, String> map) {
+	public List<BoardDto> retrieveBoard(Map<String, String> map) throws Exception {
 		return boardMapper.selectBoard(map);
 	}
     
   	@Override
-	public boolean writeBoard(BoardDto board) {
+	public boolean writeBoard(BoardDto board) throws Exception {
 		return boardMapper.insertBoard(board) == 1;
 	}
 
 	@Override
-	public BoardDto detailBoard(int articleno) {
+	public BoardDto detailBoard(int articleno) throws Exception {
 		return boardMapper.selectBoardByNo(articleno);
 	}
 
 	@Override
 	@Transactional
-	public boolean updateBoard(BoardDto board) {
+	public boolean updateBoard(BoardDto board) throws Exception {
 		return boardMapper.updateBoard(board) == 1;
 	}
 
 	@Override
 	@Transactional
-	public boolean deleteBoard(int articleno) {
+	public boolean deleteBoard(int articleno) throws Exception {
 		return boardMapper.deleteBoard(articleno) == 1;
 	}
 }

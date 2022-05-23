@@ -25,7 +25,7 @@
 	</select>
 		
 	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">
-		select h.aptCode, h.apartmentName as "aptName", h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
 				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
 		from houseinfo h
 		left join sidocode si
@@ -33,11 +33,11 @@
 		left join guguncode gu
 		on left(h.dongcode,5) = left(gu.guguncode,5)
 		where dongCode = #{dong} and h.apartmentName like concat('%', #{aptName}, '%')
-		order by h.apartmentName
+      order by apartmentName
 	</select>
 	
 		<select id="searchByAptName" parameterType="string" resultType="houseInfoDto">
-		select h.aptCode, h.apartmentName AS 'aptName', h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
 				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
 		from houseinfo h
 		left join sidocode si

@@ -5,6 +5,7 @@ import {
   modifyMemberInfo,
   unregisterMember,
   signUpMember,
+  setMyhomeInfo,
 } from "@/api/member.js";
 
 const memberStore = {
@@ -35,6 +36,9 @@ const memberStore = {
 
     SET_IS_SIGNUP_ERROR: (state, isSignupError) => {
       state.isSignupError = isSignupError;
+    },
+    SET_USER_MYHOME: (state, userInfo) => {
+      state.userInfo = userInfo;
     },
   },
   actions: {
@@ -74,6 +78,10 @@ const memberStore = {
     modifyMember({ commit }, user) {
       modifyMemberInfo(user);
       commit("SET_USER_INFO", user);
+    },
+    setMyhome({ commit }, user) {
+      setMyhomeInfo(user);
+      commit("SET_USER_MYHOME", user);
     },
     deleteMember({ commit }, userid) {
       unregisterMember(
