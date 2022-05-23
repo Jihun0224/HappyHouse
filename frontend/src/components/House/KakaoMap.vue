@@ -27,7 +27,11 @@ export default {
     this.getLocation();
   },
   methods: {
-    ...mapMutations(houseStore, ["SET_CENTER", "SET_SELECTEDHOUSE","SET_ISSELECTEDHOUSE",]),
+    ...mapMutations(houseStore, [
+      "SET_CENTER",
+      "SET_SELECTEDHOUSE",
+      "SET_ISSELECTEDHOUSE",
+    ]),
     getLocation() {
       if (!("geolocation" in navigator)) {
         window.kakao && window.kakao.maps ? this.initMap() : this.addScript();
@@ -49,9 +53,9 @@ export default {
 
       var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
       marker.setMap(this.map);
-      this.createMarker(this.selectApt);
+      this.createMarker();
     },
-    createMarker(selectApt) {
+    createMarker() {
       var activeId = null;
       var timeoutId = null;
       setTimeout(() => {}, 100);
@@ -107,7 +111,6 @@ export default {
             timeoutId = null;
             return;
           }
-          console.log(this.map);
           overlay.setMap(this.map);
           activeId = house.aptCode;
         };
@@ -120,13 +123,15 @@ export default {
           }, 50);
         };
 
+        var clickHandler = () => {
+          this.selectApt(house);
+        };
+
         kakao.maps.event.addListener(marker, "mouseover", mouseOverHandler);
         kakao.maps.event.addListener(marker, "mouseout", mouseOutHandler);
         contents.addEventListener("mouseover", mouseOverHandler);
         contents.addEventListener("mouseout", mouseOutHandler);
-        kakao.maps.event.addListener(marker, "click", () => {
-          selectApt(house);
-        });
+        kakao.maps.event.addListener(marker, "click", clickHandler);
         return marker;
       });
 
