@@ -43,7 +43,7 @@ export default {
       var container = document.getElementById("map");
       var options = {
         center: new kakao.maps.LatLng(this.getCenter.lat, this.getCenter.lng),
-        level: 5,
+        level: 3,
       };
       this.map = new kakao.maps.Map(container, options);
 
@@ -99,7 +99,6 @@ export default {
         });
         var contents = document.createElement("div");
         contents.innerHTML = content;
-        contents.style.cssText = "background-color: white";
 
         var mouseOverHandler = () => {
           if (timeoutId !== null && house.aptCode === activeId) {
@@ -107,7 +106,6 @@ export default {
             timeoutId = null;
             return;
           }
-          console.log(this.map);
           overlay.setMap(this.map);
           activeId = house.aptCode;
         };

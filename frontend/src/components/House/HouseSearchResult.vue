@@ -1,80 +1,88 @@
 <template>
   <div class="search-result">
-    <div class="search-result-top">
-      <div class="search-result-title"><b-icon icon="search"></b-icon>검색</div>
-    </div>
-    <div class="search-result-body">
-      <div class="search-result-options">
-        <div class="option">
-          <div class="option_title">시도</div>
-          <div class="option_select">
-            <v-select
-              v-model="sidoCode"
-              :options="sidos"
-              @input="gugunList"
-              id="select"
-            />
+    <b-tabs content-class="mt-3" justified>
+      <b-tab active>
+        <template #title> <b-icon icon="search"></b-icon>검색 </template>
+        <div class="search-result-body">
+          <div class="search-result-options">
+            <div class="option">
+              <div class="option_title">시도</div>
+              <div class="option_select">
+                <v-select
+                  v-model="sidoCode"
+                  :options="sidos"
+                  @input="gugunList"
+                  id="select"
+                />
+              </div>
+            </div>
+            <div class="option">
+              <div class="option_title">시군구</div>
+              <div class="option_select">
+                <v-select
+                  v-model="gugunCode"
+                  :options="guguns"
+                  @input="DongList"
+                  id="select"
+                />
+              </div>
+            </div>
+            <div class="option">
+              <div class="option_title">읍면동</div>
+              <div class="option_select">
+                <v-select v-model="dongCode" :options="dongs" id="select" />
+              </div>
+            </div>
+            <div class="option_input_type">
+              <div class="option_title">아파트명</div>
+              <div class="option_input">
+                <b-input-group>
+                  <b-form-input
+                    v-model="aptName"
+                    placeholder="Apt Name"
+                    style="background-color: #f5f8fd"
+                  ></b-form-input>
+                </b-input-group>
+              </div>
+            </div>
+            <div class="serch-btn-div">
+              <b-button id="search-button" @click="searchApt">검색</b-button>
+            </div>
           </div>
-        </div>
-        <div class="option">
-          <div class="option_title">시군구</div>
-          <div class="option_select">
-            <v-select
-              v-model="gugunCode"
-              :options="guguns"
-              @input="DongList"
-              id="select"
-            />
-          </div>
-        </div>
-        <div class="option">
-          <div class="option_title">읍면동</div>
-          <div class="option_select">
-            <v-select v-model="dongCode" :options="dongs" id="select" />
-          </div>
-        </div>
-        <div class="option_input_type">
-          <div class="option_title">아파트명</div>
-          <div class="option_input">
-            <b-input-group>
-              <b-form-input
-                v-model="aptName"
-                placeholder="Apt Name"
-                style="background-color: #f5f8fd"
-              ></b-form-input>
-            </b-input-group>
-          </div>
-        </div>
-        <div class="serch-btn-div">
-          <b-button id="search-button" @click="searchApt">검색</b-button>
-        </div>
-      </div>
 
-      <div class="search-result-body-result">
-        <div class="search-result-body-result-top">
-          <div class="search-result-title">
-            <b-icon icon="list-task"></b-icon>검색 결과
-          </div>
-          <div class="search-result-list">
-            <ResultNotFound v-if="isEmpty" />
-            <HouseList v-else />
+          <div class="search-result-body-result">
+            <div class="search-result-body-result-top">
+              <div class="search-result-title">
+                <b-icon icon="list-task"></b-icon>검색 결과
+              </div>
+              <div class="search-result-list">
+                <ResultNotFound v-if="isEmpty" />
+                <HouseList v-else />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <house-deal-detail></house-deal-detail>
+        <house-deal-detail></house-deal-detail>
+      </b-tab>
+      <b-tab :title-item-class="'tab-title-class'">
+        <template #title> <b-icon icon="star-fill"></b-icon>즐겨찾기 </template>
+        <FavoriteList />
+      </b-tab>
+    </b-tabs>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 import HouseList from "@/components/House/HouseList.vue";
+import FavoriteList from "@/components/House/FavoriteList.vue";
 import ResultNotFound from "@/components/House/ResultNotFound.vue";
 import HouseDealDetail from "@/components/House/HouseDealDetail.vue";
 const houseStore = "houseStore";
 
 export default {
   components: {
+    FavoriteList,
     HouseList,
     ResultNotFound,
     HouseDealDetail,
@@ -86,6 +94,7 @@ export default {
       dongCode: "읍·면·동",
       aptName: "",
       coords: null,
+      tab: false,
     };
   },
   computed: {
@@ -180,6 +189,9 @@ export default {
       this.getGeocoder();
       this.CLEAR_SELECTEDAREA();
     },
+    changeTab(tabName) {
+      this.tab = tabName;
+    },
   },
 };
 </script>
@@ -191,10 +203,7 @@ export default {
   width: 20%;
   height: 100vh;
 }
-.search-result-top {
-  height: 50px;
-  background-color: #a3a3e8;
-}
+
 .option {
   height: 35px;
   margin-top: 10px;
@@ -224,14 +233,16 @@ export default {
   line-height: 50px;
   padding-left: 20px;
   margin-bottom: 0;
+  color: white;
 }
 .search-result-options {
   background-color: #f5f8fd;
   height: 35%;
 }
+
 .search-result-body-result-top {
   height: 50px;
-  background-color: #a3a3e8;
+  background-color: #413e66;
 }
 .search-result-body-result {
   background-color: #f5f8fd;
