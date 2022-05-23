@@ -21,20 +21,19 @@
               variant="primary"
               v-text="userInfo ? userInfo.userid.charAt(0).toUpperCase() : ''"
             ></b-avatar
-            >{{ userInfo.username }}({{ userInfo.userid }})님
-            환영합니다.</b-nav-item
+            >Welcome! {{ userInfo.username }}({{ userInfo.userid }})</b-nav-item
           >
           <b-nav-item class="align-self-center"
             ><router-link
               :to="{ name: 'mypage' }"
               class="link align-self-center"
-              >내정보보기</router-link
+              >MyPage</router-link
             ></b-nav-item
           >
           <b-nav-item
             class="link align-self-center"
             @click.prevent="onClickLogout"
-            >로그아웃</b-nav-item
+            >LogOut</b-nav-item
           >
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-else>
@@ -44,12 +43,12 @@
             </template>
             <b-dropdown-item href="#"
               ><router-link :to="{ name: 'signUp' }" class="link"
-                ><b-icon icon="person-circle"></b-icon> 회원가입</router-link
+                ><b-icon icon="person-circle"></b-icon> SignUp</router-link
               ></b-dropdown-item
             >
             <b-dropdown-item href="#"
               ><router-link :to="{ name: 'signIn' }" class="link"
-                ><b-icon icon="key"></b-icon> 로그인</router-link
+                ><b-icon icon="key"></b-icon> LogIn</router-link
               ></b-dropdown-item
             >
           </b-nav-item-dropdown>
