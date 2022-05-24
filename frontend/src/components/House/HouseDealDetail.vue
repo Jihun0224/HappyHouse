@@ -35,6 +35,7 @@
         </div>
         <b-button type="submit" @click="setmyhome">마이홈 등록</b-button>
         <b-button type="submit" @click="addBookmark">즐겨찾기 등록</b-button>
+        <b-button type="submit" @click="deleteBookmark">즐겨찾기 삭제</b-button>
       </b-tab>
       <b-tab title="모든 거래" @click="allDealsMode">
         <div class="row my-1">
@@ -75,6 +76,13 @@
             >검색</b-button
           >
         </b-form>
+        <HouseDetailChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:dealYear="year"
+          v-bind:aptCode="getSelectedHouse.aptCode"
+          v-bind:avgList="avgList"
+          :key="searched"
+        />
         <all-deal-list v-bind:list="getSearchDeals"></all-deal-list>
       </b-tab>
     </b-tabs>
@@ -82,9 +90,9 @@
 </template>
 
 <script>
+import HouseDetailChart from "@/components/House/HouseDetailChart.vue";
+import AllDealList from "@/components/House/AllDealList.vue";
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import AllDealList from "@/components/House/AllDealList";
-
 const houseStore = "houseStore";
 const memberStore = "memberStore";
 export default {
@@ -128,9 +136,16 @@ export default {
   },
   components: {
     AllDealList,
+    HouseDetailChart,
   },
+
   computed: {
-    ...mapState(houseStore, ["selectedHouse", "isSelectedHouse"]),
+    ...mapState(houseStore, [
+      "searched",
+      "avgList",
+      "selectedHouse",
+      "isSelectedHouse",
+    ]),
     ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(houseStore, [
       "getIsSelectedHouse",
@@ -164,22 +179,45 @@ export default {
       "SET_DEALYEAR",
       "SET_SEARCHYEAR",
       "SET_SEARCHDEAL_LIST",
+      "SET_SEARCHED",
+    ]),
+    ...mapActions(houseStore, [
+      "getAvgList",
+      "getDealYearList",
+      "getSearchDealList",
     ]),
     ...mapActions(houseStore, [
       "getDealYearList",
       "getSearchDealList",
       "addbookmark",
+      "deletebookmark",
     ]),
     ...mapActions(memberStore, ["setMyhome"]),
+    async setData() {
+      var SearchParams = {
+        aptCode: this.getSelectedHouse.aptCode,
+        dealYear: this.year,
+        min: this.area.minArea,
+        max: this.area.maxArea,
+      };
+      await this.getAvgList(SearchParams);
+      this.SET_SEARCHED();
+    },
     setmyhome() {
+      this.user.myhome = this.selectedHouse.aptCode;
       this.setMyhome(this.user);
-      console.log(this.user.myhome);
+      // console.log(this.user.myhome);
     },
     addBookmark() {
       this.bookmark.userid = this.user.userid;
       this.bookmark.aptCode = this.selectedHouse.aptCode;
-      console.log(this.bookmark);
+      // console.log(this.bookmark);
       this.addbookmark(this.bookmark);
+    },
+    deleteBookmark() {
+      this.bookmark.userid = this.user.userid;
+      this.bookmark.aptCode = this.selectedHouse.aptCode;
+      this.deletebookmark(this.bookmark);
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
@@ -189,7 +227,7 @@ export default {
       this.SET_SEARCHDEAL_LIST(null);
     },
     async allDealsMode() {
-      console.log("all deals mode");
+      // console.log("all deals mode");
       await this.getDealYearList(this.getSelectedHouse.aptCode);
       this.getSearchDealList({
         dealYear: this.year,
@@ -199,12 +237,14 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      console.log(this.year + " " + this.area);
+      this.setData();
+      // console.log(this.year);
     },
+
     searchDeal(event) {
       event.preventDefault();
-      console.log("searchDeal");
-      console.log(this.area);
+      // console.log("searchDeal");
+      // console.log(this.area);
       this.getSearchDealList({
         dealYear: this.year,
         minArea: this.area.minArea,
@@ -213,13 +253,11 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
+      this.setData();
     },
   },
   created() {
     this.user = this.userInfo;
-    console.log(this.isSelectedHouse);
-    console.log(this.selectedHouse);
-    this.user.myhome = this.selectedHouse.aptCode;
   },
 };
 </script>

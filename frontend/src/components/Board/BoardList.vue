@@ -94,7 +94,7 @@ export default {
     },
     search(event) {
       event.preventDefault();
-      console.log(this.key + " " + this.word);
+      // console.log(this.key + " " + this.word);
       if (this.key === null) {
         alert("검색 대상을 선택해주세요.");
       } else {

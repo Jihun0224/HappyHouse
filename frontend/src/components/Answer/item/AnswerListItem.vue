@@ -49,7 +49,6 @@ export default {
   methods: {
     ...mapActions(answerStore, ["deleteAnswer"]),
     onDelete() {
-      console.log(this.answer.answerno);
       if (confirm("정말로 삭제?")) {
         this.deleteAnswer(this.answer.answerno);
         // 새로고침

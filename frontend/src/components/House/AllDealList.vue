@@ -32,7 +32,7 @@ export default {
   },
   props: ["list"],
   created() {
-    console.log("allDealList components");
+    // console.log("allDealList components");
   },
 };
 </script>

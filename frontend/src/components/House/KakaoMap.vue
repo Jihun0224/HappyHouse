@@ -224,17 +224,16 @@ export default {
         children = category.children;
       for (var i = 0; i < children.length; i++) {
         let id = children[i].id,
-          className = children[i].className;
+          this_ = children[i];
         children[i].addEventListener("click", () => {
           this.placeOverlay.setMap(null);
-
-          if (className === "on") {
+          if (this_.className === "on") {
             this.currCategory = "";
             this.changeCategoryClass();
             this.removeMarker();
           } else {
             this.currCategory = id;
-            this.changeCategoryClass();
+            this.changeCategoryClass(this_);
             this.searchPlaces();
           }
         });
@@ -245,11 +244,9 @@ export default {
       var category = document.getElementById("category"),
         children = category.children,
         i;
-
       for (i = 0; i < children.length; i++) {
         children[i].className = "";
       }
-
       if (el) {
         el.className = "on";
       }

@@ -119,7 +119,7 @@ export default {
       }
     },
     async register() {
-      console.log("회원가입 버튼 눌렸음");
+      // console.log("회원가입 버튼 눌렸음");
       this.pwCheck();
       if (this.pwMatches) {
         await this.registerMember(this.user);

@@ -66,5 +66,12 @@
 		</where>
 		order by dealYear, dealMonth, dealDay
 	</select>
-	
+		<select id="getHouseDealAVG" parameterType="map" resultType="houseDealAVGDto">
+		select dealmonth, floor(avg(cast(replace(dealAmount, ',', '') as DECIMAL))) as avg
+		from housedeal
+		where aptcode=#{aptCode} AND dealyear=#{dealYear} 
+		<if test="min != null and max != null">AND cast(area as decimal(10,4)) between #{min} and #{max}</if>
+		group by dealMonth
+		order by dealMonth
+	</select>
 </mapper>
