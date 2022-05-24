@@ -7,6 +7,7 @@ import {
   dealYearList,
   searchDealList,
   bookmarkList,
+  registerBookmark,
 } from "@/api/house.js";
 
 const houseStore = {
@@ -18,6 +19,7 @@ const houseStore = {
     dongs: [{ value: null, label: "읍·면·동" }],
     houses: null,
     bookmarks: null,
+    bookmark: null,
     allHouses: [],
     selectedHouse: null,
     isSelectedHouse: false,
@@ -119,6 +121,9 @@ const houseStore = {
     },
     SET_CNTUP(state) {
       state.centerChangeCnt += 1;
+    },
+    SET_BOOKMARK(state, bookmark) {
+      state.bookmark = bookmark;
     },
   },
   actions: {
@@ -226,6 +231,10 @@ const houseStore = {
           console.log(error);
         },
       );
+    },
+    addbookmark({ commit }, bookmark) {
+      registerBookmark(bookmark);
+      commit("SET_BOOKMARK", bookmark);
     },
   },
 };

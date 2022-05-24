@@ -34,6 +34,7 @@
           <span class="infoValue">{{ getSelectedHouse.recentPrice }}</span>
         </div>
         <b-button type="submit" @click="setmyhome">마이홈 등록</b-button>
+        <b-button type="submit" @click="addBookmark">즐겨찾기 등록</b-button>
       </b-tab>
       <b-tab title="모든 거래" @click="allDealsMode">
         <div class="row my-1">
@@ -87,6 +88,10 @@ export default {
       },
       minAmount: 10000,
       maxAmount: 100000,
+      bookmark: {
+        userid: null,
+        aptCode: null,
+      },
     };
   },
   components: {
@@ -128,11 +133,21 @@ export default {
       "SET_INITYEAR",
       "SET_SEARCHDEAL_LIST",
     ]),
-    ...mapActions(houseStore, ["getDealYearList", "getSearchDealList"]),
+    ...mapActions(houseStore, [
+      "getDealYearList",
+      "getSearchDealList",
+      "addbookmark",
+    ]),
     ...mapActions(memberStore, ["setMyhome"]),
     setmyhome() {
       this.setMyhome(this.user);
       console.log(this.user.myhome);
+    },
+    addBookmark() {
+      this.bookmark.userid = this.user.userid;
+      this.bookmark.aptCode = this.selectedHouse.aptCode;
+      console.log(this.bookmark);
+      this.addbookmark(this.bookmark);
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);

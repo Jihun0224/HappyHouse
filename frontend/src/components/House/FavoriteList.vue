@@ -1,7 +1,7 @@
 <template>
   <div class="Favorite-list">
     <div class="my-home-title"><b-icon icon="house"></b-icon>My House</div>
-    <div class="my-home" v-if="getHouses">
+    <div class="my-home" v-if="getBookmark">
       <b-col>
         <div class="house-name" v-on:click="changeCenter(source)">
           유저 아파트명

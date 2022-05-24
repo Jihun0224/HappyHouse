@@ -20,6 +20,10 @@ async function houseList(params, success, fail) {
 function bookmarkList(params, success, fail) {
   api.get(`/bookmark/list`, { params: params }).then(success).catch(fail);
 }
+function registerBookmark(bookmark) {
+  console.log(bookmark);
+  api.post(`/bookmark`, JSON.stringify(bookmark));
+}
 async function dealYearList(params, success, fail) {
   await api.get(`/map/dealYear`, { params: params }).then(success).catch(fail);
 }
@@ -35,4 +39,5 @@ export {
   dealYearList,
   searchDealList,
   bookmarkList,
+  registerBookmark,
 };
