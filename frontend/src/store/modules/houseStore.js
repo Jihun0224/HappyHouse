@@ -8,6 +8,7 @@ import {
   searchDealList,
   bookmarkList,
   registerBookmark,
+  removeBookmark,
 } from "@/api/house.js";
 
 const houseStore = {
@@ -134,7 +135,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getGugun({ commit }, sidoCode) {
@@ -146,7 +147,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getDong({ commit }, gugunCode) {
@@ -158,7 +159,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getHouses: async function ({ commit }, searchString) {
@@ -175,7 +176,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getAllhouses({ commit }) {
@@ -187,7 +188,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getDealYearList: async function ({ commit }, aptCode) {
@@ -200,7 +201,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getSearchDealList: async function ({ commit }, searchHouseDeal) {
@@ -211,7 +212,7 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     getBookmark({ commit }, userid) {
@@ -228,11 +229,15 @@ const houseStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     addbookmark({ commit }, bookmark) {
       registerBookmark(bookmark);
+      commit("SET_BOOKMARK", bookmark);
+    },
+    deletebookmark({ commit }, bookmark) {
+      removeBookmark(bookmark);
       commit("SET_BOOKMARK", bookmark);
     },
   },

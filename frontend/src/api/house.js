@@ -24,6 +24,9 @@ function registerBookmark(bookmark) {
   console.log(bookmark);
   api.post(`/bookmark`, JSON.stringify(bookmark));
 }
+function removeBookmark(bookmark) {
+  api.post(`/bookmark/delete`, JSON.stringify(bookmark));
+}
 async function dealYearList(params, success, fail) {
   await api.get(`/map/dealYear`, { params: params }).then(success).catch(fail);
 }
@@ -40,4 +43,5 @@ export {
   searchDealList,
   bookmarkList,
   registerBookmark,
+  removeBookmark,
 };

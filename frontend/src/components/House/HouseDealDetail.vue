@@ -35,6 +35,7 @@
         </div>
         <b-button type="submit" @click="setmyhome">마이홈 등록</b-button>
         <b-button type="submit" @click="addBookmark">즐겨찾기 등록</b-button>
+        <b-button type="submit" @click="deleteBookmark">즐겨찾기 삭제</b-button>
       </b-tab>
       <b-tab title="모든 거래" @click="allDealsMode">
         <div class="row my-1">
@@ -169,6 +170,7 @@ export default {
       "getDealYearList",
       "getSearchDealList",
       "addbookmark",
+      "deletebookmark",
     ]),
     ...mapActions(memberStore, ["setMyhome"]),
     setmyhome() {
@@ -180,6 +182,11 @@ export default {
       this.bookmark.aptCode = this.selectedHouse.aptCode;
       console.log(this.bookmark);
       this.addbookmark(this.bookmark);
+    },
+    deleteBookmark() {
+      this.bookmark.userid = this.user.userid;
+      this.bookmark.aptCode = this.selectedHouse.aptCode;
+      this.deletebookmark(this.bookmark);
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
