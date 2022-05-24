@@ -1,7 +1,7 @@
 <template>
-  <div class="Favorite-list" v-if="getHouses">
+  <div class="Favorite-list">
     <div class="my-home-title"><b-icon icon="house"></b-icon>My House</div>
-    <div class="my-home" v-if="getHouses">
+    <div class="my-home" v-if="getBookmark">
       <b-col>
         <div class="house-name" v-on:click="changeCenter(source)">
           유저 아파트명
@@ -17,7 +17,7 @@
     <virtual-list
       id="virtual-flist"
       :data-key="'aptCode'"
-      :data-sources="getHouses"
+      :data-sources="getBookmark"
       :data-component="HouseListItem"
     />
   </div>
@@ -40,7 +40,7 @@ export default {
     "virtual-list": VirtualList,
   },
   computed: {
-    ...mapGetters(houseStore, ["getHouses"]),
+    ...mapGetters(houseStore, ["getBookmark"]),
   },
 };
 </script>

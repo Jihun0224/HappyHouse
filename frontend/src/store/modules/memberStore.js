@@ -102,10 +102,6 @@ const memberStore = {
       );
     },
     async registerMember({ commit }, user) {
-      //   signUpMember(member);
-      //   commit("SET_IS_LOGIN", false);
-      //   commit("SET_IS_LOGIN_ERROR", false);
-      //   commit("SET_MEMBER_INFO", null);
       await signUpMember(
         user,
         () => {
