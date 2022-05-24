@@ -87,7 +87,18 @@
         <HouseDetailChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:avgList="avgList"
+          v-bind:myAptName="getMyhomeinfo.aptName"
+          v-bind:myHomeAvgList="myHomeAvgList"
           :key="searched"
+          v-if="getMyhomeinfo"
+        />
+        <HouseDetailChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:avgList="avgList"
+          v-bind:myAptName="getSelectedHouse.aptName"
+          v-bind:myHomeAvgList="myHomeAvgList"
+          :key="searched"
+          v-else
         />
         <all-deal-list v-bind:list="getSearchDeals"></all-deal-list>
       </b-tab>
@@ -95,6 +106,16 @@
         <HouseDetailBarChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:aroundCntArray="this.aroundCnt"
+          v-bind:myAptName="getMyhomeinfo.aptName"
+          v-bind:myAptAroundCntArray="this.myAptaroundCnt"
+          v-if="getMyhomeinfo"
+        />
+        <HouseDetailBarChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:aroundCntArray="this.aroundCnt"
+          v-bind:myAptName="getSelectedHouse.aptName"
+          v-bind:myAptAroundCntArray="this.aroundCnt"
+          v-else
         />
       </b-tab>
     </b-tabs>
@@ -147,6 +168,7 @@ export default {
         aptCode: null,
       },
       aroundCnt: [...Array(9)].map(() => 0),
+      MyAptAroundCnt: [...Array(9)].map(() => 0),
     };
   },
   components: {
@@ -161,6 +183,8 @@ export default {
       "avgList",
       "selectedHouse",
       "isSelectedHouse",
+      "myHomeAvgList",
+      "myHomeInfo",
     ]),
     ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(houseStore, [
@@ -169,6 +193,7 @@ export default {
       "getDealYears",
       "getSearchYear",
       "getSearchDeals",
+      "getMyhomeinfo",
     ]),
     year: {
       get() {
@@ -189,7 +214,9 @@ export default {
     },
   },
   mounted() {
-    this.getAroundInfo();
+    console.log(this.getMyhomeinfo);
+    this.getAroundInfo(this.getSelectedHouse, this.aroundCnt);
+    // this.getAroundInfo(this.getMyhomeinfo, this.MyAptAroundCnt);
   },
   methods: {
     ...mapMutations(houseStore, [
@@ -199,6 +226,7 @@ export default {
       "SET_SEARCHYEAR",
       "SET_SEARCHDEAL_LIST",
       "SET_SEARCHED",
+      "SET_MYHOMEAVG_List",
     ]),
     ...mapActions(houseStore, [
       "getAvgList",
@@ -212,9 +240,9 @@ export default {
       "deletebookmark",
     ]),
     ...mapActions(memberStore, ["setMyhome"]),
-    async setData() {
+    async setData(house) {
       var SearchParams = {
-        aptCode: this.getSelectedHouse.aptCode,
+        aptCode: house.aptCode,
         dealYear: this.year,
         min: this.area.minArea,
         max: this.area.maxArea,
@@ -256,7 +284,9 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      this.setData();
+      this.setData(this.getSelectedHouse);
+      // this.setData(this.getMyhomeinfo);
+
       // console.log(this.year);
     },
 
@@ -272,9 +302,11 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      this.setData();
+      this.setData(this.getSelectedHouse);
+      this.setData(this.getMyhomeinfo);
     },
-    getAroundInfo() {
+    getAroundInfo(house, array) {
+      // const REST_API_KEY=process.env.VUE_APP_KAKAO_MAP_REST_API_KEY
       const REST_API_KEY = "45c15e1b5ec6fa1a4d3937e3546de43e";
       var category_group_codes = [
         "MT1",
@@ -290,8 +322,8 @@ export default {
       category_group_codes.forEach((code, i) => {
         let params = {
           category_group_code: code,
-          y: this.getSelectedHouse.lat,
-          x: this.getSelectedHouse.lng,
+          y: house.lat,
+          x: house.lng,
           radius: 1000,
         };
         axios
@@ -302,7 +334,7 @@ export default {
             params: params,
           })
           .then((result) => {
-            this.aroundCnt[i] = result.data.meta.total_count;
+            array[i] = result.data.meta.total_count;
           });
       });
     },

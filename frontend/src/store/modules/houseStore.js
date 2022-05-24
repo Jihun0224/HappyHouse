@@ -34,6 +34,7 @@ const houseStore = {
     avgList: null,
     searched: 0,
     myHomeInfo: null,
+    myHomeAvgList: null
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -53,6 +54,7 @@ const houseStore = {
     getBookmark: (state) => state.bookmarks,
     getAvg: (state) => state.avgList,
     getMyhomeinfo: (state) => state.myHomeInfo,
+    getMyHomeAvgList: (state) => state.myHomeAvgList
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -135,6 +137,13 @@ const houseStore = {
         tmp[d.month - 1] = d.avg;
       });
       state.avgList = tmp;
+    },
+    SET_MYHOMEAVG_List(state, data) {
+      var tmp = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"];
+      data.map((d) => {
+        tmp[d.month - 1] = d.avg;
+      });
+      state.myHomeAvgList = tmp;
     },
     SET_SEARCHED(state) {
       state.searched += 1;
@@ -264,6 +273,17 @@ const houseStore = {
         SearchParams,
         ({ data }) => {
           commit("SET_AVGLIST_LIST", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getMyAvgList: async function ({ commit }, SearchParams) {
+      await dealAVG(
+        SearchParams,
+        ({ data }) => {
+          commit("SET_MYHOMEAVG_List", data);
         },
         (error) => {
           console.log(error);
