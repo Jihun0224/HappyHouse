@@ -53,7 +53,12 @@ public class HouseMapServiceImpl implements HouseMapService {
 	public List<HouseDealDto> getHouseDeal(Map<String, Object> searchHouseDealDto) throws SQLException {
 		return houseMapMapper.getHouseDeal(searchHouseDealDto);
 	}
+
 	@Override
+	public HouseInfoDto getHouseInfo(long aptCode) throws SQLException {
+		return houseMapMapper.getHouseInfo(aptCode);
+	}
+@Override
 	public List<HouseDealAVGDto> getHouseDealAVG(Map<String, Object> searchHouseDealAVGDto) throws SQLException {
 		return houseMapMapper.getHouseDealAVG(searchHouseDealAVGDto);
 	}

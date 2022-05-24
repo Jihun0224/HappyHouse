@@ -11,6 +11,6 @@ import com.ssafy.happyhouse.model.HouseInfoDto;
 @Mapper
 public interface BookmarkMapper {
 	List<HouseInfoDto> bookmarkList(String userid) throws SQLException;
-	int bookmarkRemove(int bookmarkno) throws SQLException;
+	int bookmarkRemove(BookmarkDto bookmarkdto) throws SQLException;
 	boolean bookmarkRegister(BookmarkDto bookmarkdto) throws SQLException;
 }

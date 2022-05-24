@@ -2,75 +2,125 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapMapper">
+<mapper
+	namespace="com.ssafy.happyhouse.model.mapper.HouseMapMapper">
 
 	<select id="getSido" resultType="sidoGugunCodeDto">
-		select left(sidoCode,2) sidoCode, sidoName
+		select left(sidoCode,2)
+		sidoCode, sidoName
 		from sidocode
 		order by sidoCode
 	</select>
-	
-	<select id="getGugunInSido" parameterType="string" resultType="sidoGugunCodeDto">
+
+	<select id="getGugunInSido" parameterType="string"
+		resultType="sidoGugunCodeDto">
 		select left(gugunCode,5) gugunCode, gugunName
 		from guguncode
 		where left(gugunCode,2) = #{sido}
 		order by gugunCode
 	</select>
-	
-	<select id="getDongInGugun" parameterType="string" resultType="houseInfoDto">
+
+	<select id="getDongInGugun" parameterType="string"
+		resultType="houseInfoDto">
 		select distinct dongName, dongCode
 		from dongcode
-		where left(dongCode, 5) = #{gugun}
+		where
+		left(dongCode, 5) = #{gugun}
 		order by dongName
 	</select>
-		
-	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">
-		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
-				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
-		from houseinfo h
+
+	<select id="getAptInDong" parameterType="string"
+		resultType="houseInfoDto">
+		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode,
+		h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+		(select
+		dealAmount from housedeal where aptCode = h.aptCode and no = (select
+		max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from
+		houseinfo h
 		left join sidocode si
-		on left(h.dongcode,2) = left(si.sidocode,2)
+		on left(h.dongcode,2) =
+		left(si.sidocode,2)
 		left join guguncode gu
-		on left(h.dongcode,5) = left(gu.guguncode,5)
-		where dongCode = #{dong} and h.apartmentName like concat('%', #{aptName}, '%')
-      order by apartmentName
-	</select>
-	
-		<select id="searchByAptName" parameterType="string" resultType="houseInfoDto">
-		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode, h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
-				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
-		from houseinfo h
-		left join sidocode si
-		on left(h.dongcode,2) = left(si.sidocode,2)
-		left join guguncode gu
-		on left(h.dongcode,5) = left(gu.guguncode,5)
-		where apartmentName like concat('%', #{aptName}, '%')
+		on left(h.dongcode,5) =
+		left(gu.guguncode,5)
+		where dongCode = #{dong} and h.apartmentName like
+		concat('%', #{aptName}, '%')
 		order by apartmentName
 	</select>
-	
+
+	<select id="searchByAptName" parameterType="string"
+		resultType="houseInfoDto">
+		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode,
+		h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+		(select
+		dealAmount from housedeal where aptCode = h.aptCode and no = (select
+		max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from
+		houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) =
+		left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) =
+		left(gu.guguncode,5)
+		where apartmentName like concat('%', #{aptName},
+		'%')
+		order by apartmentName
+	</select>
+
 	<select id="getDealYear" parameterType="long" resultType="int">
-		select distinct dealYear
+		select
+		distinct dealYear
 		from housedeal
 		where aptCode = #{aptCode}
-		order by dealYear
+		order by
+		dealYear
 	</select>
-	
-	<select id="getHouseDeal" parameterType="map" resultType="houseDealDto">
-		select no, dealYear, dealMonth, dealDay, dealAmount, area, floor, aptCode
+
+	<select id="getHouseDeal" parameterType="map"
+		resultType="houseDealDto">
+		select no, dealYear, dealMonth, dealDay, dealAmount, area, floor,
+		aptCode
 		from housedeal
 		<where>
 			<if test="aptCode != null">and aptCode = #{aptCode}</if>
 			<if test="dealYear != null">and dealYear = #{dealYear}</if>
-			<if test="minArea != null and maxArea != null">and cast(area as decimal(10,4)) between #{minArea} and #{maxArea}</if>
-			<if test="minAmount != null and maxAmount != null">and cast(replace(dealAmount, ',', '') as unsigned) between #{minAmount} and #{maxAmount}</if>
+			<if test="minArea != null and maxArea != null">and cast(area as decimal(10,4)) between #{minArea} and
+				#{maxArea}
+			</if>
+			<if test="minAmount != null and maxAmount != null">and cast(replace(dealAmount, ',', '') as unsigned)
+				between #{minAmount} and #{maxAmount}
+			</if>
 		</where>
 		order by dealYear, dealMonth, dealDay
 	</select>
-		<select id="getHouseDealAVG" parameterType="map" resultType="houseDealAVGDto">
-		select dealmonth, floor(avg(cast(replace(dealAmount, ',', '') as DECIMAL))) as avg
+	<select id="getHouseInfo" parameterType="long"
+		resultType="houseInfoDto">
+		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode,
+		h.dong, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+		(select
+		dealAmount from housedeal where aptCode = h.aptCode and no = (select
+		max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from
+		houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) =
+		left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) =
+		left(gu.guguncode,5)
+		where h.aptCode = #{aptCode}
+	</select>
+	<select id="getHouseDealAVG" parameterType="map"
+		resultType="houseDealAVGDto">
+		select dealmonth, floor(avg(cast(replace(dealAmount, ',', '') as
+		DECIMAL))) as avg
 		from housedeal
-		where aptcode=#{aptCode} AND dealyear=#{dealYear} 
-		<if test="min != null and max != null">AND cast(area as decimal(10,4)) between #{min} and #{max}</if>
+		where aptcode=#{aptCode} AND
+		dealyear=#{dealYear}
+		<if test="min != null and max != null">AND cast(area as decimal(10,4)) between #{min} and #{max}
+		</if>
 		group by dealMonth
 		order by dealMonth
 	</select>
