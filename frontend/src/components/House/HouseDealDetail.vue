@@ -204,6 +204,7 @@ export default {
       this.SET_SEARCHED();
     },
     setmyhome() {
+      this.user.myhome = this.selectedHouse.aptCode;
       this.setMyhome(this.user);
       // console.log(this.user.myhome);
     },
@@ -257,9 +258,6 @@ export default {
   },
   created() {
     this.user = this.userInfo;
-    // console.log(this.isSelectedHouse);
-    // console.log(this.selectedHouse);
-    this.user.myhome = this.selectedHouse.aptCode;
   },
 };
 </script>
