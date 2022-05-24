@@ -7,6 +7,7 @@ import {
   dealYearList,
   searchDealList,
   bookmarkList,
+  dealAVG,
   registerBookmark,
   removeBookmark,
 } from "@/api/house.js";
@@ -20,7 +21,6 @@ const houseStore = {
     dongs: [{ value: null, label: "읍·면·동" }],
     houses: null,
     bookmarks: null,
-    bookmark: null,
     allHouses: [],
     selectedHouse: null,
     isSelectedHouse: false,
@@ -30,6 +30,8 @@ const houseStore = {
     isEmpty: false,
     center: null,
     centerChangeCnt: 0,
+    avgList: null,
+    searched: 0
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -47,6 +49,7 @@ const houseStore = {
     getCenter: (state) => state.center,
     getCenterChangeCnt: (state) => state.centerChangeCnt,
     getBookmark: (state) => state.bookmarks,
+    getAvg: (state) => state.avgList,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -122,6 +125,16 @@ const houseStore = {
     },
     SET_CNTUP(state) {
       state.centerChangeCnt += 1;
+    },
+    SET_AVGLIST_LIST(state, data) {
+      var tmp = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"]
+      data.map((d) => {
+        tmp[d.month - 1] = d.avg
+      })
+      state.avgList = tmp
+    },
+    SET_SEARCHED(state) {
+      state.searched += 1
     },
     SET_BOOKMARK(state, bookmark) {
       state.bookmark = bookmark;
@@ -240,6 +253,17 @@ const houseStore = {
       removeBookmark(bookmark);
       commit("SET_BOOKMARK", bookmark);
     },
+    getAvgList: async function ({ commit }, SearchParams) {
+      await dealAVG(
+        SearchParams,
+        ({ data }) => {
+          commit("SET_AVGLIST_LIST", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    }
   },
 };
 export default houseStore;

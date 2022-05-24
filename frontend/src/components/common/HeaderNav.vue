@@ -81,7 +81,7 @@ export default {
       // console.log("memberStore : ", ms);
       this.SET_IS_LOGIN(false); // 안먹힘
       this.SET_USER_INFO(null);
-      console.log(this.isLogin);
+      // console.log(this.isLogin);
       sessionStorage.removeItem("access-token");
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },

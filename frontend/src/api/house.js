@@ -13,7 +13,6 @@ function dongList(params, success, fail) {
 function allHouseList(params, success, fail) {
   api.get(`/map/searchByAptName`, { params: params }).then(success).catch(fail);
 }
-
 async function houseList(params, success, fail) {
   await api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
@@ -21,7 +20,6 @@ function bookmarkList(params, success, fail) {
   api.get(`/bookmark/list`, { params: params }).then(success).catch(fail);
 }
 function registerBookmark(bookmark) {
-  console.log(bookmark);
   api.post(`/bookmark`, JSON.stringify(bookmark));
 }
 function removeBookmark(bookmark) {
@@ -33,6 +31,9 @@ async function dealYearList(params, success, fail) {
 function searchDealList(params, success, fail) {
   api.get(`map/deal`, { params: params }).then(success).catch(fail);
 }
+async function dealAVG(params, success, fail) {
+  await api.get(`map/dealAVG`, { params: params }).then(success).catch(fail);
+}
 export {
   sidoList,
   gugunList,
@@ -42,6 +43,7 @@ export {
   dealYearList,
   searchDealList,
   bookmarkList,
+  dealAVG,
   registerBookmark,
   removeBookmark,
 };

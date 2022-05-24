@@ -99,7 +99,7 @@ export default {
     ]),
     async setBoard() {
       await this.getDetailBoard(this.$route.params.articleno);
-      console.log(this.board);
+      // console.log(this.board);
       this.article.articleno = this.board.articleno;
       this.article.userid = this.board.userid;
       this.article.subject = this.board.subject;
@@ -145,7 +145,7 @@ export default {
       });
     },
     modifyArticle() {
-      console.log(this.article.content);
+      // console.log(this.article.content);
       this.modifyBoard({
         userid: this.article.userid,
         articleno: this.article.articleno,

@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-        <house-deal-detail></house-deal-detail>
+        <house-deal-detail v-if="selectedHouse"></house-deal-detail>
       </b-tab>
       <b-tab :title-item-class="'tab-title-class'">
         <template #title> <b-icon icon="star-fill"></b-icon>즐겨찾기 </template>
@@ -105,6 +105,7 @@ export default {
       "houses",
       "isEmpty",
       "center",
+      "selectedHouse",
     ]),
     ...mapState(memberStore, ["userInfo"]),
   },
@@ -179,14 +180,14 @@ export default {
       }
       if (this.dongCode.value) {
         await this.getHouses(this.dongCode.value + "," + this.aptName);
-        console.log(this.houses);
-        console.log(this.dongCode.value);
+        // console.log(this.houses);
+        // console.log(this.dongCode.value);
         this.getGeocoder();
       }
     },
     loadBookmark() {
-      console.log(this.userInfo.userid);
-      this.getBookmark(this.userInfo.userid);
+      // console.log(this.userInfo.userid);
+      if (this.userInfo) this.getBookmark(this.userInfo.userid);
     },
     setArea() {
       const area = this.selectedArea;
