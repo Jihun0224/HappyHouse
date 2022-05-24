@@ -164,9 +164,10 @@ export default {
     },
   },
   created() {
-    console.log("modal create");
     this.user = this.userInfo;
-    //this.user.myhome = this.selectedHouse.aptCode;
+    console.log(this.isSelectedHouse);
+    console.log(this.selectedHouse);
+    this.user.myhome = this.selectedHouse.aptCode;
   },
 };
 </script>
