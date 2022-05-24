@@ -7,6 +7,7 @@ import {
   dealYearList,
   searchDealList,
   bookmarkList,
+  dealAVG
 } from "@/api/house.js";
 
 const houseStore = {
@@ -27,6 +28,8 @@ const houseStore = {
     isEmpty: false,
     center: null,
     centerChangeCnt: 0,
+    avgList: null,
+    searched: 0
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -44,6 +47,7 @@ const houseStore = {
     getCenter: (state) => state.center,
     getCenterChangeCnt: (state) => state.centerChangeCnt,
     getBookmark: (state) => state.bookmarks,
+    getAvg: (state) => state.avgList,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -120,6 +124,16 @@ const houseStore = {
     SET_CNTUP(state) {
       state.centerChangeCnt += 1;
     },
+    SET_AVGLIST_LIST(state, data) {
+      var tmp = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"]
+      data.map((d) => {
+        tmp[d.month - 1] = d.avg
+      })
+      state.avgList = tmp
+    },
+    SET_SEARCHED(state) {
+      state.searched += 1
+    }
   },
   actions: {
     getSido({ commit }) {
@@ -202,7 +216,6 @@ const houseStore = {
       await searchDealList(
         searchHouseDeal,
         ({ data }) => {
-          console.log(data);
           commit("SET_SEARCHDEAL_LIST", data);
         },
         (error) => {
@@ -227,6 +240,18 @@ const houseStore = {
         },
       );
     },
+    getAvgList: async function ({ commit }, SearchParams) {
+      await dealAVG(
+        SearchParams,
+        ({ data }) => {
+          console.log(data);
+          commit("SET_AVGLIST_LIST", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    }
   },
 };
 export default houseStore;

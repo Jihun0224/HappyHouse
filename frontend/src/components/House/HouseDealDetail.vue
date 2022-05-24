@@ -66,8 +66,15 @@
             >검색</b-button
           >
         </b-form>
+        <HouseDetailChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:dealYear="year"
+          v-bind:aptCode="getSelectedHouse.aptCode"
+          v-bind:avgList="avgList"
+          :key="searched"
+        />
+
         <all-deal-list v-bind:list="getSearchDeals"></all-deal-list>
-        <HouseDetailChart />
       </b-tab>
     </b-tabs>
   </b-modal>
@@ -94,8 +101,14 @@ export default {
     AllDealList,
     HouseDetailChart,
   },
+
   computed: {
-    ...mapState(houseStore, ["selectedHouse", "isSelectedHouse"]),
+    ...mapState(houseStore, [
+      "searched",
+      "avgList",
+      "selectedHouse",
+      "isSelectedHouse",
+    ]),
     ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(houseStore, [
       "getIsSelectedHouse",
@@ -129,12 +142,27 @@ export default {
       "SET_DEALYEAR",
       "SET_INITYEAR",
       "SET_SEARCHDEAL_LIST",
+      "SET_SEARCHED",
     ]),
-    ...mapActions(houseStore, ["getDealYearList", "getSearchDealList"]),
+    ...mapActions(houseStore, [
+      "getAvgList",
+      "getDealYearList",
+      "getSearchDealList",
+    ]),
     ...mapActions(memberStore, ["setMyhome"]),
+    async setData() {
+      var SearchParams = {
+        aptCode: this.getSelectedHouse.aptCode,
+        dealYear: this.year,
+        min: 10,
+        max: 100,
+      };
+      await this.getAvgList(SearchParams);
+      this.SET_SEARCHED();
+    },
     setmyhome() {
       this.setMyhome(this.user);
-      console.log(this.user.myhome);
+      // console.log(this.user.myhome);
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
@@ -144,7 +172,7 @@ export default {
       this.SET_SEARCHDEAL_LIST(null);
     },
     async allDealsMode() {
-      console.log("all deals mode");
+      // console.log("all deals mode");
       await this.getDealYearList(this.getSelectedHouse.aptCode);
       this.getSearchDealList({
         dealYear: this.year,
@@ -152,23 +180,25 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      console.log(this.year);
+      this.setData();
+      // console.log(this.year);
     },
     searchDeal(event) {
       event.preventDefault();
-      console.log("searchDeal");
+      // console.log("searchDeal");
       this.getSearchDealList({
         dealYear: this.year,
         minAmount: this.minAmount,
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
+      this.setData();
     },
   },
   created() {
     this.user = this.userInfo;
-    console.log(this.isSelectedHouse);
-    console.log(this.selectedHouse);
+    // console.log(this.isSelectedHouse);
+    // console.log(this.selectedHouse);
     this.user.myhome = this.selectedHouse.aptCode;
   },
 };

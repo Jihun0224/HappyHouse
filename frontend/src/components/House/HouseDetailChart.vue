@@ -67,16 +67,27 @@ export default {
       type: Object,
       default: () => {},
     },
+    aptCode: Number,
+    aptName: String,
+    dealYear: Number,
+    area: Number,
+    avgList: Array,
   },
+
   data() {
     return {
       chartData: {
-        labels: [...Array(12)].map((v, i) => i + 1),
+        labels: [...Array(12)].map((v, i) => i + 1 + "월"),
         datasets: [
           {
-            label: "Data One",
+            label: this.aptName,
             backgroundColor: "#f87979",
-            data: [40, 20, 12, "X", 50],
+            data: this.avgList,
+          },
+          {
+            label: this.aptName,
+            backgroundColor: "#7acbf9",
+            data: this.avgList,
           },
         ],
       },
