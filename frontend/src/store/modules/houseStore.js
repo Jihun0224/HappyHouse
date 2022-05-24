@@ -10,6 +10,7 @@ import {
   dealAVG,
   registerBookmark,
   removeBookmark,
+  getHouseInfoByAptCode,
 } from "@/api/house.js";
 
 const houseStore = {
@@ -31,7 +32,8 @@ const houseStore = {
     center: null,
     centerChangeCnt: 0,
     avgList: null,
-    searched: 0
+    searched: 0,
+    myHomeInfo: null,
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -50,6 +52,7 @@ const houseStore = {
     getCenterChangeCnt: (state) => state.centerChangeCnt,
     getBookmark: (state) => state.bookmarks,
     getAvg: (state) => state.avgList,
+    getMyhomeinfo: (state) => state.myHomeInfo,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -127,17 +130,20 @@ const houseStore = {
       state.centerChangeCnt += 1;
     },
     SET_AVGLIST_LIST(state, data) {
-      var tmp = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"]
+      var tmp = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"];
       data.map((d) => {
-        tmp[d.month - 1] = d.avg
-      })
-      state.avgList = tmp
+        tmp[d.month - 1] = d.avg;
+      });
+      state.avgList = tmp;
     },
     SET_SEARCHED(state) {
-      state.searched += 1
+      state.searched += 1;
     },
     SET_BOOKMARK(state, bookmark) {
       state.bookmark = bookmark;
+    },
+    SET_MYHOMEINFO(state, myHomeInfo) {
+      state.myHomeInfo = myHomeInfo;
     },
   },
   actions: {
@@ -263,7 +269,13 @@ const houseStore = {
           console.log(error);
         },
       );
-    }
+    },
+    getHouseInfoByaptcode({ commit }, aptCode) {
+      const params = { aptCode: aptCode };
+      getHouseInfoByAptCode(params, ({ data }) => {
+        commit("SET_MYHOMEINFO", data);
+      });
+    },
   },
 };
 export default houseStore;
