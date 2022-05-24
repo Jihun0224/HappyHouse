@@ -49,7 +49,6 @@
               <b-button id="search-button" @click="searchApt">검색</b-button>
             </div>
           </div>
-
           <div class="search-result-body-result">
             <div class="search-result-body-result-top">
               <div class="search-result-title">
@@ -161,7 +160,7 @@ export default {
         }
       });
     },
-    searchApt() {
+    async searchApt() {
       if (
         this.sidoCode == null ||
         this.gugunCode == null ||
@@ -171,7 +170,7 @@ export default {
         return;
       }
       if (this.dongCode.value) {
-        this.getHouses(this.dongCode.value + "," + this.aptName);
+        await this.getHouses(this.dongCode.value + "," + this.aptName);
         console.log(this.houses);
         console.log(this.dongCode.value);
         this.getGeocoder();

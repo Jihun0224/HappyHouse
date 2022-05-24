@@ -1,5 +1,5 @@
 <template>
-  <Bar
+  <LineChartGenerator
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -13,33 +13,35 @@
 </template>
 
 <script>
-import { Bar } from "vue-chartjs/legacy";
+import { Line as LineChartGenerator } from "vue-chartjs/legacy";
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  BarElement,
-  CategoryScale,
+  LineElement,
   LinearScale,
+  CategoryScale,
+  PointElement,
 } from "chart.js";
 
 ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  BarElement,
+  LineElement,
+  LinearScale,
   CategoryScale,
-  LinearScale
+  PointElement
 );
 
 export default {
   name: "HouseDetailChart",
-  components: { Bar },
+  components: { LineChartGenerator },
   props: {
     chartId: {
       type: String,
-      default: "bar-chart",
+      default: "1년 거래 내역",
     },
     datasetIdKey: {
       type: String,
@@ -51,7 +53,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 400,
+      default: 200,
     },
     cssClasses: {
       default: "",
@@ -69,11 +71,18 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ["January", "February", "March"],
-        datasets: [{ data: [40, 20, 12] }],
+        labels: [...Array(12)].map((v, i) => i + 1),
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: "#f87979",
+            data: [40, 20, 12, "X", 50],
+          },
+        ],
       },
       chartOptions: {
         responsive: true,
+        maintainAspectRatio: false,
       },
     };
   },

@@ -1,4 +1,4 @@
-import { sidoList, gugunList, dongList, allHouseList, houseList } from "@/api/house.js";
+import { sidoList, gugunList, dongList, allHouseList, houseList, dealYearList, searchDealList } from "@/api/house.js";
 
 const houseStore = {
     namespaced: true,
@@ -11,6 +11,9 @@ const houseStore = {
         allHouses: [],
         selectedHouse: null,
         isSelectedHouse: false,
+        dealYears: [],
+        initYear: null,
+        searchDeals: [],
         isEmpty: false,
         center: null,
         centerChangeCnt: 0,
@@ -24,6 +27,9 @@ const houseStore = {
         getSelectedArea: state => state.selectedArea,
         getSelectedHouse: state => state.selectedHouse,
         getIsSelectedHouse: state => state.isSelectedHouse,
+        getDealYears: state => state.dealYears,
+        getInitYear: state => state.initYear,
+        getSearchDeals: state => state.searchDeals,
         getIsEmpty: state => state.isEmpty,
         getCenter: state => state.center,
         getCenterChangeCnt: state => state.centerChangeCnt
@@ -71,6 +77,15 @@ const houseStore = {
         SET_ISSELECTEDHOUSE(state, bool) {
             state.isSelectedHouse = bool;
         },
+        SET_DEALYEAR(state, years) {
+            state.dealYears = years;
+        },
+        SET_INITYEAR(state, year) {
+            state.initYear = year;
+        },
+        SET_SEARCHDEAL_LIST(state, deals) {
+            state.searchDeals = deals;
+        },
         CLEAR_SELECTEDAREA(state) {
             state.selectedArea = null
         },
@@ -103,7 +118,6 @@ const houseStore = {
             gugunList(
                 params,
                 ({ data }) => {
-                    // console.log(commit, response);
                     commit("SET_GUGUN_LIST", data);
                 },
                 (error) => {
@@ -116,7 +130,6 @@ const houseStore = {
             dongList(
                 params,
                 ({ data }) => {
-                    // console.log(commit, response);
                     commit("SET_DONG_LIST", data);
                 },
                 (error) => {
@@ -124,9 +137,9 @@ const houseStore = {
                 },
             );
         },
-        getHouses({ commit }, searchString) {
+        getHouses: async function({ commit }, searchString) {
             const params = { params: searchString };
-            houseList(
+            await houseList(
                 params,
                 ({ data }) => {
                     if (data.length == 0) {
@@ -148,8 +161,32 @@ const houseStore = {
             allHouseList(
                 params,
                 ({ data }) => {
-                    // console.log(commit, response);
                     commit("SET_ALLHOUSE_LIST", data);
+                },
+                (error) => {
+                    console.log(error);
+                },
+            );
+        },
+        getDealYearList: async function({ commit }, aptCode) {
+            const params = { aptCode: aptCode }
+            await dealYearList(
+                params,
+                ({ data }) => {
+                    commit("SET_INITYEAR", data[0]);
+                    commit("SET_DEALYEAR",data);
+                },
+                (error) => {
+                    console.log(error);
+                },
+            );
+        },
+        getSearchDealList: async function({ commit }, searchHouseDeal) {
+            await searchDealList(
+                searchHouseDeal,
+                ({ data }) => {
+                    console.log(data);
+                    commit("SET_SEARCHDEAL_LIST",data);
                 },
                 (error) => {
                     console.log(error);
