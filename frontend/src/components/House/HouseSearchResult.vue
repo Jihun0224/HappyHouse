@@ -78,7 +78,7 @@ import FavoriteList from "@/components/House/FavoriteList.vue";
 import ResultNotFound from "@/components/House/ResultNotFound.vue";
 import HouseDealDetail from "@/components/House/HouseDealDetail.vue";
 const houseStore = "houseStore";
-
+const memberStore = "memberStore";
 export default {
   components: {
     FavoriteList,
@@ -106,6 +106,7 @@ export default {
       "isEmpty",
       "center",
     ]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     if (this.selectedArea != null) {
@@ -116,10 +117,17 @@ export default {
       this.CLEAR_SIDO_LIST();
       this.getSido();
     }
+    this.loadBookmark();
   },
 
   methods: {
-    ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouses"]),
+    ...mapActions(houseStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getHouses",
+      "getBookmark",
+    ]),
     ...mapMutations(houseStore, [
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
@@ -175,6 +183,10 @@ export default {
         console.log(this.dongCode.value);
         this.getGeocoder();
       }
+    },
+    loadBookmark() {
+      console.log(this.userInfo.userid);
+      this.getBookmark(this.userInfo.userid);
     },
     setArea() {
       const area = this.selectedArea;
