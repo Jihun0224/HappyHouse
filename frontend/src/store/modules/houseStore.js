@@ -80,6 +80,9 @@ const houseStore = {
     SET_HOUSE_LIST(state, houses) {
       state.houses = houses;
     },
+    SET_BOOKMARK_LIST(state, bookmarks) {
+      state.bookmarks = bookmarks;
+    },
     CLEAR_HOUSE_LIST(state) {
       state.houses = null;
     },
