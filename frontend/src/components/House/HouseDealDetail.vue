@@ -22,11 +22,15 @@
         <div class="row my-1">
           <span class="infoKey col-4">주소</span>
           <span class="infoValue">{{
-            getSelectedHouse.sidoName +
-            " " +
-            getSelectedHouse.gugunName +
-            " " +
-            getSelectedHouse.jibun
+            (
+              getSelectedHouse.sidoName +
+              " " +
+              getSelectedHouse.gugunName +
+              " " +
+              getSelectedHouse.dongName +
+              " " +
+              getSelectedHouse.jibun
+            ).replace("null null ", "")
           }}</span>
         </div>
         <div class="row my-1">

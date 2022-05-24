@@ -51,7 +51,8 @@ export default {
         house.dongName +
         " " +
         house.jibun
-      );
+      ).replace("null null ", "");
+      // 임시로 null null 이 들어가 있을 때, 공백으로 대체.
     },
   },
 };
