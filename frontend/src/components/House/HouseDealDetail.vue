@@ -37,8 +37,12 @@
           <span class="infoKey col-4">최신거래금액</span>
           <span class="infoValue">{{ getSelectedHouse.recentPrice }}</span>
         </div>
-        <b-button type="submit" @click="setmyhome">마이홈 등록</b-button>
-        <b-button type="submit" @click="addBookmark">즐겨찾기 등록</b-button>
+        <b-button type="submit" @click="setmyhome" id="my-btn"
+          >마이홈 등록</b-button
+        >
+        <b-button type="submit" @click="addBookmark" id="my-btn"
+          >즐겨찾기 등록</b-button
+        >
         <b-button type="submit" @click="deleteBookmark">즐겨찾기 삭제</b-button>
       </b-tab>
       <b-tab title="모든 거래" @click="allDealsMode">
@@ -82,18 +86,24 @@
         </b-form>
         <HouseDetailChart
           v-bind:aptName="getSelectedHouse.aptName"
-          v-bind:dealYear="year"
-          v-bind:aptCode="getSelectedHouse.aptCode"
           v-bind:avgList="avgList"
           :key="searched"
         />
         <all-deal-list v-bind:list="getSearchDeals"></all-deal-list>
+      </b-tab>
+      <b-tab title="1km이내 주변 정보">
+        <HouseDetailBarChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:aroundCntArray="this.aroundCnt"
+        />
       </b-tab>
     </b-tabs>
   </b-modal>
 </template>
 
 <script>
+import axios from "axios";
+import HouseDetailBarChart from "@/components/House/HouseDetailBarChart.vue";
 import HouseDetailChart from "@/components/House/HouseDetailChart.vue";
 import AllDealList from "@/components/House/AllDealList.vue";
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
@@ -136,11 +146,13 @@ export default {
         userid: null,
         aptCode: null,
       },
+      aroundCnt: [...Array(9)].map(() => 0),
     };
   },
   components: {
     AllDealList,
     HouseDetailChart,
+    HouseDetailBarChart,
   },
 
   computed: {
@@ -175,6 +187,9 @@ export default {
         return bool;
       },
     },
+  },
+  mounted() {
+    this.getAroundInfo();
   },
   methods: {
     ...mapMutations(houseStore, [
@@ -259,6 +274,38 @@ export default {
       });
       this.setData();
     },
+    getAroundInfo() {
+      const REST_API_KEY = "45c15e1b5ec6fa1a4d3937e3546de43e";
+      var category_group_codes = [
+        "MT1",
+        "CS2",
+        "PS3",
+        "SC4",
+        "OL4",
+        "SW8",
+        "CT1",
+        "PM9",
+        "HP8",
+      ];
+      category_group_codes.forEach((code, i) => {
+        let params = {
+          category_group_code: code,
+          y: this.getSelectedHouse.lat,
+          x: this.getSelectedHouse.lng,
+          radius: 1000,
+        };
+        axios
+          .get("https://dapi.kakao.com/v2/local/search/category.json", {
+            headers: {
+              Authorization: `KakaoAK ${REST_API_KEY}`,
+            },
+            params: params,
+          })
+          .then((result) => {
+            this.aroundCnt[i] = result.data.meta.total_count;
+          });
+      });
+    },
   },
   created() {
     this.user = this.userInfo;
@@ -266,4 +313,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#my-btn {
+  margin-right: 10px;
+}
+</style>
