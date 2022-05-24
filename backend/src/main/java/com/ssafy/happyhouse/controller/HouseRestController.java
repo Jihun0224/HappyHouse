@@ -1,6 +1,7 @@
 package com.ssafy.happyhouse.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HouseMapService;
@@ -57,6 +60,16 @@ public class HouseRestController {
 		return new ResponseEntity<List<HouseInfoDto>>(houseMapService.searchByAptName(aptName), HttpStatus.OK);
 	}
 	
+	@GetMapping("/dealYear")
+	public ResponseEntity<List<Integer>> dealYear(@RequestParam("aptCode") long aptCode) throws Exception{
+		return new ResponseEntity<List<Integer>>(houseMapService.getDealYear(aptCode), HttpStatus.OK);
+	}
+	
+	@GetMapping("/deal")
+	public ResponseEntity<List<HouseDealDto>> deal(@RequestParam Map<String, Object> searchHouseDeal) throws Exception{
+		System.out.println(searchHouseDeal);
+		return new ResponseEntity<List<HouseDealDto>>(houseMapService.getHouseDeal(searchHouseDeal), HttpStatus.OK);
+	}
 	
 }
 
