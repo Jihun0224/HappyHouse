@@ -66,9 +66,9 @@ const noticeStore = {
         }
       );
     },
-    getNoticeList({ commit }, keyword) {
+    getNoticeList: async function({ commit }, keyword) {
       console.log(keyword);
-      listArticle(
+      await listArticle(
         keyword,
         (response) => {
           if (keyword.key === null && keyword.word === null) {
