@@ -83,9 +83,9 @@ export default {
       key: null,
       word: null,
     });
-    console.log("isVisible: " + this.isVisible);
-    console.log("isSearch: " + this.isSearch);
-    console.log(this.noticeList);
+    // console.log("isVisible: " + this.isVisible);
+    // console.log("isSearch: " + this.isSearch);
+    // console.log(this.noticeList);
   },
   methods: {
     ...mapActions(noticeStore, ["getNoticeList"]),
@@ -95,7 +95,7 @@ export default {
     },
     search(event) {
       event.preventDefault();
-      console.log(this.key + " " + this.word);
+      // console.log(this.key + " " + this.word);
       if (this.key === null) {
         alert("검색 대상을 선택해주세요.");
       } else {

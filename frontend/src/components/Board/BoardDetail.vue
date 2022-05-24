@@ -137,7 +137,6 @@ export default {
       } else {
         this.answer.userid = this.userInfo.userid;
         await this.registerAnswer(this.answer);
-        console.log(this.answerList);
         // 새로고침 -> 아니면 다시 getAnswerList
         //await this.getAnswerList(this.$route.params.articleno);
         this.$router.go();

@@ -67,10 +67,7 @@ export default {
       type: Object,
       default: () => {},
     },
-    aptCode: Number,
     aptName: String,
-    dealYear: Number,
-    area: Number,
     avgList: Array,
   },
 

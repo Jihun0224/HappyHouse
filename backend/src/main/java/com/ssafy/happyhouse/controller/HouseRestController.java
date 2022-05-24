@@ -73,7 +73,6 @@ public class HouseRestController {
 	}
 	@GetMapping("/dealAVG")
 	public ResponseEntity<List<HouseDealAVGDto>> dealAvg(@RequestParam Map<String, Object> SearchParams) throws Exception{
-	System.out.println(houseMapService.getHouseDealAVG(SearchParams));
 		return new ResponseEntity<List<HouseDealAVGDto>>(houseMapService.getHouseDealAVG(SearchParams), HttpStatus.OK);
 	}
 }

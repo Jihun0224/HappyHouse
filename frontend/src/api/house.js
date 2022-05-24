@@ -19,6 +19,12 @@ async function houseList(params, success, fail) {
 function bookmarkList(params, success, fail) {
   api.get(`/bookmark/list`, { params: params }).then(success).catch(fail);
 }
+function registerBookmark(bookmark) {
+  api.post(`/bookmark`, JSON.stringify(bookmark));
+}
+function removeBookmark(bookmark) {
+  api.post(`/bookmark/delete`, JSON.stringify(bookmark));
+}
 async function dealYearList(params, success, fail) {
   await api.get(`/map/dealYear`, { params: params }).then(success).catch(fail);
 }
@@ -37,5 +43,7 @@ export {
   dealYearList,
   searchDealList,
   bookmarkList,
-  dealAVG
+  dealAVG,
+  registerBookmark,
+  removeBookmark,
 };
