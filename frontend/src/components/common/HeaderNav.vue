@@ -16,12 +16,12 @@
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" v-if="userInfo">
-          <b-nav-item class="align-self-center"
-            ><b-avatar
+          <b-nav-item class="align-self-center">
+            <!-- <b-avatar
               variant="primary"
               v-text="userInfo ? userInfo.userid.charAt(0).toUpperCase() : ''"
-            ></b-avatar
-            >Welcome! {{ userInfo.username }}({{ userInfo.userid }})
+            ></b-avatar> -->
+            Welcome! {{ userInfo.username }}({{ userInfo.userid }})
           </b-nav-item>
           <b-nav-item class="align-self-center"
             ><router-link
@@ -112,7 +112,7 @@ export default {
   outline: none;
 }
 #mainNav .navbar-brand {
-  color: #413e66;
+  color: white;
   font-weight: 700;
   padding: 0.9rem 0;
 }
@@ -156,6 +156,9 @@ export default {
     color: #413e66;
     padding: 1.5rem 1.5rem 1.25rem;
     border-bottom: 0.25rem solid transparent;
+  }
+  .link .align-self-center {
+    color: #413e66;
   }
 }
 .btn .btn-secondary {

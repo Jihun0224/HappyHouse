@@ -1,5 +1,5 @@
 <template>
-  <LineChartGenerator
+  <Bar
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -13,35 +13,36 @@
 </template>
 
 <script>
-import { Line as LineChartGenerator } from "vue-chartjs/legacy";
+import { Bar } from "vue-chartjs/legacy";
+
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  LineElement,
-  LinearScale,
+  BarElement,
   CategoryScale,
-  PointElement,
+  LinearScale,
 } from "chart.js";
 
 ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  LineElement,
-  LinearScale,
+  BarElement,
   CategoryScale,
-  PointElement
+  LinearScale
 );
 
 export default {
-  name: "HouseDetailChart",
-  components: { LineChartGenerator },
+  name: "BarChart",
+  components: {
+    Bar,
+  },
   props: {
     chartId: {
       type: String,
-      default: "아파트 거래 평균 가격",
+      default: "bar-chart",
     },
     datasetIdKey: {
       type: String,
@@ -53,7 +54,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 200,
+      default: 400,
     },
     cssClasses: {
       default: "",
@@ -64,27 +65,36 @@ export default {
       default: () => {},
     },
     plugins: {
-      type: Object,
-      default: () => {},
+      type: Array,
+      default: () => [],
     },
     aptName: String,
-    avgList: Array,
+    aroundCntArray: Array,
   },
-
   data() {
     return {
       chartData: {
-        labels: [...Array(12)].map((v, i) => i + 1 + "월"),
+        labels: [
+          "대형마트",
+          "편의점",
+          "어린이집,유치원",
+          "학교",
+          "주유소",
+          "자하철역",
+          "문화시설",
+          "약국",
+          "병원",
+        ],
         datasets: [
           {
             label: this.aptName,
             backgroundColor: "#f87979",
-            data: this.avgList,
+            data: this.aroundCntArray,
           },
           {
-            label: this.aptName,
+            label: "Data Two",
             backgroundColor: "#7acbf9",
-            data: this.avgList,
+            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
           },
         ],
       },
