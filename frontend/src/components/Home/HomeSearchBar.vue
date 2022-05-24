@@ -138,4 +138,8 @@ h1 {
 #map {
   height: 60vh;
 }
+.custom_zoomcontrol {
+  position: absolute;
+  top: 10px !important;
+}
 </style>

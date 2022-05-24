@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.service.BoardService;
 
-import io.swagger.annotations.ApiOperation;
-
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/board")
