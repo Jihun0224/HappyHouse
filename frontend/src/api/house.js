@@ -34,6 +34,9 @@ function searchDealList(params, success, fail) {
 async function dealAVG(params, success, fail) {
   await api.get(`map/dealAVG`, { params: params }).then(success).catch(fail);
 }
+function getHouseInfoByAptCode(params, success, fail) {
+  api.get(`map/aptcode`, { params: params }).then(success).catch(fail);
+}
 export {
   sidoList,
   gugunList,
@@ -46,4 +49,5 @@ export {
   dealAVG,
   registerBookmark,
   removeBookmark,
+  getHouseInfoByAptCode,
 };

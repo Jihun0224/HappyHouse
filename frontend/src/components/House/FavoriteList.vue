@@ -26,21 +26,32 @@
 <script>
 import VirtualList from "vue-virtual-scroll-list";
 import HouseListItem from "@/components/House/HouseListItem.vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 const houseStore = "houseStore";
-
+const memberStore = "memberStore";
 export default {
   name: "HouseList",
   data() {
     return {
       HouseListItem: HouseListItem,
+      myHomeinfo: null,
     };
   },
   components: {
     "virtual-list": VirtualList,
   },
   computed: {
-    ...mapGetters(houseStore, ["getBookmark"]),
+    ...mapState(memberStore, ["userInfo"]),
+    ...mapGetters(houseStore, ["getBookmark", "getMyhomeinfo"]),
+  },
+  methods: {
+    ...mapActions(houseStore, ["getHouseInfoByaptcode"]),
+    getmyhome() {
+      this.getHouseInfoByaptcode(this.userInfo.myhome);
+    },
+  },
+  created() {
+    this.getmyhome();
   },
 };
 </script>
