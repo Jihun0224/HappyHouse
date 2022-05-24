@@ -280,6 +280,7 @@ export default {
 
       if (this.getHouses === null) return;
       setTimeout(() => {}, 100);
+
       var markers = this.getHouses.map((house) => {
         var marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),
@@ -344,6 +345,7 @@ export default {
         kakao.maps.event.addListener(marker, "click", clickHandler);
         return marker;
       });
+
       var clusterer = new kakao.maps.MarkerClusterer({
         map: this.map,
         averageCenter: true,
