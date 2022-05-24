@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.model.HouseDealAVGDto;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
@@ -72,6 +73,10 @@ public class HouseRestController {
 	public ResponseEntity<HouseInfoDto> searchByAptCode(@RequestParam("aptCode") long aptCode) throws Exception{
 		System.out.println(aptCode);
 		return new ResponseEntity<HouseInfoDto>(houseMapService.getHouseInfo(aptCode), HttpStatus.OK);
+	}
+	@GetMapping("/dealAVG")
+	public ResponseEntity<List<HouseDealAVGDto>> dealAvg(@RequestParam Map<String, Object> SearchParams) throws Exception{
+		return new ResponseEntity<List<HouseDealAVGDto>>(houseMapService.getHouseDealAVG(SearchParams), HttpStatus.OK);
 	}
 	
 }
