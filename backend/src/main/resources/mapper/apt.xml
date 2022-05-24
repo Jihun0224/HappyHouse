@@ -61,6 +61,7 @@
 		<where>
 			<if test="aptCode != null">and aptCode = #{aptCode}</if>
 			<if test="dealYear != null">and dealYear = #{dealYear}</if>
+			<if test="minArea != null and maxArea != null">and cast(area as decimal(10,4)) between #{minArea} and #{maxArea}</if>
 			<if test="minAmount != null and maxAmount != null">and cast(replace(dealAmount, ',', '') as unsigned) between #{minAmount} and #{maxAmount}</if>
 		</where>
 		order by dealYear, dealMonth, dealDay

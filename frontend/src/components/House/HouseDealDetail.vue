@@ -2,7 +2,7 @@
   <b-modal
     v-model="isSelectedHouse"
     v-if="getSelectedHouse"
-    size="lg"
+    size="xl"
     id="deal-detail"
     title="상세정보"
     @close="closeModal"
@@ -40,12 +40,20 @@
           <h5 class="col-12 text-center">{{ getSelectedHouse.aptName }}</h5>
         </div>
         <b-form class="mb-2" @submit="searchDeal" inline>
-          <label class="ml-1" for="inline-form-select-key">년도 :</label>
+          <label class="ml-1" for="inline-form-year">년도 :</label>
           <b-form-select
-            id="inline-form-select-key"
-            class="col-2 ml-1 mb-2 mr-sm-2 mb-sm-0"
+            id="inline-form-year"
+            class="col-1 ml-1 mb-2 mr-sm-2 mb-sm-0"
             v-model="year"
             :options="getDealYears"
+            required
+          ></b-form-select>
+          <label class="ml-1" for="inline-form-area">면적 :</label>
+          <b-form-select
+            id="inline-form-area"
+            class="col-2 ml-1 mb-2 mr-sm-2 mb-sm-0"
+            v-model="area"
+            :options="areaOpt"
             required
           ></b-form-select>
           <label class="ml-1" for="inline-form-minAmount">최소거래금액 :</label>
@@ -85,6 +93,30 @@ export default {
       user: {
         myhome: null,
       },
+      area: { minArea: null, maxArea: null },
+      // 0~18, 18~24. 24~32. 32~45, 45~60, 60~
+      // 한평당 3.3으로 계산
+      areaOpt: [
+        { value: { minArea: null, maxArea: null }, text: "전체" },
+        { value: { minArea: 0, maxArea: 3.3 * 18 }, text: "18평 이하" },
+        {
+          value: { minArea: 3.3 * 18, maxArea: 3.3 * 24 },
+          text: "18평 ~ 24평",
+        },
+        {
+          value: { minArea: 3.3 * 24, maxArea: 3.3 * 32 },
+          text: "24평 ~ 32평",
+        },
+        {
+          value: { minArea: 3.3 * 32, maxArea: 3.3 * 45 },
+          text: "32평 ~ 45평",
+        },
+        {
+          value: { minArea: 3.3 * 45, maxArea: 3.3 * 60 },
+          text: "45평 ~ 60평",
+        },
+        { value: { minArea: 3.3 * 60, maxArea: 1000 }, text: "60평 이상" },
+      ],
       minAmount: 10000,
       maxAmount: 100000,
     };
@@ -99,15 +131,15 @@ export default {
       "getIsSelectedHouse",
       "getSelectedHouse",
       "getDealYears",
-      "getInitYear",
+      "getSearchYear",
       "getSearchDeals",
     ]),
     year: {
       get() {
-        return this.getInitYear;
+        return this.getSearchYear;
       },
       set(year) {
-        return this.SET_INITYEAR(year);
+        return this.SET_SEARCHYEAR(year);
       },
     },
     isSelectedHouse: {
@@ -125,7 +157,7 @@ export default {
       "SET_SELECTEDHOUSE",
       "SET_ISSELECTEDHOUSE",
       "SET_DEALYEAR",
-      "SET_INITYEAR",
+      "SET_SEARCHYEAR",
       "SET_SEARCHDEAL_LIST",
     ]),
     ...mapActions(houseStore, ["getDealYearList", "getSearchDealList"]),
@@ -138,7 +170,7 @@ export default {
       this.SET_SELECTEDHOUSE(null);
       this.SET_ISSELECTEDHOUSE(false);
       this.SET_DEALYEAR(null);
-      this.SET_INITYEAR(null);
+      this.SET_SEARCHYEAR(null);
       this.SET_SEARCHDEAL_LIST(null);
     },
     async allDealsMode() {
@@ -146,17 +178,22 @@ export default {
       await this.getDealYearList(this.getSelectedHouse.aptCode);
       this.getSearchDealList({
         dealYear: this.year,
+        minArea: this.area.minArea,
+        maxArea: this.area.maxArea,
         minAmount: this.minAmount,
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      console.log(this.year);
+      console.log(this.year + " " + this.area);
     },
     searchDeal(event) {
       event.preventDefault();
       console.log("searchDeal");
+      console.log(this.area);
       this.getSearchDealList({
         dealYear: this.year,
+        minArea: this.area.minArea,
+        maxArea: this.area.maxArea,
         minAmount: this.minAmount,
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
@@ -164,7 +201,6 @@ export default {
     },
   },
   created() {
-    console.log("modal create");
     this.user = this.userInfo;
     //this.user.myhome = this.selectedHouse.aptCode;
   },

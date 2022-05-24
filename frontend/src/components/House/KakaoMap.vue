@@ -391,7 +391,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .customoverlay {
   position: absolute;
   left: 0;

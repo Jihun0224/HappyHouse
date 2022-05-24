@@ -12,7 +12,7 @@ const houseStore = {
         selectedHouse: null,
         isSelectedHouse: false,
         dealYears: [],
-        initYear: null,
+        searchYear: null,
         searchDeals: [],
         isEmpty: false,
         center: null,
@@ -28,7 +28,7 @@ const houseStore = {
         getSelectedHouse: state => state.selectedHouse,
         getIsSelectedHouse: state => state.isSelectedHouse,
         getDealYears: state => state.dealYears,
-        getInitYear: state => state.initYear,
+        getSearchYear: state => state.searchYear,
         getSearchDeals: state => state.searchDeals,
         getIsEmpty: state => state.isEmpty,
         getCenter: state => state.center,
@@ -80,8 +80,8 @@ const houseStore = {
         SET_DEALYEAR(state, years) {
             state.dealYears = years;
         },
-        SET_INITYEAR(state, year) {
-            state.initYear = year;
+        SET_SEARCHYEAR(state, year) {
+            state.searchYear = year;
         },
         SET_SEARCHDEAL_LIST(state, deals) {
             state.searchDeals = deals;
@@ -173,7 +173,7 @@ const houseStore = {
             await dealYearList(
                 params,
                 ({ data }) => {
-                    commit("SET_INITYEAR", data[0]);
+                    commit("SET_SEARCHYEAR", data[0]);
                     commit("SET_DEALYEAR",data);
                 },
                 (error) => {
@@ -185,7 +185,6 @@ const houseStore = {
             await searchDealList(
                 searchHouseDeal,
                 ({ data }) => {
-                    console.log(data);
                     commit("SET_SEARCHDEAL_LIST",data);
                 },
                 (error) => {
