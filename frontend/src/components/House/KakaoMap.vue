@@ -260,8 +260,6 @@ export default {
       };
       this.map = new kakao.maps.Map(container, options);
 
-      var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
-      marker.setMap(this.map);
       this.createMarker();
       this.createMyMarker();
       this.ps = new kakao.maps.services.Places(this.map);

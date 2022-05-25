@@ -106,15 +106,15 @@
         <HouseDetailBarChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:aroundCntArray="this.aroundCnt"
-          v-bind:myAptName="getMyhomeinfo.aptName"
-          v-bind:myAptAroundCntArray="this.myAptaroundCnt"
+          v-bind:myAptName="this.myHouseInfo.aptName"
+          v-bind:myAptAroundCntArray="this.myAptAroundCnt"
           v-if="getMyhomeinfo"
         />
         <HouseDetailBarChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:aroundCntArray="this.aroundCnt"
-          v-bind:myAptName="getSelectedHouse.aptName"
-          v-bind:myAptAroundCntArray="this.aroundCnt"
+          v-bind:myAptName="this.myHouseInfo.aptName"
+          v-bind:myAptAroundCntArray="this.myAptAroundCnt"
           v-else
         />
       </b-tab>
@@ -168,7 +168,8 @@ export default {
         aptCode: null,
       },
       aroundCnt: [...Array(9)].map(() => 0),
-      MyAptAroundCnt: [...Array(9)].map(() => 0),
+      myAptAroundCnt: [...Array(9)].map(() => 0),
+      myHouseInfo: { aptName: "My House를 등록해주세요." },
     };
   },
   components: {
@@ -214,9 +215,11 @@ export default {
     },
   },
   mounted() {
-    console.log(this.getMyhomeinfo);
     this.getAroundInfo(this.getSelectedHouse, this.aroundCnt);
-    // this.getAroundInfo(this.getMyhomeinfo, this.MyAptAroundCnt);
+    if (this.myHouseInfo) {
+      this.getAroundInfo(this.getMyhomeinfo, this.myAptAroundCnt);
+      this.myHouseInfo.aptName = this.getMyhomeinfo.aptName;
+    }
   },
   methods: {
     ...mapMutations(houseStore, [
@@ -232,6 +235,7 @@ export default {
       "getAvgList",
       "getDealYearList",
       "getSearchDealList",
+      "getMyAvgList",
     ]),
     ...mapActions(houseStore, [
       "getDealYearList",
@@ -249,6 +253,15 @@ export default {
       };
       await this.getAvgList(SearchParams);
       this.SET_SEARCHED();
+    },
+    async setMyHomeData(house) {
+      var SearchParams = {
+        aptCode: house.aptCode,
+        dealYear: this.year,
+        min: this.area.minArea,
+        max: this.area.maxArea,
+      };
+      await this.getMyAvgList(SearchParams);
     },
     setmyhome() {
       this.user.myhome = this.selectedHouse.aptCode;
@@ -284,8 +297,8 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
+      if (this.getMyhomeinfo) this.setMyHomeData(this.getMyhomeinfo);
       this.setData(this.getSelectedHouse);
-      // this.setData(this.getMyhomeinfo);
 
       // console.log(this.year);
     },
@@ -302,8 +315,8 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
+      if (this.getMyhomeinfo) this.setMyHomeData(this.getMyhomeinfo);
       this.setData(this.getSelectedHouse);
-      this.setData(this.getMyhomeinfo);
     },
     getAroundInfo(house, array) {
       // const REST_API_KEY=process.env.VUE_APP_KAKAO_MAP_REST_API_KEY

@@ -50,7 +50,7 @@ export default {
       this.getHouseInfoByaptcode(this.userInfo.myhome);
     },
     getAptname() {
-      console.log(this.myHomeInfo.aptName);
+      // console.log(this.myHomeInfo);
       return this.myHomeInfo.aptName + "";
     },
     getAddress() {
