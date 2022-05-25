@@ -92,6 +92,9 @@ const houseStore = {
     SET_BOOKMARK_LIST(state, bookmarks) {
       state.bookmarks = bookmarks;
     },
+    CLEAR_BOOKMARK_LIST(state) {
+      state.bookmarks = null;
+    },
     CLEAR_HOUSE_LIST(state) {
       state.houses = null;
     },
@@ -145,6 +148,9 @@ const houseStore = {
       });
       state.myHomeAvgList = tmp;
     },
+    CLEAR_MYHOMEAVG_List(state) {
+      state.myHomeAvgList = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"];
+    },
     SET_SEARCHED(state) {
       state.searched += 1;
     },
@@ -153,6 +159,9 @@ const houseStore = {
     },
     SET_MYHOMEINFO(state, myHomeInfo) {
       state.myHomeInfo = myHomeInfo;
+    },
+    CLEAR_MYHOMEINFO(state) {
+      state.myHomeInfo = null;
     },
   },
   actions: {
