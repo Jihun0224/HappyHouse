@@ -29,15 +29,17 @@ export default {
       "SET_ISSELECTEDHOUSE",
       "SET_CENTER",
       "SET_CNTUP",
+      "SET_SELECTED_CODE",
     ]),
     changeCenter(house) {
-      console.log("click" + house);
+      // console.log("click" + house);
       var coords = {
         lat: house.lat,
         lng: house.lng,
       };
       this.SET_CENTER(coords);
       this.SET_CNTUP();
+      this.SET_SELECTED_CODE(house.aptCode);
       //this.SET_SELECTEDHOUSE(house);
       //this.SET_ISSELECTEDHOUSE(true);
     },

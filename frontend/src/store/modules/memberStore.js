@@ -56,7 +56,7 @@ const memberStore = {
             commit("SET_IS_LOGIN_ERROR", true);
           }
         },
-        () => {},
+        () => { },
       );
     },
     getUserInfo({ commit }, token) {
@@ -67,7 +67,7 @@ const memberStore = {
           if (response.data.message === "success") {
             commit("SET_USER_INFO", response.data.userInfo);
           } else {
-            console.log("유저 정보 없음!!");
+            // console.log("유저 정보 없음!!");
           }
         },
         (error) => {
@@ -87,13 +87,13 @@ const memberStore = {
       unregisterMember(
         userid,
         (response) => {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data === "success") {
             commit("SET_IS_LOGIN", false);
             commit("SET_IS_LOGIN_ERROR", false);
             commit("SET_USER_INFO", null);
           } else {
-            console.log("response data fail");
+            // console.log("response data fail");
           }
         },
         (error) => {

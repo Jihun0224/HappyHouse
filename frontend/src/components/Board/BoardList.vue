@@ -71,7 +71,7 @@ export default {
     };
   },
   created() {
-    console.log("create");
+    // console.log("create");
     this.getBoardList({
       key: null,
       word: null,

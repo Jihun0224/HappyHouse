@@ -40,11 +40,11 @@ const answerStore = {
       );
     },
     getAnswerList: async function ({ commit }, articleno) {
-      console.log("getAnswerList: " + articleno);
+      // console.log("getAnswerList: " + articleno);
       await listAnswer(
         articleno,
         (response) => {
-          console.log(response);
+          // console.log(response);
           commit("SET_ANSWER_LIST", response.data);
         },
         (error) => {

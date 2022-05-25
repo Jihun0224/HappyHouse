@@ -67,15 +67,15 @@ const boardStore = {
       );
     },
     getBoardList({ commit }, keyword) {
-      console.log(keyword);
+      // console.log(keyword);
       listArticle(
         keyword,
         (response) => {
           if (keyword.key === null && keyword.word === null) {
-            console.log("list - 검색X");
+            // console.log("list - 검색X");
             commit("SET_BOARD_LIST", response.data);
           } else {
-            console.log("list - 검색O");
+            // console.log("list - 검색O");
             commit("SET_SEARCH_BOARD_LIST", response.data);
           }
         },
@@ -89,7 +89,7 @@ const boardStore = {
         articleno,
         (response) => {
           commit("SET_DETAIL_BOARD", response.data);
-          console.log("완료");
+          // console.log("완료");
         },
         (error) => {
           console.log(error);

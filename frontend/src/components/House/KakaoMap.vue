@@ -372,22 +372,44 @@ export default {
       });
     },
     createMarker() {
+      if (this.getHouses === null) return;
       var activeId = null;
       var timeoutId = null;
-
-      var imageSrc =
-        "https://user-images.githubusercontent.com/59672592/168978406-52c01767-ff40-4587-9cc5-760f8f11a164.png";
-      var imageSize = new kakao.maps.Size(24, 35);
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-      if (this.getHouses === null) return;
-
+      var aptImg = new kakao.maps.MarkerImage(
+        "https://raw.githubusercontent.com/Jihun0224/KTO/master/flask/static/infopage_img/hotel.svg?token=AOHIQEDUY2JUHP7DUXI2YK3BHXGYO",
+        new kakao.maps.Size(31, 35),
+        {
+          offset: new kakao.maps.Point(16, 34),
+          shape: "poly",
+          coords: "1,20,1,9,5,2,10,0,21,0,27,3,30,9,30,20,17,33,14,33",
+        }
+      );
+      var selAptImg = new kakao.maps.MarkerImage(
+        "https://github.com/Jihun0224/KTO/blob/master/flask/static/infopage_img/hotel_select.png?raw=true",
+        new kakao.maps.Size(41, 45),
+        {
+          offset: new kakao.maps.Point(16, 34),
+          shape: "poly",
+          coords: "1,20,1,9,5,2,10,0,21,0,27,3,30,9,30,20,17,33,14,33",
+        }
+      );
       var markers = this.getHouses.map((house) => {
-        var marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(house.lat, house.lng),
-          title: house.aptCode,
-          image: markerImage,
-        });
+        var marker;
+
+        if (this.getSelectedCode && this.getSelectedCode == house.aptCode) {
+          marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(house.lat, house.lng),
+            title: house.aptCode,
+            image: selAptImg,
+          });
+        } else {
+          marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(house.lat, house.lng),
+            title: house.aptCode,
+            image: aptImg,
+          });
+        }
+
         var content = `<div class="customoverlay">
           <div class="info">
             <div class="title">${house.aptName}
@@ -492,6 +514,7 @@ export default {
       "getHouses",
       "getCenter",
       "getMyhomeinfo",
+      "getSelectedCode",
     ]),
   },
 };

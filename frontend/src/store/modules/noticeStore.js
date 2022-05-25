@@ -66,16 +66,16 @@ const noticeStore = {
         }
       );
     },
-    getNoticeList: async function({ commit }, keyword) {
-      console.log(keyword);
+    getNoticeList: async function ({ commit }, keyword) {
+      // console.log(keyword);
       await listArticle(
         keyword,
         (response) => {
           if (keyword.key === null && keyword.word === null) {
-            console.log("list - 검색X");
+            // console.log("list - 검색X");
             commit("SET_NOTICE_LIST", response.data);
           } else {
-            console.log("list - 검색O");
+            // console.log("list - 검색O");
             commit("SET_SEARCH_NOTICE_LIST", response.data);
           }
         },

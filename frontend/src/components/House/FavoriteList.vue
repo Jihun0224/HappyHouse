@@ -61,7 +61,7 @@ export default {
     ]),
     ...mapActions(houseStore, ["getHouseInfoByaptcode", "getBookmarkList"]),
     getmyhome() {
-      console.log(this.userInfo.myhome);
+      // console.log(this.userInfo.myhome);
       if (this.userInfo.myhome !== null && this.userInfo.myhome !== -1) {
         this.getHouseInfoByaptcode(this.userInfo.myhome);
       }
@@ -98,8 +98,8 @@ export default {
     },
   },
   created() {
-    console.log(this.userInfo.myhome);
-    console.log(this.myHomeInfo);
+    // console.log(this.userInfo.myhome);
+    // console.log(this.myHomeInfo);
     this.getmyhome();
   },
 };

@@ -2,7 +2,6 @@ import {
   sidoList,
   gugunList,
   dongList,
-  allHouseList,
   houseList,
   dealYearList,
   searchDealList,
@@ -23,7 +22,6 @@ const houseStore = {
     dongs: [{ value: null, label: "읍·면·동" }],
     houses: null,
     bookmarks: null,
-    allHouses: [],
     selectedHouse: null,
     isSelectedHouse: false,
     dealYears: [],
@@ -37,13 +35,13 @@ const houseStore = {
     myHomeInfo: null,
     isRegisteredBookmark: false,
     myHomeAvgList: null,
+    selectedCode: null
   },
   getters: {
     getSidos: (state) => state.sidos,
     getGuguns: (state) => state.guguns,
     getDongs: (state) => state.dongs,
     getHouses: (state) => state.houses,
-    getAllHouses: (state) => state.allHouses,
     getSelectedArea: (state) => state.selectedArea,
     getSelectedHouse: (state) => state.selectedHouse,
     getIsSelectedHouse: (state) => state.isSelectedHouse,
@@ -58,6 +56,7 @@ const houseStore = {
     getMyhomeinfo: (state) => state.myHomeInfo,
     getIsRegisteredBM: (state) => state.isRegisteredBookmark,
     getMyHomeAvgList: (state) => state.myHomeAvgList,
+    getSelectedCode: (state) => state.selectedCode
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -100,9 +99,6 @@ const houseStore = {
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = null;
-    },
-    SET_ALLHOUSE_LIST(state, houses) {
-      state.allHouses = houses;
     },
     SET_SELECTEDAREA(state, selectedArea) {
       state.selectedArea = selectedArea;
@@ -182,6 +178,9 @@ const houseStore = {
     CLEAR_MYHOMEINFO(state) {
       state.myHomeInfo = null;
     },
+    SET_SELECTED_CODE(state, selectedCode) {
+      state.selectedCode = selectedCode
+    }
   },
   actions: {
     getSido({ commit }) {
@@ -235,18 +234,7 @@ const houseStore = {
         },
       );
     },
-    getAllhouses({ commit }) {
-      const params = { aptName: "" };
-      allHouseList(
-        params,
-        ({ data }) => {
-          commit("SET_ALLHOUSE_LIST", data);
-        },
-        (error) => {
-          console.log(error);
-        },
-      );
-    },
+
     getDealYearList: async function ({ commit }, aptCode) {
       const params = { aptCode: aptCode };
       await dealYearList(
@@ -292,7 +280,7 @@ const houseStore = {
       await existBookmark(
         searchBookmark,
         ({ data }) => {
-          console.log(data);
+          // console.log(data);
           commit("SET_ISREGISTEREDBOOKMARK", data);
         },
         (error) => {

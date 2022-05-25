@@ -252,8 +252,7 @@ export default {
       this.getAroundInfo(this.getSelectedHouse, this.aroundCnt);
     }
     if (this.getMyhomeinfo) {
-      console.log(this.myHouseInfo);
-
+      // console.log(this.myHouseInfo);
       this.getAroundInfo(this.getMyhomeinfo, this.myAptAroundCnt);
       this.myHouseInfo.aptName = this.getMyhomeinfo.aptName;
     }
@@ -345,7 +344,7 @@ export default {
       this.SET_SEARCHDEAL_LIST(null);
     },
     async recentDealMode() {
-      console.log("recent deal mode");
+      // console.log("recent deal mode");
       if (this.userInfo !== null) {
         // 로그인 되어있을 때
         // 해당 아파트 북마크 존재하는지 확인
@@ -354,9 +353,10 @@ export default {
           aptCode: this.getSelectedHouse.aptCode,
         });
       }
+      // console.log(this.getIsRegisteredBM);
     },
     async allDealsMode() {
-      console.log("all deals mode");
+      // console.log("all deals mode");
       await this.getDealYearList(this.getSelectedHouse.aptCode);
       this.getSearchDealList({
         dealYear: this.year,
@@ -417,7 +417,7 @@ export default {
     },
   },
   created() {
-    console.log("created");
+    // console.log("created");
     this.user = this.userInfo;
     this.recentDealMode();
   },

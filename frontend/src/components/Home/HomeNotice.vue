@@ -66,7 +66,7 @@ export default {
       key: null,
       word: null,
     });
-    console.log(this.noticeList);
+    // console.log(this.noticeList);
   },
   methods: {
     ...mapActions(noticeStore, ["getNoticeList"]),
