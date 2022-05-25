@@ -34,7 +34,7 @@ const houseStore = {
     avgList: null,
     searched: 0,
     myHomeInfo: null,
-    myHomeAvgList: null
+    myHomeAvgList: null,
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -52,9 +52,10 @@ const houseStore = {
     getCenter: (state) => state.center,
     getCenterChangeCnt: (state) => state.centerChangeCnt,
     getBookmark: (state) => state.bookmarks,
+    loadBookmark: (state) => state.bookmarks,
     getAvg: (state) => state.avgList,
     getMyhomeinfo: (state) => state.myHomeInfo,
-    getMyHomeAvgList: (state) => state.myHomeAvgList
+    getMyHomeAvgList: (state) => state.myHomeAvgList,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -149,7 +150,20 @@ const houseStore = {
       state.myHomeAvgList = tmp;
     },
     CLEAR_MYHOMEAVG_List(state) {
-      state.myHomeAvgList = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"];
+      state.myHomeAvgList = [
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+      ];
     },
     SET_SEARCHED(state) {
       state.searched += 1;
@@ -253,6 +267,23 @@ const houseStore = {
       );
     },
     getBookmark({ commit }, userid) {
+      const params = { userid: userid };
+      bookmarkList(
+        params,
+        ({ data }) => {
+          if (data.length == 0) {
+            commit("SET_ISEMPTY", true);
+          } else {
+            commit("SET_ISEMPTY", false);
+          }
+          commit("SET_BOOKMARK_LIST", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    loadBookmark({ commit }, userid) {
       const params = { userid: userid };
       bookmarkList(
         params,
