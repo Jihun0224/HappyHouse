@@ -274,6 +274,7 @@ export default {
         "https://user-images.githubusercontent.com/59672592/170097782-8afa1cd8-6040-495c-885f-41773223eec5.png";
       var imageSize = new kakao.maps.Size(35, 35);
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      if (this.getBookmark == null) return;
       this.getBookmark.forEach((house) => {
         var marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(house.lat, house.lng),

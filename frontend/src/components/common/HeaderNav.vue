@@ -63,7 +63,7 @@ import { mapState, mapMutations } from "vuex";
 // import ms from "@/store/modules/memberStore";
 
 const memberStore = "memberStore";
-
+const houseStore = "houseStore";
 export default {
   name: "HeaderNaviBar",
   computed: {
@@ -77,10 +77,18 @@ export default {
   },
   methods: {
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    ...mapMutations(houseStore, [
+      "CLEAR_MYHOMEAVG_List",
+      "CLEAR_BOOKMARK_LIST",
+      "CLEAR_MYHOMEINFO",
+    ]),
     onClickLogout() {
       // console.log("memberStore : ", ms);
       this.SET_IS_LOGIN(false); // 안먹힘
       this.SET_USER_INFO(null);
+      this.CLEAR_MYHOMEINFO();
+      this.CLEAR_BOOKMARK_LIST();
+      this.CLEAR_MYHOMEAVG_List();
       // console.log(this.isLogin);
       sessionStorage.removeItem("access-token");
       if (this.$route.path != "/") this.$router.push({ name: "home" });

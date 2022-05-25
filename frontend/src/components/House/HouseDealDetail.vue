@@ -87,7 +87,7 @@
         <HouseDetailChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:avgList="avgList"
-          v-bind:myAptName="getMyhomeinfo.aptName"
+          v-bind:myAptName="this.myHouseInfo.aptName"
           v-bind:myHomeAvgList="myHomeAvgList"
           :key="searched"
           v-if="getMyhomeinfo"
@@ -95,7 +95,7 @@
         <HouseDetailChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:avgList="avgList"
-          v-bind:myAptName="getMyhomeinfo.aptName"
+          v-bind:myAptName="this.myHouseInfo.aptName"
           v-bind:myHomeAvgList="myHomeAvgList"
           :key="searched"
           v-else
@@ -215,8 +215,12 @@ export default {
     },
   },
   mounted() {
-    this.getAroundInfo(this.getSelectedHouse, this.aroundCnt);
-    if (this.myHouseInfo) {
+    if (this.getSelectedHouse) {
+      this.getAroundInfo(this.getSelectedHouse, this.aroundCnt);
+    }
+    if (this.getMyhomeinfo) {
+      console.log(this.myHouseInfo);
+
       this.getAroundInfo(this.getMyhomeinfo, this.myAptAroundCnt);
       this.myHouseInfo.aptName = this.getMyhomeinfo.aptName;
     }
