@@ -1,6 +1,5 @@
 <template>
   <div>
-    <HeaderNav />
     <b-container class="bv-example-row mt-3">
       <div>
         <div>
@@ -67,15 +66,11 @@
 </template>
 
 <script>
-import HeaderNav from "@/components/common/HeaderNav.vue";
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
 
 export default {
-  components: {
-    HeaderNav,
-  },
   name: "MemberLogin",
   data() {
     return {
