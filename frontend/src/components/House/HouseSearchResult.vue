@@ -127,7 +127,7 @@ export default {
       "getGugun",
       "getDong",
       "getHouses",
-      "getBookmark",
+      "getBookmarkList",
     ]),
     ...mapMutations(houseStore, [
       "CLEAR_SIDO_LIST",
@@ -187,7 +187,7 @@ export default {
     },
     loadBookmark() {
       // console.log(this.userInfo.userid);
-      if (this.userInfo) this.getBookmark(this.userInfo.userid);
+      if (this.userInfo) this.getBookmarkList(this.userInfo.userid);
     },
     setArea() {
       const area = this.selectedArea;

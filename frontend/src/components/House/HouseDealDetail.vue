@@ -275,8 +275,10 @@ export default {
       "getSearchDealList",
       "getIsRegisteredBookmark",
       "getMyAvgList",
+      "getBookmarkList",
       "addbookmark",
       "deletebookmark",
+      "getHouseInfoByaptcode",
     ]),
     ...mapActions(memberStore, ["setMyhome"]),
     async setData(house) {
@@ -303,29 +305,37 @@ export default {
         // 등록
         this.user.myhome = this.getSelectedHouse.aptCode;
         this.setMyhome(this.user);
+        // 바로 새로운 마이홈 불러올 수 있도록
+        this.getHouseInfoByaptcode(this.user.myhome);
         alert("마이홈 등록 완료!");
       } else {
         // 삭제
-        // null이 backend에서 0으로 들어감
+        // null이 backend에서 0으로 들어감 -> -1로 설정
         this.user.myhome = -1;
         this.setMyhome(this.user);
-        // myhomeinfo => null
+        // 바로 마이홈 삭제되도록
         this.SET_MYHOMEINFO(null);
         alert("마이홈 삭제 완료!");
       }
     },
-    addBookmark() {
+    async addBookmark() {
       this.bookmark.userid = this.user.userid;
       this.bookmark.aptCode = this.getSelectedHouse.aptCode;
-      // console.log(this.bookmark);
-      this.addbookmark(this.bookmark);
+      await this.addbookmark(this.bookmark);
+      // reload
+      await this.load();
       alert("즐겨찾기 등록 완료!");
     },
-    deleteBookmark() {
+    async deleteBookmark() {
       this.bookmark.userid = this.user.userid;
       this.bookmark.aptCode = this.getSelectedHouse.aptCode;
-      this.deletebookmark(this.bookmark);
+      await this.deletebookmark(this.bookmark);
+      // reload
+      await this.load();
       alert("즐겨찾기 삭제 완료!");
+    },
+    load() {
+      this.getBookmarkList(this.user.userid);
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
@@ -344,7 +354,6 @@ export default {
           aptCode: this.getSelectedHouse.aptCode,
         });
       }
-      console.log(this.getIsRegisteredBM);
     },
     async allDealsMode() {
       console.log("all deals mode");
@@ -359,13 +368,9 @@ export default {
       });
       if (this.getMyhomeinfo) this.setMyHomeData(this.getMyhomeinfo);
       this.setData(this.getSelectedHouse);
-
-      // console.log(this.year);
     },
     searchDeal(event) {
       event.preventDefault();
-      // console.log("searchDeal");
-      // console.log(this.area);
       this.getSearchDealList({
         dealYear: this.year,
         minArea: this.area.minArea,

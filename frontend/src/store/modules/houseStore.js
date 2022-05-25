@@ -54,7 +54,6 @@ const houseStore = {
     getCenter: (state) => state.center,
     getCenterChangeCnt: (state) => state.centerChangeCnt,
     getBookmark: (state) => state.bookmarks,
-    loadBookmark: (state) => state.bookmarks,
     getAvg: (state) => state.avgList,
     getMyhomeinfo: (state) => state.myHomeInfo,
     getIsRegisteredBM: (state) => state.isRegisteredBookmark,
@@ -272,9 +271,9 @@ const houseStore = {
         },
       );
     },
-    getBookmark({ commit }, userid) {
+    getBookmarkList: async function ({ commit }, userid) {
       const params = { userid: userid };
-      bookmarkList(
+      await bookmarkList(
         params,
         ({ data }) => {
           if (data.length == 0) {
@@ -301,30 +300,13 @@ const houseStore = {
         },
       );
     },
-    loadBookmark({ commit }, userid) {
-      const params = { userid: userid };
-      bookmarkList(
-        params,
-        ({ data }) => {
-          if (data.length == 0) {
-            commit("SET_ISEMPTY", true);
-          } else {
-            commit("SET_ISEMPTY", false);
-          }
-          commit("SET_BOOKMARK_LIST", data);
-        },
-        (error) => {
-          console.log(error);
-        },
-      );
-    },
-    addbookmark({ commit }, bookmark) {
-      registerBookmark(bookmark);
+    addbookmark: async function ({ commit }, bookmark) {
+      await registerBookmark(bookmark);
       commit("SET_BOOKMARK", bookmark);
       commit("SET_ISREGISTEREDBOOKMARK", true);
     },
-    deletebookmark({ commit }, bookmark) {
-      removeBookmark(bookmark);
+    deletebookmark: async function ({ commit }, bookmark) {
+      await removeBookmark(bookmark);
       commit("SET_BOOKMARK", bookmark);
       commit("SET_ISREGISTEREDBOOKMARK", false);
     },

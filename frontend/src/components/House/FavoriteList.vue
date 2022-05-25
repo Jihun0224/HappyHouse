@@ -59,7 +59,7 @@ export default {
       "SET_CENTER",
       "SET_CNTUP",
     ]),
-    ...mapActions(houseStore, ["getHouseInfoByaptcode", "loadBookmark"]),
+    ...mapActions(houseStore, ["getHouseInfoByaptcode", "getBookmarkList"]),
     getmyhome() {
       console.log(this.userInfo.myhome);
       if (this.userInfo.myhome !== null && this.userInfo.myhome !== -1) {
@@ -94,8 +94,7 @@ export default {
       this.SET_ISSELECTEDHOUSE(true);
     },
     load() {
-      //console.log("aaaaaaaaaaaaa");
-      if (this.userInfo) this.loadBookmark(this.userInfo.userid);
+      if (this.userInfo) this.getBookmarkList(this.userInfo.userid);
     },
   },
   created() {
