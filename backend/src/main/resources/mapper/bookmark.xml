@@ -19,6 +19,13 @@
 		ON h.aptCode =
 		b.aptCode
 	</select>
+	
+	<!-- 북마트 등록 유무 확인 -->
+	<select id="bookmarkExist" parameterType="map" resultType="int">
+		select count(bookmarkno)
+		from bookmark
+		where userid = #{userid} and aptCode = #{aptCode}
+	</select>
 
 	<!-- 북마크 등록 -->
 	<insert id="bookmarkRegister" parameterType="BookmarkDto">

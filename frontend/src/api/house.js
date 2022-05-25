@@ -19,6 +19,9 @@ async function houseList(params, success, fail) {
 function bookmarkList(params, success, fail) {
   api.get(`/bookmark/list`, { params: params }).then(success).catch(fail);
 }
+async function existBookmark(params, success, fail) {
+  await api.get(`/bookmark/exist`, { params: params }).then(success).catch(fail);
+}
 function registerBookmark(bookmark) {
   api.post(`/bookmark`, JSON.stringify(bookmark));
 }
@@ -47,6 +50,7 @@ export {
   searchDealList,
   bookmarkList,
   dealAVG,
+  existBookmark,
   registerBookmark,
   removeBookmark,
   getHouseInfoByAptCode,

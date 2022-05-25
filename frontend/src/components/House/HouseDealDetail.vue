@@ -10,10 +10,24 @@
     ok-only
   >
     <b-tabs content-class="mt-3">
-      <b-tab title="최신거래">
+      <b-tab title="최신거래" @click="recentDealMode">
         <div class="row my-1">
           <span class="infoKey col-4">아파트명</span>
           <span class="infoValue">{{ getSelectedHouse.aptName }}</span>
+          <b-icon
+            class="ml-2"
+            v-if="userInfo && userInfo.myhome === getSelectedHouse.aptCode"
+            icon="house-fill"
+            scale="1"
+            variant="success"
+          ></b-icon>
+          <b-icon
+            class="ml-2"
+            v-if="userInfo && getIsRegisteredBM"
+            icon="star-fill"
+            scale="1"
+            variant="warning"
+          ></b-icon>
         </div>
         <div class="row my-1">
           <span class="infoKey col-4">건축년도</span>
@@ -37,13 +51,31 @@
           <span class="infoKey col-4">최신거래금액</span>
           <span class="infoValue">{{ getSelectedHouse.recentPrice }}</span>
         </div>
-        <b-button type="submit" @click="setmyhome" id="my-btn"
-          >마이홈 등록</b-button
-        >
-        <b-button type="submit" @click="addBookmark" id="my-btn"
-          >즐겨찾기 등록</b-button
-        >
-        <b-button type="submit" @click="deleteBookmark">즐겨찾기 삭제</b-button>
+        <!-- 로그인 했을 때만 보이게-->
+        <div v-if="userInfo">
+          <!-- 등록된 마이홈이 아닐 때만 보이게 -->
+          <b-button
+            v-if="userInfo.myhome !== getSelectedHouse.aptCode"
+            type="submit"
+            @click="setmyhome(true)"
+            id="my-btn"
+            >마이홈 등록</b-button
+          >
+          <b-button v-else type="submit" @click="setmyhome(false)" id="my-btn"
+            >마이홈 삭제</b-button
+          >
+          <!-- 즐겨찾기에 있을 때랑 없을 때 파악 후 보이게 -->
+          <b-button
+            v-if="!getIsRegisteredBM"
+            type="submit"
+            @click="addBookmark"
+            id="my-btn"
+            >즐겨찾기 등록</b-button
+          >
+          <b-button v-else type="submit" @click="deleteBookmark"
+            >즐겨찾기 삭제</b-button
+          >
+        </div>
       </b-tab>
       <b-tab title="모든 거래" @click="allDealsMode">
         <div class="row my-1">
@@ -156,12 +188,7 @@ export default {
   },
 
   computed: {
-    ...mapState(houseStore, [
-      "searched",
-      "avgList",
-      "selectedHouse",
-      "isSelectedHouse",
-    ]),
+    ...mapState(houseStore, ["searched", "avgList"]),
     ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(houseStore, [
       "getIsSelectedHouse",
@@ -169,6 +196,7 @@ export default {
       "getDealYears",
       "getSearchYear",
       "getSearchDeals",
+      "getIsRegisteredBM",
     ]),
     year: {
       get() {
@@ -199,15 +227,13 @@ export default {
       "SET_SEARCHYEAR",
       "SET_SEARCHDEAL_LIST",
       "SET_SEARCHED",
+      "SET_MYHOMEINFO",
     ]),
     ...mapActions(houseStore, [
       "getAvgList",
       "getDealYearList",
       "getSearchDealList",
-    ]),
-    ...mapActions(houseStore, [
-      "getDealYearList",
-      "getSearchDealList",
+      "getIsRegisteredBookmark",
       "addbookmark",
       "deletebookmark",
     ]),
@@ -222,21 +248,32 @@ export default {
       await this.getAvgList(SearchParams);
       this.SET_SEARCHED();
     },
-    setmyhome() {
-      this.user.myhome = this.selectedHouse.aptCode;
-      this.setMyhome(this.user);
-      // console.log(this.user.myhome);
+    setmyhome(reg) {
+      if (reg) {
+        // 등록
+        this.user.myhome = this.getSelectedHouse.aptCode;
+        this.setMyhome(this.user);
+      } else {
+        // 삭제
+        // null이 backend에서 0으로 들어감
+        this.user.myhome = -1;
+        this.setMyhome(this.user);
+        // myhomeinfo => null
+        this.SET_MYHOMEINFO(null);
+      }
     },
     addBookmark() {
       this.bookmark.userid = this.user.userid;
-      this.bookmark.aptCode = this.selectedHouse.aptCode;
+      this.bookmark.aptCode = this.getSelectedHouse.aptCode;
       // console.log(this.bookmark);
       this.addbookmark(this.bookmark);
+      alert("등록되었습니다.");
     },
     deleteBookmark() {
       this.bookmark.userid = this.user.userid;
-      this.bookmark.aptCode = this.selectedHouse.aptCode;
+      this.bookmark.aptCode = this.getSelectedHouse.aptCode;
       this.deletebookmark(this.bookmark);
+      alert("삭제되었습니다.");
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
@@ -245,8 +282,20 @@ export default {
       this.SET_SEARCHYEAR(null);
       this.SET_SEARCHDEAL_LIST(null);
     },
+    async recentDealMode() {
+      console.log("recent deal mode");
+      if (this.userInfo !== null) {
+        // 로그인 되어있을 때
+        // 해당 아파트 북마크 존재하는지 확인
+        await this.getIsRegisteredBookmark({
+          userid: this.userInfo.userid,
+          aptCode: this.getSelectedHouse.aptCode,
+        });
+      }
+      console.log(this.getIsRegisteredBM);
+    },
     async allDealsMode() {
-      // console.log("all deals mode");
+      console.log("all deals mode");
       await this.getDealYearList(this.getSelectedHouse.aptCode);
       this.getSearchDealList({
         dealYear: this.year,
@@ -259,7 +308,6 @@ export default {
       this.setData();
       // console.log(this.year);
     },
-
     searchDeal(event) {
       event.preventDefault();
       // console.log("searchDeal");
@@ -308,7 +356,9 @@ export default {
     },
   },
   created() {
+    console.log("created");
     this.user = this.userInfo;
+    this.recentDealMode();
   },
 };
 </script>

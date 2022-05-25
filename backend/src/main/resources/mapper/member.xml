@@ -53,12 +53,12 @@
 		where
 		userid = #{userid}
 	</delete>
-	<select id="userInfo" parameterType="String"
-		resultType="memberDto">
-		select username, userid, email, joindate
-		from member
-		where
-		userid = #{userid}
-	</select>
+    <select id="userInfo" parameterType="String"
+        resultType="memberDto">
+        select username, userid, email, joindate, phone, myhome
+        from member
+        where
+        userid = #{userid}
+    </select>
 
 </mapper>

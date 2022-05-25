@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,11 @@ public class BookmarkServiceImpl implements BookmarkService {
 	@Override
 	public List<HouseInfoDto> listBookmark(String userid) throws SQLException {
 		return bookmarkMapper.bookmarkList(userid);
+	}
+
+	@Override
+	public boolean existBookmark(Map<String, Object> searchBookmark) throws SQLException {
+		return bookmarkMapper.bookmarkExist(searchBookmark) > 0;
 	}
 
 }

@@ -8,7 +8,11 @@
           <br />
         </header>
         <div class="row g-5">
+          <div v-if="!noticeList.length" class="col-12 text-center">
+            <h5>현재 등록된 공지사항이 없습니다.</h5>
+          </div>
           <div
+            v-else
             v-for="(notice, i) in noticeList.slice(0, 3)"
             :key="i"
             class="col-md-6 col-lg-4 wow bounceInUp"
@@ -62,6 +66,7 @@ export default {
       key: null,
       word: null,
     });
+    console.log(this.noticeList);
   },
   methods: {
     ...mapActions(noticeStore, ["getNoticeList"]),

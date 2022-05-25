@@ -1,7 +1,7 @@
 <template>
   <div class="Favorite-list">
     <div class="my-home-title"><b-icon icon="house"></b-icon>My House</div>
-    <div class="my-home" v-if="getBookmark">
+    <div class="my-home" v-if="myHomeInfo">
       <b-col>
         <div class="house-name" v-on:click="changeCenter(source)">
           {{ getAptname() }}
@@ -13,7 +13,6 @@
       </b-col>
     </div>
     <div class="my-home-title"><b-icon icon="star"></b-icon>관심 아파트</div>
-
     <virtual-list
       id="virtual-flist"
       :data-key="'aptCode'"
@@ -42,12 +41,15 @@ export default {
   computed: {
     ...mapState(memberStore, ["userInfo"]),
     ...mapState(houseStore, ["myHomeInfo"]),
-    ...mapGetters(houseStore, ["getBookmark", "getMyhomeinfo"]),
+    ...mapGetters(houseStore, ["getBookmark"]),
   },
   methods: {
     ...mapActions(houseStore, ["getHouseInfoByaptcode"]),
     getmyhome() {
-      this.getHouseInfoByaptcode(this.userInfo.myhome);
+      console.log(this.userInfo.myhome);
+      if (this.userInfo.myhome !== null && this.userInfo.myhome !== -1) {
+        this.getHouseInfoByaptcode(this.userInfo.myhome);
+      }
     },
     getAptname() {
       console.log(this.myHomeInfo.aptName);
@@ -66,6 +68,8 @@ export default {
     },
   },
   created() {
+    console.log(this.userInfo.myhome);
+    console.log(this.myHomeInfo);
     this.getmyhome();
   },
 };

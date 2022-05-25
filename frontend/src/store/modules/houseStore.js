@@ -8,6 +8,7 @@ import {
   searchDealList,
   bookmarkList,
   dealAVG,
+  existBookmark,
   registerBookmark,
   removeBookmark,
   getHouseInfoByAptCode,
@@ -34,6 +35,7 @@ const houseStore = {
     avgList: null,
     searched: 0,
     myHomeInfo: null,
+    isRegisteredBookmark: false
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -53,6 +55,7 @@ const houseStore = {
     getBookmark: (state) => state.bookmarks,
     getAvg: (state) => state.avgList,
     getMyhomeinfo: (state) => state.myHomeInfo,
+    getIsRegisteredBM: (state) => state.isRegisteredBookmark,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -145,6 +148,9 @@ const houseStore = {
     SET_MYHOMEINFO(state, myHomeInfo) {
       state.myHomeInfo = myHomeInfo;
     },
+    SET_ISREGISTEREDBOOKMARK(state, isRegisteredBookmark) {
+      state.isRegisteredBookmark = isRegisteredBookmark;
+    }
   },
   actions: {
     getSido({ commit }) {
@@ -251,13 +257,27 @@ const houseStore = {
         },
       );
     },
+    getIsRegisteredBookmark: async function({ commit }, searchBookmark) {
+      await existBookmark(
+        searchBookmark,
+        ({ data }) => {
+            console.log(data);
+            commit("SET_ISREGISTEREDBOOKMARK", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
     addbookmark({ commit }, bookmark) {
       registerBookmark(bookmark);
       commit("SET_BOOKMARK", bookmark);
+      commit("SET_ISREGISTEREDBOOKMARK", true);
     },
     deletebookmark({ commit }, bookmark) {
       removeBookmark(bookmark);
       commit("SET_BOOKMARK", bookmark);
+      commit("SET_ISREGISTEREDBOOKMARK", false);
     },
     getAvgList: async function ({ commit }, SearchParams) {
       await dealAVG(
