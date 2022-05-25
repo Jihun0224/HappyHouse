@@ -53,7 +53,7 @@ export default {
       currCategory: "",
       ps: null,
       contentNode: null,
-      ...mapState(memberStore, ["isLogin", "userInfo"]),
+      ...mapState(memberStore, ["isLogin", "userInfo", "myHomeInfo"]),
     };
   },
   mounted() {
@@ -64,12 +64,14 @@ export default {
       var category = document.getElementById("category");
       category.style.top = 0;
     }
+    this.CLEAR_SELECTEDHOUSE();
   },
   methods: {
     ...mapMutations(houseStore, [
       "SET_CENTER",
       "SET_SELECTEDHOUSE",
       "SET_ISSELECTEDHOUSE",
+      "CLEAR_SELECTEDHOUSE",
     ]),
     getLocation() {
       if (!("geolocation" in navigator)) {
@@ -272,15 +274,35 @@ export default {
       if (this.isLogin === false) return;
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/170097782-8afa1cd8-6040-495c-885f-41773223eec5.png";
+      var myHomeMarkerImgSrc =
+        "https://user-images.githubusercontent.com/59672592/170197729-7be06853-fa56-4679-9e42-508a3aa89753.png";
       var imageSize = new kakao.maps.Size(35, 35);
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      var MyHomemarkerImage = new kakao.maps.MarkerImage(
+        myHomeMarkerImgSrc,
+        imageSize
+      );
+
+      if (this.getMyhomeinfo != null) this.getBookmark.push(this.getMyhomeinfo);
       if (this.getBookmark == null) return;
       this.getBookmark.forEach((house) => {
-        var marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(house.lat, house.lng),
-          title: house.aptCode,
-          image: markerImage,
-        });
+        var marker;
+        if (
+          this.getMyhomeinfo != null &&
+          this.getMyhomeinfo.aptCode == house.aptCode
+        ) {
+          marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(house.lat, house.lng),
+            title: house.aptCode,
+            image: MyHomemarkerImage,
+          });
+        } else {
+          marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(house.lat, house.lng),
+            title: house.aptCode,
+            image: markerImage,
+          });
+        }
         var content = `<div class="customoverlay">
           <div class="info">
             <div class="title">${house.aptName}
@@ -457,7 +479,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(houseStore, ["getBookmark", "getHouses", "getCenter"]),
+    ...mapGetters(houseStore, [
+      "getBookmark",
+      "getHouses",
+      "getCenter",
+      "getMyhomeinfo",
+    ]),
   },
 };
 </script>
