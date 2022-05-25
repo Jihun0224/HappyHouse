@@ -10,14 +10,16 @@
 	<select id="bookmarkList" parameterType="string"
 		resultType="HouseInfoDto">
 		select h.aptCode, h.apartmentName, h.buildyear, h.dongCode,
-		h.dong, h.jibun, h.lat, h.lng
+		h.dong, h.jibun, h.lat, h.lng,d.sidoName,d.gugunName,(select
+		dealAmount from housedeal where aptCode = h.aptCode and no = (select
+		max(no) from housedeal where aptCode = h.aptCode)) recentPrice
 		from houseinfo h
 		INNER JOIN (select
 		aptCode
 		from bookmark
 		where userid = #{userid}) b
-		ON h.aptCode =
-		b.aptCode
+		ON h.aptCode = b.aptCode 
+		join dongcode d on h.dongCode=d.dongCode
 	</select>
 	
 	<!-- 북마트 등록 유무 확인 -->

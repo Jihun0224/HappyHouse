@@ -319,7 +319,7 @@ export default {
               </div>
               <div class="row my-1">
                 <span class="infoKey col-4">최신거래금액</span>
-                <span class="infoValue">${house.recentPrice}</span>
+                <span class="infoValue">${house.recentPrice} 만원</span>
               </div>
             </div>
           </div>
@@ -396,7 +396,7 @@ export default {
               </div>
               <div class="row my-1">
                 <span class="infoKey col-4">최신거래금액</span>
-                <span class="infoValue">${house.recentPrice}</span>
+                <span class="infoValue">${house.recentPrice} 만원</span>
               </div>
             </div>
           </div>

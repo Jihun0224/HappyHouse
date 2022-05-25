@@ -49,7 +49,7 @@
         </div>
         <div class="row my-1">
           <span class="infoKey col-4">최신거래금액</span>
-          <span class="infoValue">{{ getSelectedHouse.recentPrice }}</span>
+          <span class="infoValue">{{ getSelectedHouse.recentPrice }} 만원</span>
         </div>
         <!-- 로그인 했을 때만 보이게-->
         <div v-if="userInfo">
