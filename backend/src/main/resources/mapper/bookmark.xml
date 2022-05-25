@@ -28,11 +28,11 @@
 	</insert>
 
 	<!-- 북마크 삭제 -->
-	<delete id="bookmarkRemove" parameterType="int">
+	<delete id="bookmarkRemove" parameterType="BookmarkDto">
 		delete
 		from bookmark
 		where
-		bookmarkno = #{bookmarkno}
+		userid = #{userid} and aptCode = #{aptCode};
 	</delete>
 
 </mapper>

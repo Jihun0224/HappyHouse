@@ -22,8 +22,8 @@ public class BookmarkServiceImpl implements BookmarkService {
 	}
 
 	@Override
-	public void removeBookmark(int bookmarkno) throws SQLException {
-		bookmarkMapper.bookmarkRemove(bookmarkno);
+	public void removeBookmark(BookmarkDto bookmarkdto) throws SQLException {
+		bookmarkMapper.bookmarkRemove(bookmarkdto);
 	}
 
 	@Override

@@ -13,6 +13,6 @@ public interface BookmarkService {
 
 	boolean registerBookmark(BookmarkDto bookmarkdto) throws SQLException;
 
-	void removeBookmark(int bookmarkno)throws SQLException;
+	void removeBookmark(BookmarkDto bookmarkdto)throws SQLException;
 
 }

@@ -18,5 +18,6 @@ public interface HouseMapMapper {
 	List<HouseInfoDto> searchByAptName(String aptName) throws SQLException;
 	List<Integer> getDealYear(long aptCode) throws SQLException;
 	List<HouseDealDto> getHouseDeal(Map<String, Object> searchHouseDealDto) throws SQLException;
+	HouseInfoDto getHouseInfo(long aptCode) throws SQLException;
 	List<HouseDealAVGDto>getHouseDealAVG(Map<String, Object> searchHouseDealAVGDto) throws SQLException;
 }

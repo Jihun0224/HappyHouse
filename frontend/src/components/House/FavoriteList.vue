@@ -4,11 +4,11 @@
     <div class="my-home" v-if="getBookmark">
       <b-col>
         <div class="house-name" v-on:click="changeCenter(source)">
-          유저 아파트명
+          {{ getAptname() }}
         </div>
         <div class="house-address">
           <b-icon icon="geo-alt-fill" font-scale="1"></b-icon>
-          유저 아파트 주소
+          {{ getAddress() }}
         </div>
       </b-col>
     </div>
@@ -34,7 +34,6 @@ export default {
   data() {
     return {
       HouseListItem: HouseListItem,
-      myHomeinfo: null,
     };
   },
   components: {
@@ -42,12 +41,28 @@ export default {
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+    ...mapState(houseStore, ["myHomeInfo"]),
     ...mapGetters(houseStore, ["getBookmark", "getMyhomeinfo"]),
   },
   methods: {
     ...mapActions(houseStore, ["getHouseInfoByaptcode"]),
     getmyhome() {
       this.getHouseInfoByaptcode(this.userInfo.myhome);
+    },
+    getAptname() {
+      console.log(this.myHomeInfo.aptName);
+      return this.myHomeInfo.aptName + "";
+    },
+    getAddress() {
+      return (
+        this.myHomeInfo.sidoName +
+        " " +
+        this.myHomeInfo.gugunName +
+        " " +
+        this.myHomeInfo.dongName +
+        " " +
+        this.myHomeInfo.jibun
+      );
     },
   },
   created() {

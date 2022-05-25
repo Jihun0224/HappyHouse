@@ -36,6 +36,7 @@ public class BookmarkController {
 	@ApiOperation(value = "관심아파트등록", notes = "관심아파트를 등록한다. ", response = BookmarkDto.class)
 	@PostMapping
 	public ResponseEntity<String> registerReview(@RequestBody BookmarkDto bookmarkdto) throws Exception {
+		System.out.println(bookmarkdto.toString());
 		if (bookmarkService.registerBookmark(bookmarkdto)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -49,9 +50,10 @@ public class BookmarkController {
 	}
 	
 	@ApiOperation(value = "관심아파트 삭제", notes = "해당 관심아파트 삭제. ")
-	@DeleteMapping("/{bookmarkno}")
-	public ResponseEntity<String> removeBookmark(@RequestBody int bookmarkno) throws Exception {
-		bookmarkService.removeBookmark(bookmarkno);
+	@PostMapping("/delete")
+	public ResponseEntity<String> removeBookmark(@RequestBody BookmarkDto bookmarkdto) throws Exception {
+		System.out.println(bookmarkdto.toString());
+		bookmarkService.removeBookmark(bookmarkdto);
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 }
