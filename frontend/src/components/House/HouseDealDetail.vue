@@ -267,17 +267,20 @@ export default {
       this.user.myhome = this.selectedHouse.aptCode;
       this.setMyhome(this.user);
       // console.log(this.user.myhome);
+      alert("마이홈 등록 완료!");
     },
     addBookmark() {
       this.bookmark.userid = this.user.userid;
       this.bookmark.aptCode = this.selectedHouse.aptCode;
       // console.log(this.bookmark);
       this.addbookmark(this.bookmark);
+      alert("즐겨찾기 등록 완료!");
     },
     deleteBookmark() {
       this.bookmark.userid = this.user.userid;
       this.bookmark.aptCode = this.selectedHouse.aptCode;
       this.deletebookmark(this.bookmark);
+      alert("즐겨찾기 삭제 완료!");
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
