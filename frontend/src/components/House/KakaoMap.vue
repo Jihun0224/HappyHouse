@@ -271,7 +271,12 @@ export default {
     createMyMarker() {
       var activeId = null;
       var timeoutId = null;
-      if (this.isLogin === false) return;
+      if (
+        this.userInfo === null ||
+        !this.getBookmark ||
+        !this.getBookmark.length
+      )
+        return;
       var imageSrc =
         "https://user-images.githubusercontent.com/59672592/170097782-8afa1cd8-6040-495c-885f-41773223eec5.png";
       var myHomeMarkerImgSrc =
@@ -283,9 +288,12 @@ export default {
         imageSize
       );
 
-      if (this.getMyhomeinfo != null) this.getBookmark.push(this.getMyhomeinfo);
+      // 배열 복제하여 사용
+      var myHouse = this.getBookmark.slice();
+
+      if (this.getMyhomeinfo != null) myHouse.push(this.getMyhomeinfo);
       if (this.getBookmark == null) return;
-      this.getBookmark.forEach((house) => {
+      myHouse.forEach((house) => {
         var marker;
         if (
           this.getMyhomeinfo != null &&

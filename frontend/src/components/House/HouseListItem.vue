@@ -31,14 +31,15 @@ export default {
       "SET_CNTUP",
     ]),
     changeCenter(house) {
+      console.log("click" + house);
       var coords = {
         lat: house.lat,
         lng: house.lng,
       };
       this.SET_CENTER(coords);
       this.SET_CNTUP();
-      this.SET_SELECTEDHOUSE(house);
-      this.SET_ISSELECTEDHOUSE(true);
+      //this.SET_SELECTEDHOUSE(house);
+      //this.SET_ISSELECTEDHOUSE(true);
     },
   },
   filters: {
