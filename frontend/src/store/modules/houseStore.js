@@ -35,7 +35,8 @@ const houseStore = {
     avgList: null,
     searched: 0,
     myHomeInfo: null,
-    isRegisteredBookmark: false
+    isRegisteredBookmark: false,
+    myHomeAvgList: null,
   },
   getters: {
     getSidos: (state) => state.sidos,
@@ -53,9 +54,11 @@ const houseStore = {
     getCenter: (state) => state.center,
     getCenterChangeCnt: (state) => state.centerChangeCnt,
     getBookmark: (state) => state.bookmarks,
+    loadBookmark: (state) => state.bookmarks,
     getAvg: (state) => state.avgList,
     getMyhomeinfo: (state) => state.myHomeInfo,
     getIsRegisteredBM: (state) => state.isRegisteredBookmark,
+    getMyHomeAvgList: (state) => state.myHomeAvgList,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -92,6 +95,9 @@ const houseStore = {
     },
     SET_BOOKMARK_LIST(state, bookmarks) {
       state.bookmarks = bookmarks;
+    },
+    CLEAR_BOOKMARK_LIST(state) {
+      state.bookmarks = null;
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = null;
@@ -139,6 +145,29 @@ const houseStore = {
       });
       state.avgList = tmp;
     },
+    SET_MYHOMEAVG_List(state, data) {
+      var tmp = ["x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x"];
+      data.map((d) => {
+        tmp[d.month - 1] = d.avg;
+      });
+      state.myHomeAvgList = tmp;
+    },
+    CLEAR_MYHOMEAVG_List(state) {
+      state.myHomeAvgList = [
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+        "x",
+      ];
+    },
     SET_SEARCHED(state) {
       state.searched += 1;
     },
@@ -150,7 +179,10 @@ const houseStore = {
     },
     SET_ISREGISTEREDBOOKMARK(state, isRegisteredBookmark) {
       state.isRegisteredBookmark = isRegisteredBookmark;
-    }
+    },
+    CLEAR_MYHOMEINFO(state) {
+      state.myHomeInfo = null;
+    },
   },
   actions: {
     getSido({ commit }) {
@@ -257,12 +289,29 @@ const houseStore = {
         },
       );
     },
-    getIsRegisteredBookmark: async function({ commit }, searchBookmark) {
+    getIsRegisteredBookmark: async function ({ commit }, searchBookmark) {
       await existBookmark(
         searchBookmark,
         ({ data }) => {
-            console.log(data);
-            commit("SET_ISREGISTEREDBOOKMARK", data);
+          console.log(data);
+          commit("SET_ISREGISTEREDBOOKMARK", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    loadBookmark({ commit }, userid) {
+      const params = { userid: userid };
+      bookmarkList(
+        params,
+        ({ data }) => {
+          if (data.length == 0) {
+            commit("SET_ISEMPTY", true);
+          } else {
+            commit("SET_ISEMPTY", false);
+          }
+          commit("SET_BOOKMARK_LIST", data);
         },
         (error) => {
           console.log(error);
@@ -284,6 +333,17 @@ const houseStore = {
         SearchParams,
         ({ data }) => {
           commit("SET_AVGLIST_LIST", data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    getMyAvgList: async function ({ commit }, SearchParams) {
+      await dealAVG(
+        SearchParams,
+        ({ data }) => {
+          commit("SET_MYHOMEAVG_List", data);
         },
         (error) => {
           console.log(error);

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="container" id="footer">
+  <div id="footer">
+    <div class="container">
       <h3>Find Us</h3>
       <br />
       <h4>
@@ -16,7 +16,9 @@
         admin@ssafy.com<br />
       </h4>
     </div>
-    <div class="copy">Copyright by 공지훈, 신세영. All rights reserved.</div>
+    <div class="copy">
+      Copyright by 공지훈, 남한솔, 인예림. All rights reserved.
+    </div>
   </div>
 </template>
 
@@ -25,9 +27,6 @@ export default {};
 </script>
 
 <style>
-#footer {
-  padding-bottom: 30px;
-}
 #footer h3 {
   text-align: left;
   color: #413e66;

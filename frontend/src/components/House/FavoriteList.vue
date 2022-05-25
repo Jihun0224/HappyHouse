@@ -3,7 +3,7 @@
     <div class="my-home-title"><b-icon icon="house"></b-icon>My House</div>
     <div class="my-home" v-if="myHomeInfo">
       <b-col>
-        <div class="house-name" v-on:click="changeCenter(source)">
+        <div class="house-name" v-on:click="changeCenter()">
           {{ getAptname() }}
         </div>
         <div class="house-address">
@@ -12,12 +12,21 @@
         </div>
       </b-col>
     </div>
-    <div class="my-home-title"><b-icon icon="star"></b-icon>관심 아파트</div>
+    <div class="my-home-title">
+      <b-icon icon="star"></b-icon>관심 아파트
+      <b-icon
+        @click="load"
+        icon="arrow-clockwise"
+        animation="spin"
+        font-scale="1"
+      ></b-icon>
+    </div>
     <virtual-list
       id="virtual-flist"
       :data-key="'aptCode'"
       :data-sources="getBookmark"
       :data-component="HouseListItem"
+      v-if="getBookmark"
     />
   </div>
 </template>
@@ -25,7 +34,7 @@
 <script>
 import VirtualList from "vue-virtual-scroll-list";
 import HouseListItem from "@/components/House/HouseListItem.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState, mapMutations } from "vuex";
 const houseStore = "houseStore";
 const memberStore = "memberStore";
 export default {
@@ -44,7 +53,13 @@ export default {
     ...mapGetters(houseStore, ["getBookmark"]),
   },
   methods: {
-    ...mapActions(houseStore, ["getHouseInfoByaptcode"]),
+    ...mapMutations(houseStore, [
+      "SET_SELECTEDHOUSE",
+      "SET_ISSELECTEDHOUSE",
+      "SET_CENTER",
+      "SET_CNTUP",
+    ]),
+    ...mapActions(houseStore, ["getHouseInfoByaptcode", "loadBookmark"]),
     getmyhome() {
       console.log(this.userInfo.myhome);
       if (this.userInfo.myhome !== null && this.userInfo.myhome !== -1) {
@@ -52,10 +67,12 @@ export default {
       }
     },
     getAptname() {
-      console.log(this.myHomeInfo.aptName);
+      // console.log(this.myHomeInfo);
+      if (this.myHomeInfo == null) return;
       return this.myHomeInfo.aptName + "";
     },
     getAddress() {
+      if (this.myHomeInfo == null) return;
       return (
         this.myHomeInfo.sidoName +
         " " +
@@ -65,6 +82,20 @@ export default {
         " " +
         this.myHomeInfo.jibun
       );
+    },
+    changeCenter() {
+      var coords = {
+        lat: this.myHomeInfo.lat,
+        lng: this.myHomeInfo.lng,
+      };
+      this.SET_CENTER(coords);
+      this.SET_CNTUP();
+      this.SET_SELECTEDHOUSE(this.myHomeInfo);
+      this.SET_ISSELECTEDHOUSE(true);
+    },
+    load() {
+      //console.log("aaaaaaaaaaaaa");
+      if (this.userInfo) this.loadBookmark(this.userInfo.userid);
     },
   },
   created() {

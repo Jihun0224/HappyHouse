@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 const houseStore = "houseStore";
-
+const memberStore = "memberStore";
 export default {
   data() {
     return {
@@ -53,6 +53,7 @@ export default {
       currCategory: "",
       ps: null,
       contentNode: null,
+      ...mapState(memberStore, ["isLogin", "userInfo"]),
     };
   },
   mounted() {
@@ -259,12 +260,86 @@ export default {
       };
       this.map = new kakao.maps.Map(container, options);
 
-      var marker = new kakao.maps.Marker({ position: this.map.getCenter() });
-      marker.setMap(this.map);
       this.createMarker();
+      this.createMyMarker();
       this.ps = new kakao.maps.services.Places(this.map);
       this.placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 });
       this.createAroundInfo();
+    },
+    createMyMarker() {
+      var activeId = null;
+      var timeoutId = null;
+      if (this.isLogin === false) return;
+      var imageSrc =
+        "https://user-images.githubusercontent.com/59672592/170097782-8afa1cd8-6040-495c-885f-41773223eec5.png";
+      var imageSize = new kakao.maps.Size(35, 35);
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      if (this.getBookmark == null) return;
+      this.getBookmark.forEach((house) => {
+        var marker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(house.lat, house.lng),
+          title: house.aptCode,
+          image: markerImage,
+        });
+        var content = `<div class="customoverlay">
+          <div class="info">
+            <div class="title">${house.aptName}
+              <div class="close" ></div>
+            </div>
+            <div class="body ml-3 my-2">
+              <div class="row my-1">
+                <span class="infoKey col-4">건축년도</span>
+                <span class="infoValue">${house.buildYear}</span>
+              </div>
+              <div class="row my-1">
+                <span class="infoKey col-4">주소</span>
+                <span class="infoValue">${house.sidoName} ${house.gugunName} ${house.dongName} ${house.jibun}</span>
+              </div>
+              <div class="row my-1">
+                <span class="infoKey col-4">최신거래금액</span>
+                <span class="infoValue">${house.recentPrice}</span>
+              </div>
+            </div>
+          </div>
+          </div>`;
+        var overlay = new kakao.maps.CustomOverlay({
+          yAnchor: 2.5,
+          content: content,
+          position: marker.getPosition(),
+        });
+        var contents = document.createElement("div");
+        contents.innerHTML = content;
+
+        var mouseOverHandler = () => {
+          if (timeoutId !== null && house.aptCode === activeId) {
+            window.clearTimeout(timeoutId);
+            timeoutId = null;
+            return;
+          }
+          overlay.setMap(this.map);
+          activeId = house.aptCode;
+        };
+
+        var mouseOutHandler = () => {
+          timeoutId = window.setTimeout(function () {
+            overlay.setMap(null);
+            activeId = null;
+            timeoutId = null;
+          }, 50);
+        };
+
+        var clickHandler = () => {
+          this.selectApt(house);
+        };
+
+        kakao.maps.event.addListener(marker, "mouseover", mouseOverHandler);
+        kakao.maps.event.addListener(marker, "mouseout", mouseOutHandler);
+        contents.addEventListener("mouseover", mouseOverHandler);
+        contents.addEventListener("mouseout", mouseOutHandler);
+        kakao.maps.event.addListener(marker, "click", clickHandler);
+
+        marker.setMap(this.map);
+      });
     },
     createMarker() {
       var activeId = null;
@@ -276,7 +351,6 @@ export default {
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
       if (this.getHouses === null) return;
-      setTimeout(() => {}, 100);
 
       var markers = this.getHouses.map((house) => {
         var marker = new kakao.maps.Marker({
@@ -383,7 +457,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(houseStore, ["getHouses", "getCenter"]),
+    ...mapGetters(houseStore, ["getBookmark", "getHouses", "getCenter"]),
   },
 };
 </script>

@@ -119,7 +119,18 @@
         <HouseDetailChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:avgList="avgList"
+          v-bind:myAptName="this.myHouseInfo.aptName"
+          v-bind:myHomeAvgList="myHomeAvgList"
           :key="searched"
+          v-if="getMyhomeinfo"
+        />
+        <HouseDetailChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:avgList="avgList"
+          v-bind:myAptName="this.myHouseInfo.aptName"
+          v-bind:myHomeAvgList="myHomeAvgList"
+          :key="searched"
+          v-else
         />
         <all-deal-list v-bind:list="getSearchDeals"></all-deal-list>
       </b-tab>
@@ -127,6 +138,16 @@
         <HouseDetailBarChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:aroundCntArray="this.aroundCnt"
+          v-bind:myAptName="this.myHouseInfo.aptName"
+          v-bind:myAptAroundCntArray="this.myAptAroundCnt"
+          v-if="getMyhomeinfo"
+        />
+        <HouseDetailBarChart
+          v-bind:aptName="getSelectedHouse.aptName"
+          v-bind:aroundCntArray="this.aroundCnt"
+          v-bind:myAptName="this.myHouseInfo.aptName"
+          v-bind:myAptAroundCntArray="this.myAptAroundCnt"
+          v-else
         />
       </b-tab>
     </b-tabs>
@@ -179,6 +200,8 @@ export default {
         aptCode: null,
       },
       aroundCnt: [...Array(9)].map(() => 0),
+      myAptAroundCnt: [...Array(9)].map(() => 0),
+      myHouseInfo: { aptName: "My House를 등록해주세요." },
     };
   },
   components: {
@@ -188,7 +211,14 @@ export default {
   },
 
   computed: {
-    ...mapState(houseStore, ["searched", "avgList"]),
+    ...mapState(houseStore, [
+      "searched",
+      "avgList",
+      "selectedHouse",
+      "isSelectedHouse",
+      "myHomeAvgList",
+      "myHomeInfo",
+    ]),
     ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(houseStore, [
       "getIsSelectedHouse",
@@ -197,6 +227,7 @@ export default {
       "getSearchYear",
       "getSearchDeals",
       "getIsRegisteredBM",
+      "getMyhomeinfo",
     ]),
     year: {
       get() {
@@ -217,7 +248,15 @@ export default {
     },
   },
   mounted() {
-    this.getAroundInfo();
+    if (this.getSelectedHouse) {
+      this.getAroundInfo(this.getSelectedHouse, this.aroundCnt);
+    }
+    if (this.getMyhomeinfo) {
+      console.log(this.myHouseInfo);
+
+      this.getAroundInfo(this.getMyhomeinfo, this.myAptAroundCnt);
+      this.myHouseInfo.aptName = this.getMyhomeinfo.aptName;
+    }
   },
   methods: {
     ...mapMutations(houseStore, [
@@ -228,19 +267,21 @@ export default {
       "SET_SEARCHDEAL_LIST",
       "SET_SEARCHED",
       "SET_MYHOMEINFO",
+      "SET_MYHOMEAVG_List",
     ]),
     ...mapActions(houseStore, [
       "getAvgList",
       "getDealYearList",
       "getSearchDealList",
       "getIsRegisteredBookmark",
+      "getMyAvgList",
       "addbookmark",
       "deletebookmark",
     ]),
     ...mapActions(memberStore, ["setMyhome"]),
-    async setData() {
+    async setData(house) {
       var SearchParams = {
-        aptCode: this.getSelectedHouse.aptCode,
+        aptCode: house.aptCode,
         dealYear: this.year,
         min: this.area.minArea,
         max: this.area.maxArea,
@@ -248,11 +289,21 @@ export default {
       await this.getAvgList(SearchParams);
       this.SET_SEARCHED();
     },
+    async setMyHomeData(house) {
+      var SearchParams = {
+        aptCode: house.aptCode,
+        dealYear: this.year,
+        min: this.area.minArea,
+        max: this.area.maxArea,
+      };
+      await this.getMyAvgList(SearchParams);
+    },
     setmyhome(reg) {
       if (reg) {
         // 등록
         this.user.myhome = this.getSelectedHouse.aptCode;
         this.setMyhome(this.user);
+        alert("마이홈 등록 완료!");
       } else {
         // 삭제
         // null이 backend에서 0으로 들어감
@@ -260,6 +311,7 @@ export default {
         this.setMyhome(this.user);
         // myhomeinfo => null
         this.SET_MYHOMEINFO(null);
+        alert("마이홈 삭제 완료!");
       }
     },
     addBookmark() {
@@ -267,13 +319,13 @@ export default {
       this.bookmark.aptCode = this.getSelectedHouse.aptCode;
       // console.log(this.bookmark);
       this.addbookmark(this.bookmark);
-      alert("등록되었습니다.");
+      alert("즐겨찾기 등록 완료!");
     },
     deleteBookmark() {
       this.bookmark.userid = this.user.userid;
       this.bookmark.aptCode = this.getSelectedHouse.aptCode;
       this.deletebookmark(this.bookmark);
-      alert("삭제되었습니다.");
+      alert("즐겨찾기 삭제 완료!");
     },
     closeModal() {
       this.SET_SELECTEDHOUSE(null);
@@ -305,7 +357,9 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      this.setData();
+      if (this.getMyhomeinfo) this.setMyHomeData(this.getMyhomeinfo);
+      this.setData(this.getSelectedHouse);
+
       // console.log(this.year);
     },
     searchDeal(event) {
@@ -320,9 +374,11 @@ export default {
         maxAmount: this.maxAmount,
         aptCode: this.getSelectedHouse.aptCode,
       });
-      this.setData();
+      if (this.getMyhomeinfo) this.setMyHomeData(this.getMyhomeinfo);
+      this.setData(this.getSelectedHouse);
     },
-    getAroundInfo() {
+    getAroundInfo(house, array) {
+      // const REST_API_KEY=process.env.VUE_APP_KAKAO_MAP_REST_API_KEY
       const REST_API_KEY = "45c15e1b5ec6fa1a4d3937e3546de43e";
       var category_group_codes = [
         "MT1",
@@ -338,8 +394,8 @@ export default {
       category_group_codes.forEach((code, i) => {
         let params = {
           category_group_code: code,
-          y: this.getSelectedHouse.lat,
-          x: this.getSelectedHouse.lng,
+          y: house.lat,
+          x: house.lng,
           radius: 1000,
         };
         axios
@@ -350,7 +406,7 @@ export default {
             params: params,
           })
           .then((result) => {
-            this.aroundCnt[i] = result.data.meta.total_count;
+            array[i] = result.data.meta.total_count;
           });
       });
     },

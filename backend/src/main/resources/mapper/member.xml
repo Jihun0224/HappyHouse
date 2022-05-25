@@ -19,7 +19,7 @@
 	</select>
 	<select id="login" parameterType="memberDto"
 		resultType="memberDto">
-		select username, userid, email
+		select username, userid, email, phone, myhome
 		from member
 		where userid =
 		#{userid} and userpwd = #{userpwd}
@@ -27,7 +27,7 @@
 
 	<select id="getMember" parameterType="String"
 		resultType="memberdto">
-		select userid, userpwd, username, email,
+		select userid, userpwd, username, email, myhome,
 		phone,date_format(joindate, '%y.%m.%d') joindate
 		from member
 		where

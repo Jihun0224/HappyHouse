@@ -63,9 +63,9 @@
         </div>
         <house-deal-detail v-if="selectedHouse"></house-deal-detail>
       </b-tab>
-      <b-tab :title-item-class="'tab-title-class'">
+      <b-tab :title-item-class="'tab-title-class'" v-if="userInfo">
         <template #title> <b-icon icon="star-fill"></b-icon>즐겨찾기 </template>
-        <FavoriteList />
+        <FavoriteList v-if="userInfo" />
       </b-tab>
     </b-tabs>
   </div>

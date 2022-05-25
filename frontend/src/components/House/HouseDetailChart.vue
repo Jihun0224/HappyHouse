@@ -32,7 +32,7 @@ ChartJS.register(
   LineElement,
   LinearScale,
   CategoryScale,
-  PointElement
+  PointElement,
 );
 
 export default {
@@ -69,6 +69,8 @@ export default {
     },
     aptName: String,
     avgList: Array,
+    myAptName: String,
+    myHomeAvgList: Array,
   },
 
   data() {
@@ -82,9 +84,9 @@ export default {
             data: this.avgList,
           },
           {
-            label: this.aptName,
+            label: this.myAptName,
             backgroundColor: "#7acbf9",
-            data: this.avgList,
+            data: this.myHomeAvgList,
           },
         ],
       },

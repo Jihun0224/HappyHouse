@@ -70,6 +70,8 @@ export default {
     },
     aptName: String,
     aroundCntArray: Array,
+    myAptName: String,
+    myAptAroundCntArray: Array,
   },
   data() {
     return {
@@ -80,7 +82,7 @@ export default {
           "어린이집,유치원",
           "학교",
           "주유소",
-          "자하철역",
+          "지하철역",
           "문화시설",
           "약국",
           "병원",
@@ -92,9 +94,9 @@ export default {
             data: this.aroundCntArray,
           },
           {
-            label: "Data Two",
+            label: this.myAptName,
             backgroundColor: "#7acbf9",
-            data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
+            data: this.myAptAroundCntArray,
           },
         ],
       },
