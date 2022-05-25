@@ -32,7 +32,7 @@ ChartJS.register(
   LineElement,
   LinearScale,
   CategoryScale,
-  PointElement
+  PointElement,
 );
 
 export default {

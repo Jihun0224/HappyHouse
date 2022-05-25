@@ -12,7 +12,15 @@
         </div>
       </b-col>
     </div>
-    <div class="my-home-title"><b-icon icon="star"></b-icon>관심 아파트</div>
+    <div class="my-home-title">
+      <b-icon icon="star"></b-icon>관심 아파트
+      <b-icon
+        @click="load"
+        icon="arrow-clockwise"
+        animation="spin"
+        font-scale="1"
+      ></b-icon>
+    </div>
 
     <virtual-list
       id="virtual-flist"
@@ -51,7 +59,7 @@ export default {
       "SET_CENTER",
       "SET_CNTUP",
     ]),
-    ...mapActions(houseStore, ["getHouseInfoByaptcode"]),
+    ...mapActions(houseStore, ["getHouseInfoByaptcode", "loadBookmark"]),
     getmyhome() {
       this.getHouseInfoByaptcode(this.userInfo.myhome);
     },
@@ -79,6 +87,10 @@ export default {
       this.SET_CNTUP();
       this.SET_SELECTEDHOUSE(this.myHomeInfo);
       this.SET_ISSELECTEDHOUSE(true);
+    },
+    load() {
+      //console.log("aaaaaaaaaaaaa");
+      if (this.userInfo) this.loadBookmark(this.userInfo.userid);
     },
   },
   created() {
