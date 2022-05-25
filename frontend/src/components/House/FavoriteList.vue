@@ -19,6 +19,7 @@
       :data-key="'aptCode'"
       :data-sources="getBookmark"
       :data-component="HouseListItem"
+      v-if="getBookmark"
     />
   </div>
 </template>
@@ -53,13 +54,16 @@ export default {
     ]),
     ...mapActions(houseStore, ["getHouseInfoByaptcode"]),
     getmyhome() {
+      if (this.myHomeInfo == null) return;
       this.getHouseInfoByaptcode(this.userInfo.myhome);
     },
     getAptname() {
       // console.log(this.myHomeInfo);
+      if (this.myHomeInfo == null) return;
       return this.myHomeInfo.aptName + "";
     },
     getAddress() {
+      if (this.myHomeInfo == null) return;
       return (
         this.myHomeInfo.sidoName +
         " " +

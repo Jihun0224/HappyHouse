@@ -17,19 +17,10 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" v-if="userInfo">
           <b-nav-item class="align-self-center">
-            <!-- <b-avatar
-              variant="primary"
-              v-text="userInfo ? userInfo.userid.charAt(0).toUpperCase() : ''"
-            ></b-avatar> -->
             Welcome! {{ userInfo.username }}({{ userInfo.userid }})
           </b-nav-item>
-          <b-nav-item class="align-self-center"
-            ><router-link
-              :to="{ name: 'mypage' }"
-              class="link align-self-center"
-              >MyPage</router-link
-            ></b-nav-item
-          >
+          <b-nav-item router-link to="/user/mypage">MyPage</b-nav-item>
+
           <b-nav-item
             class="link align-self-center"
             @click.prevent="onClickLogout"
@@ -149,7 +140,7 @@ export default {
   }
 
   #mainNav .nav-link:hover {
-    color: rgba(65, 62, 102, 0.75);
+    color: rgba(65, 62, 102, 0.5);
   }
   #mainNav .nav-link:active {
     color: #413e66;
