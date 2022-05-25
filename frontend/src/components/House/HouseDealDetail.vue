@@ -95,7 +95,7 @@
         <HouseDetailChart
           v-bind:aptName="getSelectedHouse.aptName"
           v-bind:avgList="avgList"
-          v-bind:myAptName="getSelectedHouse.aptName"
+          v-bind:myAptName="getMyhomeinfo.aptName"
           v-bind:myHomeAvgList="myHomeAvgList"
           :key="searched"
           v-else
