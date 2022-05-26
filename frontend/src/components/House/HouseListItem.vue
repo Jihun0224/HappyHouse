@@ -39,6 +39,7 @@ export default {
       };
       this.SET_CENTER(coords);
       this.SET_CNTUP();
+      console.log(house.aptCode);
       this.SET_SELECTED_CODE(house.aptCode);
       //this.SET_SELECTEDHOUSE(house);
       //this.SET_ISSELECTEDHOUSE(true);

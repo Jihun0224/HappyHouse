@@ -102,17 +102,25 @@ const memberStore = {
       );
     },
     async registerMember({ commit }, user) {
+      console.log(user);
       await signUpMember(
         user,
-        () => {
-          alert("Store Sign Up Member Success!!");
-          commit("SET_IS_LOGIN", false);
-          commit("SET_IS_LOGIN_ERROR", false);
-          commit("SET_IS_SIGNUP_ERROR", false);
-          commit("SET_USER_INFO", null);
+        (response) => {
+          //alert("Store Sign Up Member Success!!");
+          console.log(response);
+          if (response.data === "success") {
+            commit("SET_IS_LOGIN", false);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_IS_SIGNUP_ERROR", false);
+            commit("SET_USER_INFO", null);
+            console.log("성공");
+          } else {
+            commit("SET_IS_SIGNUP_ERROR", true);
+          }
         },
-        () => {
-          //   alert("Store Sign Up Member Fail!!");
+        (error) => {
+          //alert("Store Sign Up Member Fail!!");
+          console.log(error);
           commit("SET_IS_SIGNUP_ERROR", true);
         },
       );

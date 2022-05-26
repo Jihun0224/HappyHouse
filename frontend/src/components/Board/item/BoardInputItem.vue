@@ -38,6 +38,7 @@
             id="content"
             v-model="article.content"
             placeholder="내용 입력..."
+            required
             rows="10"
             max-rows="15"
           ></b-form-textarea>

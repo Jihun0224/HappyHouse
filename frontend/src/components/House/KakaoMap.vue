@@ -514,6 +514,7 @@ export default {
       "getHouses",
       "getCenter",
       "getMyhomeinfo",
+      "getSelectedCode",
     ]),
   },
 };

@@ -14,7 +14,7 @@
       style="width: 50%; float: none; margin: 0 auto"
     >
       <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
-        <b-form class="text-left">
+        <b-form class="text-left" @submit="register">
           <b-form-group label="아이디:" label-for="userid">
             <b-form-input
               id="userid"
@@ -68,11 +68,7 @@
               placeholder="이메일 입력...."
             ></b-form-input>
           </b-form-group>
-          <b-button
-            type="submit"
-            variant="primary"
-            class="m-1"
-            @click="register"
+          <b-button type="submit" variant="primary" class="m-1"
             >회원가입</b-button
           >
         </b-form>
@@ -106,7 +102,7 @@ export default {
     //this.SET_IS_SIGNUP_ERROR(false);
   },
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "isSignipError"]),
+    ...mapState(memberStore, ["isLogin", "isLoginError", "isSignupError"]),
   },
   methods: {
     ...mapMutations(memberStore, ["SET_IS_SIGNUP_ERROR"]),
@@ -119,19 +115,25 @@ export default {
         this.pwMatches = false;
       }
     },
-    async register() {
+    async register(event) {
       // console.log("회원가입 버튼 눌렸음");
+      event.preventDefault();
       this.pwCheck();
       if (this.pwMatches) {
         await this.registerMember(this.user);
-        if (this.isSignupError == false) {
+        if (this.isSignupError === false) {
           alert("가입을 환영합니다!");
+          this.movePage();
+        } else {
+          alert("이미 가입된 아이디입니다.");
         }
-        this.movePage();
+      } else {
+        alert("비밀번호가 일치하지 않습니다.");
       }
     },
     movePage() {
-      this.$router.push({ name: "home" });
+      // 로그인으로 가게 수정
+      this.$router.push({ name: "signIn" });
     },
   },
 };
