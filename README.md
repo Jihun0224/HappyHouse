@@ -10,15 +10,18 @@
 <br>
 
 ## ⚙️ 기술 스택
-  <img src="https://img.shields.io/badge/API-Kakao_Map-red?style=flat">
-  <img src="https://img.shields.io/badge/API-Naver_News-skyblue?style=flat"> &nbsp
-  <img src="https://img.shields.io/badge/Library-vue_Chart-4285F4?style=flat&logo=google&logoColor=white">&nbsp
+<p align="center">
+  <img src="https://img.shields.io/badge/API-Kakao_Map-red?style=flat">&nbsp  
+  <img src="https://img.shields.io/badge/API-Naver_News-skyblue?style=flat">&nbsp 
+  <img src="https://img.shields.io/badge/Library-vue_Chart-4285F4?style=flat&logo=google&logoColor=white">&nbsp 
   <img src="https://img.shields.io/badge/Library-vue_Bootstrap-563D7C?style=flat&logo=bootstrap">&nbsp 
-  <img src="https://img.shields.io/badge/Language-Java_8-007396?style=flat&logo=java&logoColor=white">&nbsp 
+  <img src="https://img.shields.io/badge/Language-Java_11-007396?style=flat&logo=java&logoColor=white">&nbsp 
   <img src="https://img.shields.io/badge/Language-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=white">&nbsp 
   <img src="https://img.shields.io/badge/Database-MySql-F80000?style=flat&logo=oracle&logoColor=white">&nbsp 
   <img src="https://img.shields.io/badge/Framework-Vue-D22128?style=flat&logo=apahce&logoColor=white">&nbsp 
-  <img src="https://img.shields.io/badge/Framework-SpringFramework-6DB33F?style=flat&logo=spring&logoColor=white"> &nbsp 
+  <img src="https://img.shields.io/badge/Framework-SpringFramework-6DB33F?style=flat&logo=spring&logoColor=white">&nbsp 
+
+</p>
 
 ## 🗒️ 다이어그램
 ### UseCase Diagram
