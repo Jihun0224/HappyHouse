@@ -12,7 +12,6 @@
 ## ⚙️ 기술 스택
 <p align="center">
   <img src="https://img.shields.io/badge/API-Kakao_Map-red?style=flat">&nbsp  
-  <img src="https://img.shields.io/badge/API-Naver_News-skyblue?style=flat">&nbsp 
   <img src="https://img.shields.io/badge/Library-vue_Chart-4285F4?style=flat&logo=google&logoColor=white">&nbsp 
   <img src="https://img.shields.io/badge/Library-vue_Bootstrap-563D7C?style=flat&logo=bootstrap">&nbsp 
   <img src="https://img.shields.io/badge/Language-Java_8-007396?style=flat&logo=java&logoColor=white">&nbsp 
